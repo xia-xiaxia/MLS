@@ -1,40 +1,50 @@
 [System.Serializable]
 public class EconomySystem
 {
-    //³õÊ¼×Ê½ğ
-    public float CurrentG; 
-    private readonly EconomyConfig config;
+    public int gold = 10000;
+    public int rentCost = 1000;
+    public int salaryCost = 500;
+    public int seatCount = 5;
+    public int chefCount = 1;
+    public float chefSpeed = 0.1f; // ç›˜/ç§’
+    public float cleanSpeed = 60f; // ç§’/æ¡Œ
+    public float walkSpeed = 5f; // ç§’/é¡¾å®¢
 
-    public EconomySystem(EconomyConfig config)
+    public int CalculateDailyCustomers()
     {
-        this.config = config;
-        CurrentG = config.initialG;
-    }
-    
-    //Ã¿ÈÕ½áËã
-    public void DailySettlement()
-    {
-        float income = CalculateIncome();
-        float cost = CalculateCost();
-        float netProfit = income - cost - config.dailyFixedCost;//×ÜÀûÈó
-
-        CurrentG += netProfit;//ÀÛ¼Æ×Ê½ğ
+        float eatingTime = 300f;//é¡¾å®¢ç”¨é¤æ—¶é—´
+        float totalTime = eatingTime + cleanSpeed + walkSpeed;//æœåŠ¡ä¸€ä¸ªé¡¾å®¢æ‰€éœ€çš„æ—¶é—´
+        return Mathf.FloorToInt(seatCount * (50400f / totalTime));
     }
 
-    private float CalculateIncome() 
+    public int CalculateMaxProduction()
     {
-        return 0.5f;
-        //´Ó¶©µ¥ÏµÍ³»ñÈ¡Êı¾İ 
-        //¿´¿´ÕõÁË¶àÉÙÇ®
-        //ÈÎÎñ½±Àø
+        return Mathf.FloorToInt(chefCount * chefSpeed * 50400f);//å¨å¸ˆæœ€å¤§ç”Ÿäº§é‡
     }
-    private float CalculateCost() 
+
+    //è®¡ç®—æ¯æ—¥æ”¶ç›Š
+    public int CalculateProfit()
     {
-        return 0.5f;
-        // ´Ó¿â´æÏµÍ³»ñÈ¡Êı¾İ
-        // ËûÒò¸Ã»áÓĞ×ö²ËÒª»¨µÄÇ®
-        // ËûÓ¦¸Ã»áÓĞÔ±¹¤¹¤×Ê£¬´ğÓ¦ÎÒ°´ÌìÖ§¸¶ºÃÂğ
-        // ¿ÉÄÜ»áÓĞ×°ĞŞ£¬³é¿¨£¬ÕĞÄ¼·ÑÓÃ
+        int customers = CalculateDailyCustomers();
+        int maxDishes = CalculateMaxProduction();
+        int actualSales = Mathf.Min(customers * 2, maxDishes);//é”€å”®é¢
+
+        int revenue = actualSales * 3; // 3é‡‘å¸åˆ©æ¶¦/ç›˜
+        int expenses = rentCost + salaryCost;//æ¶ˆè€—
+        int profit = revenue - expenses;
+
+        gold += profit;
+        return profit;
     }
-    
+
+    //æŠ½å¡æ¶ˆè€—èµ„æº
+    public void BuyGacha(bool isPremium)
+    {
+        int cost = isPremium ? 3000 : 1000;
+        if (gold < cost) return;
+
+        gold -= cost;
+        var item = GameManager.Instance.gachaSystem.DrawItem(isPremium);
+        GameManager.Instance.ProcessGachaResult(item);
+    }
 }
