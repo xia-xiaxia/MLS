@@ -22,6 +22,7 @@ public class InventoryManager : MonoBehaviour
         instance = this;
     }
 
+
     public void OnEnable()
     {
         if (scipeDescription != null)

@@ -9,8 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d19d27a5b41ed1e45a63b4729cb2b443, type: 3}
-  m_Name: 123
+  m_Script: {fileID: 11500000, guid: 608890d9ef7d9644ebcb0a4ad2feb37b, type: 3}
+  m_Name: XFABManagerSettings
   m_EditorClassIdentifier: 
-  items:
-  - {fileID: 11400000, guid: 27af4521321d0dc49aee032eab24a0a0, type: 2}
+  _selectIndex: 0
+  Profiles:
+  - name: Default
+    url: 
+    updateModel: 1
+    loadMode: 1
+    ProjectName: 
+    GroupName: Default
+  Groups:
+  - Default
+  ShowMode: 0
