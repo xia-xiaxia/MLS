@@ -10,21 +10,33 @@ public class GridControl : MonoBehaviour
     public GameObject GridPrefab;
     public List<GameObject> Grids;
     public InventoryManager inventoryManager;
+    public int index;
+    private bool started = false;
 
-    void Start()
+    public void clickedStart()
     {
         currentGrid = GameObject.FindWithTag("Grid");
         slotParent = currentGrid.transform.parent;
         Grids.Add(currentGrid);
         inventoryManager.slotGrid = currentGrid;
+        index = 0;
+        foreach(GameObject grid in Grids)
+        {
+            grid.SetActive(false);
+        }
+        started = true;
     }
 
     void Update()
     {
-        inventoryManager.slotGrid = currentGrid;
-        if (Grids.Count >= 1 && currentGrid.transform.childCount >= 6)
+        if (started)
         {
-            dependCount();
+            inventoryManager.slotGrid = currentGrid;
+            if (Grids.Count >= 1 && currentGrid.transform.childCount >= 6)
+            {
+                dependCount();
+            }
+            Grids[index].SetActive(true);
         }
     }
 
