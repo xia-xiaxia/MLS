@@ -436,7 +436,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1753199442}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TaskUIControl, Assembly-CSharp
         m_MethodName: OnCpmpleteTaskButtonClicked
         m_Mode: 1
@@ -6164,7 +6164,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1753199440}
-  - component: {fileID: 1753199442}
   - component: {fileID: 1753199441}
   m_Layer: 0
   m_Name: TaskManager
@@ -6197,27 +6196,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1753199439}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd29733012b95004197b6c5f0c788851, type: 3}
+  m_Script: {fileID: 11500000, guid: e5d781e6b0501d048b34ed2c7b63cbeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  csvFilePath: Assets/Resources/Task.csv
---- !u!114 &1753199442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1753199439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 272b4731809eb9c41a9f038804b7d1fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  taskDescriptionText: {fileID: 1479258204}
-  taskProgressText: {fileID: 1067775352}
-  taskProgressSlider: {fileID: 834920826}
-  taskRewardText: {fileID: 0}
-  completeButton: {fileID: 93922201}
+  menu: {fileID: 11400000, guid: de7eb243fdc8740439349b7417b90404, type: 2}
 --- !u!1 &1759200817
 GameObject:
   m_ObjectHideFlags: 0

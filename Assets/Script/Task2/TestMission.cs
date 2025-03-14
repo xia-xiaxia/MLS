@@ -5,6 +5,7 @@ using XFGameFramework.MissionSystem;
 
 public class TestMission : MissionBase
 { 
+
     protected override void OnProgressChange()
     {
         base.OnProgressChange();

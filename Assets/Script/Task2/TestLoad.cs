@@ -6,7 +6,8 @@ using XFGameFramework.MissionSystem;
 
 public class TestLoad : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public Inventory menu;
+
     void Start()
     {
         // º”‘ÿ≈‰±Ì
@@ -24,5 +25,20 @@ public class TestLoad : MonoBehaviour
         }
     }
 
+    public void Update()
+    {
+        if(menu != null)
+        {
+            MissionManager.SetInt("New Missions Config", "get_dishes_count", getRecipeCount());
+        }
+    }
+
+    public int getRecipeCount()
+    {
+        return menu.items.Count;
+    }
+
+    
+    
 }
 

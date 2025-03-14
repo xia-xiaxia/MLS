@@ -16,12 +16,12 @@ MonoBehaviour:
   missions:
   - {fileID: 11400000, guid: e552fe84ca112f8489029239adfb1763, type: 2}
   param:
-  - name: maked_dishes_count
+  - name: get_dishes_count
     type: 1
     only_can_set_in_progress: 1
     only_can_set_larger: 0
     des: 
     custom_data: []
-  display_name: 
+  display_name: "\u65B0\u7684\u4EFB\u52A1"
   excel_path: 
   type_script_guid: 
