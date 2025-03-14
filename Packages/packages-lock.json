@@ -181,6 +181,13 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "3.2.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.test-framework": {
       "version": "1.3.9",
       "depth": 0,
@@ -193,7 +200,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.textmeshpro": {
-      "version": "3.0.6",
+      "version": "3.0.9",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -231,6 +238,36 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.xfkj.xfabmanager": {
+      "version": "https://gitee.com/xianfengkeji/xfabmanager.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "3.2.1"
+      },
+      "hash": "7a4ec5b3c08537248c852f75b8d732ebf09b3655"
+    },
+    "com.xfkj.xfgameframework": {
+      "version": "https://gitee.com/xianfengkeji/XFGameFramework.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "559f98e6ae0ee73d910d9663afb2a6cfd81e9c0e"
+    },
+    "com.xfkj.xfgameframework.excelsystem": {
+      "version": "https://gitee.com/xianfengkeji/xfgame-framework.excel-system.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "750a6c44744971684d3326baea9f44a226e397cb"
+    },
+    "com.xfkj.xfgameframework.missionsystem": {
+      "version": "https://gitee.com/xianfengkeji/xfgame-framework.mission-system.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "fc380ab035d34370ba932a95e34d23a1c982c789"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
