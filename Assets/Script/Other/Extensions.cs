@@ -30,3 +30,26 @@ public class Pair<T1, T2>
         return $"({first}, {second})";
     }
 }
+
+public static class ListExtensions
+{
+    private static System.Random rng = new System.Random();
+
+    public static List<T> GetRandomElements<T>(this List<T> list, int n)
+    {
+        if (n > list.Count)
+            Debug.LogError("n cannot be greater than the number of elements in the list");
+
+        List<T> result = new List<T>(list);
+        int count = result.Count;
+        for (int i = 0; i < n; i++)
+        {
+            int k = rng.Next(i, count);
+            T temp = result[i];
+            result[i] = result[k];
+            result[k] = temp;
+        }
+
+        return result.GetRange(0, n);
+    }
+}

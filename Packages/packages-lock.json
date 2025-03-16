@@ -5,7 +5,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "58f99b1c0cf3bee6deb43747156d153b3ffd4fdf"
+      "hash": "e9ffad91c53e1672b0914410fb001b0c76b321fe"
     },
     "com.h8man.2d.navmeshplus": {
       "version": "file:D:/Downloads/Edge_download/NavMeshPlus-master",

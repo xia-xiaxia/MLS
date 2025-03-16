@@ -49,18 +49,18 @@ public class ServeTaskBase : TaskBase
 }
 public class ServeTask : ServeTaskBase
 {
-    public string dishName;
+    public Recipe recipe;
     public bool isFetched = false;
     public bool isServed = false;
 
-    public ServeTask(string dishName, Guest guest) : base(guest, null)
+    public ServeTask(Recipe recipe, Guest guest) : base(guest, null)
     {
-        this.dishName = dishName;
+        this.recipe = recipe;
         this.guest = guest;
     }
     public void IsServed()
     {
-        //Debug.Log(dishName + " is served");
+        //Debug.Log(recipe.RecipeName + " is served");
         if (!isServed)
         {
             isServed = true;

@@ -7,8 +7,6 @@ using UnityEngine;
 【修改】
 1.TableManager的冗余代码
 3.TaskBase整合
-3.Seat的设置（不是根据名称）
-4.入口和门
 
 【优化】
 1.Debug输出名字
@@ -21,8 +19,6 @@ using UnityEngine;
 【新增】
 1.思考Strategy
 2.动画
-3.餐桌、菜品和菜单的数字UI
-4.管理guest进入
 5.文字跟随人物using UnityEngine.UI;
 
 
