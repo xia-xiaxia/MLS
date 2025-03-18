@@ -1,0 +1,9 @@
+using UnityEngine;
+
+[CreateAssetMenu(menuName = "Data/Customer")]
+public class CustomerData : ScriptableObject
+{
+    public float walkingSpeed=4f;        // »ù´¡²É¹º³É±¾
+    public float eatingSpeed=3f;       // ÏúÊÛ¼Û¸ñ
+  
+}
