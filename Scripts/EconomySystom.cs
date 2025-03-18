@@ -1,50 +1,73 @@
-[System.Serializable]
+using UnityEngine;
+
+// 经济系统
 public class EconomySystem
 {
-    public int gold = 10000;
-    public int rentCost = 1000;
-    public int salaryCost = 500;
-    public int seatCount = 5;
-    public int chefCount = 1;
-    public float chefSpeed = 0.1f; // 盘/秒
-    public float cleanSpeed = 60f; // 秒/桌
-    public float walkSpeed = 5f; // 秒/顾客
+    // 属性访问
+    public int currentGold { get; private set; }
 
-    public int CalculateDailyCustomers()
+    // 配置参数（可抽离为ScriptableObject）
+    public struct Config
     {
-        float eatingTime = 300f;//顾客用餐时间
-        float totalTime = eatingTime + cleanSpeed + walkSpeed;//服务一个顾客所需的时间
-        return Mathf.FloorToInt(seatCount * (50400f / totalTime));
+        public int baseRent;
+        public int baseSalary;
+        public int seatCount;
+        public float chefSpeed;
+        public float cleanSpeed;
+        public float walkSpeed;
     }
 
-    public int CalculateMaxProduction()
+    private Config _config;
+
+    public void Initialize(int initialGold)
     {
-        return Mathf.FloorToInt(chefCount * chefSpeed * 50400f);//厨师最大生产量
+        currentGold = initialGold;
+
+        // 初始化默认配置
+        _config = new Config
+        {
+            baseRent = 1000,
+            baseSalary = 500,
+            seatCount = 5,
+            chefSpeed = 0.1f,
+            cleanSpeed = 60f,
+            walkSpeed = 5f
+        };
     }
 
-    //计算每日收益
-    public int CalculateProfit()
+    // 收益计算
+    public DailyStats CalculateDailyProfit()
     {
-        int customers = CalculateDailyCustomers();
-        int maxDishes = CalculateMaxProduction();
-        int actualSales = Mathf.Min(customers * 2, maxDishes);//销售额
+        var stats = new DailyStats
+        {
+            customers = CalculateDailyCustomers(),
+            maxDishes = CalculateMaxProduction(),
+            day = GameDataManager.Instance.gameDays
+        };
 
-        int revenue = actualSales * 3; // 3金币利润/盘
-        int expenses = rentCost + salaryCost;//消耗
-        int profit = revenue - expenses;
+        stats.actualSales = Mathf.Min(stats.customers * 2, stats.maxDishes);
+        stats.revenue = stats.actualSales * 3;
+        stats.expenses = _config.baseRent + _config.baseSalary;
+        stats.profit = stats.revenue - stats.expenses;
+        stats.totalGold = currentGold + stats.profit;
 
-        gold += profit;
-        return profit;
+        return stats;
     }
 
-    //抽卡消耗资源
-    public void BuyGacha(bool isPremium)
+    // 执行每日结算
+    public void ApplyDailyResult(DailyStats stats)
     {
-        int cost = isPremium ? 3000 : 1000;
-        if (gold < cost) return;
-
-        gold -= cost;
-        var item = GameManager.Instance.gachaSystem.DrawItem(isPremium);
-        GameManager.Instance.ProcessGachaResult(item);
+        currentGold = stats.totalGold;
+        GameDataManager.Instance.totalGold = currentGold;
     }
+
+    // 私有计算方法
+    private int CalculateDailyCustomers() =>
+        Mathf.FloorToInt(_config.seatCount * (50400f / GetTotalServiceTime()));
+
+    private float GetTotalServiceTime() =>
+        300f + _config.cleanSpeed + _config.walkSpeed;
+
+    private int CalculateMaxProduction() =>
+        Mathf.FloorToInt(1 * _config.chefSpeed * 50400f); // 暂时固定1个厨师
 }
