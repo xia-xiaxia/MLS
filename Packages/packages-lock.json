@@ -8,7 +8,7 @@
       "hash": "e9ffad91c53e1672b0914410fb001b0c76b321fe"
     },
     "com.h8man.2d.navmeshplus": {
-      "version": "file:D:/Downloads/Edge_download/NavMeshPlus-master",
+      "version": "file:D:/gamejam/My project11/builds/NavMeshPlus-master",
       "depth": 0,
       "source": "local",
       "dependencies": {}
@@ -174,15 +174,6 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.unity.inputsystem": {
-      "version": "1.13.0",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.uielements": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
     "com.unity.mathematics": {
       "version": "1.2.6",
       "depth": 2,
@@ -324,12 +315,6 @@
         "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.animation": "1.0.0"
       }
-    },
-    "com.unity.modules.hierarchycore": {
-      "version": "1.0.0",
-      "depth": 1,
-      "source": "builtin",
-      "dependencies": {}
     },
     "com.unity.modules.imageconversion": {
       "version": "1.0.0",
