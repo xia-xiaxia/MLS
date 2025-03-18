@@ -8,6 +8,8 @@ public class GuestManager : MonoBehaviour
 
     public Transform Guests;
     public GameObject guestPrefab;
+    public Transform Bubbles;
+    public GameObject bubblePrefab;
 
     private float timer = 10f;
     private float newGuestInterval = 10f;
@@ -29,22 +31,29 @@ public class GuestManager : MonoBehaviour
         if (timer >= newGuestInterval)
         {
             timer = 0;
-            AddGuest();
+            if (guests.Count < SeatManager.Instance.CheckEmptySeatCounts().Count)
+            {
+                AddGuest();
+            }
+            else
+            {
+                //Debug.LogWarning("No Empty Seat !!!");
+            }
         }
     }
     public void AddGuest()
     {
-        if (guests.Count < SeatManager.Instance.CheckEmptySeatCounts().Count)
-        {
-            guests.Add(Instantiate(guestPrefab, Guests));
-        }
-        else
-        {
-            //Debug.LogWarning("No Empty Seat !!!");
-        }
+        GameObject guest = Instantiate(guestPrefab, Guests);
+        GuestAI guestAI = guest.GetComponent<GuestAI>();
+        Bubble bubble = Instantiate(bubblePrefab, Bubbles).GetComponent<Bubble>();
+        bubble.owner = guest.transform;
+        guestAI.guest.bubble = bubble;
+        guestAI.guest.UpdateState(GuestState.GetIn);
+        guests.Add(guest);
     }
     public void DestroyGuest(GameObject guest)
     {
+        Destroy(guest.GetComponent<GuestAI>().guest.bubble.gameObject);
         Destroy(guest);
         if (guests.Contains(guest))
         {

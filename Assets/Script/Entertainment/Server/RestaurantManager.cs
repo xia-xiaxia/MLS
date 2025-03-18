@@ -146,6 +146,7 @@ public class RestaurantManager : MonoBehaviour
     }
     public int CheckWaitingTasksCounts()
     {
+        Debug.Log(waitForOrdering.Count + waitForServing.Count + waitForBilling.Count);
         return waitForOrdering.Count + waitForServing.Count + waitForBilling.Count;
     }
 }

@@ -6,16 +6,7 @@ using UnityEngine.AI;
 
 public class ServerAI : BTAI
 {
-    public Transform waitingSite;
-    public Transform hangOrderSite;
-    public Transform dishSite;
-    public Bubble bubble;
-
-    private Queue<TaskBase> leftTasks = new Queue<TaskBase>();
-    private TaskBase curTask;
-
-    public int willingness = 60;
-    public float cleanTime = 3f;
+    public Server server = new Server();
 
 
 
@@ -57,11 +48,11 @@ public class ServerAI : BTAI
         isAcceptTask.AddChild(new Leaf("isNewTaskToDo", new ConditionStrategy(() => RestaurantManager.Instance.curTask != null)));
         isAcceptTask.AddChild(new Leaf("acceptWork", new ActionStrategy(() =>
         {
-            if (willingness > 20 && !RestaurantManager.Instance.CheckWillinger(this))
+            if (server.willingness > 20 && !RestaurantManager.Instance.CheckWillinger(this))
             {
                 //Debug.Log("WillingToAcccept");
                 RestaurantManager.Instance.AddWillinger(this);
-                willingness -= 20;
+                server.willingness -= 20;
             }
         })));
         // }
@@ -70,16 +61,16 @@ public class ServerAI : BTAI
         Selector isTask = new Selector("isTask");
         // [ 有剩余任务
         Sequence isLeftTask = new Sequence("isLeftTask");
-        isLeftTask.AddChild(new Leaf("isLeftTask", new ConditionStrategy(() => leftTasks.Count > 0)));
-        isLeftTask.AddChild(new Leaf("isCurTask", new ConditionStrategy(() => curTask == null)));
-        isLeftTask.AddChild(new Leaf("startNextTask", new ActionStrategy(() => { curTask = leftTasks.Dequeue(); /*Debug.Log("StartNextTask");*/ })));
+        isLeftTask.AddChild(new Leaf("isLeftTask", new ConditionStrategy(() => server.leftTasks.Count > 0)));
+        isLeftTask.AddChild(new Leaf("isCurTask", new ConditionStrategy(() => server.curTask == null)));
+        isLeftTask.AddChild(new Leaf("startNextTask", new ActionStrategy(() => { server.curTask = server.leftTasks.Dequeue(); /*Debug.Log("StartNextTask");*/ })));
         // ]
         // [ 有当前任务
         Sequence isCurTask = new Sequence("isCurTask");
-        isCurTask.AddChild(new Leaf("isCurTask", new ConditionStrategy(() => curTask != null)));
+        isCurTask.AddChild(new Leaf("isCurTask", new ConditionStrategy(() => server.curTask != null)));
         Allocator allocateTask = new Allocator("allocateTask", () =>
         {
-            switch (curTask)
+            switch (server.curTask)
             {
                 case OrderTask _:
                     return 1;
@@ -94,45 +85,45 @@ public class ServerAI : BTAI
         // order
         Selector order = new Selector("order");
         Sequence isWaitForOrder = new Sequence("isWaitForServe");
-        isWaitForOrder.AddChild(new Leaf("isWaitForServe", new ConditionStrategy(() => curTask.guest.state == GuestState.WaitForOrder)));
-        isWaitForOrder.AddChild(new Leaf("headToOrder", new HeadToOrderStrategy(agent, this)));
+        isWaitForOrder.AddChild(new Leaf("isWaitForServe", new ConditionStrategy(() => server.curTask.guest.state == GuestState.WaitForOrder)));
+        isWaitForOrder.AddChild(new Leaf("headToOrder", new HeadToOrderStrategy(agent, server)));
         order.AddChild(isWaitForOrder);
-        order.AddChild(new Leaf("waitOrder", new ConditionStrategy(() => curTask.guest.state == GuestState.Order)));
-        order.AddChild(new Leaf("takeBackOrder", new TakeBackOrderStrategy(agent, hangOrderSite, this)));
+        order.AddChild(new Leaf("waitOrder", new ConditionStrategy(() => server.curTask.guest.state == GuestState.Order)));
+        order.AddChild(new Leaf("takeBackOrder", new TakeBackOrderStrategy(agent, server.hangOrderSite, server)));
         order.AddChild(new Leaf("finishTask", new ActionStrategy(() =>
         {
             //Debug.LogWarning("Finish a task");
-            curTask = null;
-            willingness += 20;
+            server.curTask = null;
+            server.willingness += 20;
             timer = executeInterval;
         })));
         // serve
         Selector serve = new Selector("serve");
         Sequence fetchDish = new Sequence("fetchDish");
-        fetchDish.AddChild(new Leaf("isFetched", new ConditionStrategy(() => !((ServeTask)curTask).isFetched)));
-        fetchDish.AddChild(new Leaf("fetchDish", new FetchDishStrategy(agent, dishSite, this)));
+        fetchDish.AddChild(new Leaf("isFetched", new ConditionStrategy(() => !((ServeTask)server.curTask).isFetched)));
+        fetchDish.AddChild(new Leaf("fetchDish", new FetchDishStrategy(agent, server.dishSite, server)));
         serve.AddChild(fetchDish);
-        serve.AddChild(new Leaf("serve", new ServeStrategy(agent, this)));
+        serve.AddChild(new Leaf("serve", new ServeStrategy(agent, server)));
         serve.AddChild(new Leaf("finishTask", new ActionStrategy(() =>
         {
             //Debug.LogWarning("Finish a task");
-            curTask = null;
-            willingness += 20;
+            server.curTask = null;
+            server.willingness += 20;
             timer = executeInterval;
         })));
         // bill
         Selector bill = new Selector("bill");
         Sequence isWaitForBill = new Sequence("isWaitForBill");
-        isWaitForBill.AddChild(new Leaf("isWaitForServe", new ConditionStrategy(() => curTask.guest.state == GuestState.WaitForBill)));
-        isWaitForBill.AddChild(new Leaf("headToBill", new HeadToBillStrategy(agent, this)));
+        isWaitForBill.AddChild(new Leaf("isWaitForServe", new ConditionStrategy(() => server.curTask.guest.state == GuestState.WaitForBill)));
+        isWaitForBill.AddChild(new Leaf("headToBill", new HeadToBillStrategy(agent, server)));
         bill.AddChild(isWaitForBill);
-        bill.AddChild(new Leaf("waitBill", new ConditionStrategy(() => curTask.guest.state == GuestState.Bill)));
-        bill.AddChild(new Leaf("clean", new CleanStrategy(executeInterval, cleanTime, this)));
+        bill.AddChild(new Leaf("waitBill", new ConditionStrategy(() => server.curTask.guest.state == GuestState.Bill)));
+        bill.AddChild(new Leaf("clean", new CleanStrategy(executeInterval, server.cleanTime, server)));
         bill.AddChild(new Leaf("finishTask", new ActionStrategy(() =>
         {
             //Debug.LogWarning("Finish a task");
-            curTask = null;
-            willingness += 20;
+            server.curTask = null;
+            server.willingness += 20;
             timer = executeInterval;
         })));
         //
@@ -144,7 +135,8 @@ public class ServerAI : BTAI
         // ]
         // [ 空闲、回到前台
         Sequence available = new Sequence("available");
-        available.AddChild(new Leaf("goToForntDesk", new GotoFrontDesk(agent, waitingSite)));
+        available.AddChild(new Leaf("hideBubble", new ActionStrategy(() => server.bubble.Hide())));
+        available.AddChild(new Leaf("goToForntDesk", new GotoFrontDesk(agent, server.waitingSite)));
         // ]
         isTask.AddChild(isLeftTask);
         isTask.AddChild(isCurTask);
@@ -160,12 +152,8 @@ public class ServerAI : BTAI
     }
     public void AcceptTask(TaskBase task)
     {
-        leftTasks.Enqueue(task);
+        server.leftTasks.Enqueue(task);
         //if (task.GetType() == typeof(ServeTask))
         //    Debug.LogWarning(((ServeTask)task).dishName);
-    }
-    public TaskBase GetCurTask()
-    {
-        return curTask;
     }
 }

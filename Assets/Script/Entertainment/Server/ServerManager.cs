@@ -51,15 +51,15 @@ public class ServerManager : MonoBehaviour
     {
         GameObject server = Instantiate(serverPrefab, Servers);
         ServerAI serverAI = server.GetComponent<ServerAI>();
-        serverAI.hangOrderSite = hangOrderSite;
-        serverAI.dishSite = dishSite;
+        serverAI.server.hangOrderSite = hangOrderSite;
+        serverAI.server.dishSite = dishSite;
         Bubble bubble = Instantiate(bubblePrefab, Bubbles).GetComponent<Bubble>();
-        bubble.server = server.transform;
-        serverAI.bubble = bubble;
+        bubble.owner = server.transform;
+        serverAI.server.bubble = bubble;
 
         if (assignedWaitingSite != null)
         {
-            serverAI.waitingSite = assignedWaitingSite;
+            serverAI.server.waitingSite = assignedWaitingSite;
             server.transform.position = assignedWaitingSite.position;
             if (waitingSites.ContainsKey(assignedWaitingSite))
                 waitingSites[assignedWaitingSite] = true;
@@ -71,21 +71,21 @@ public class ServerManager : MonoBehaviour
                 if (!w.Value)
                 {
                     waitingSites[w.Key] = true;
-                    serverAI.waitingSite = w.Key;
+                    serverAI.server.waitingSite = w.Key;
                     break;
                 }
             }
         }
 
-        if (serverAI.waitingSite == null)
+        if (serverAI.server.waitingSite == null)
         {
             Destroy(server);
-            //Debug.LogWarning("No More WaitingSites !!!");
+            Debug.LogWarning("No More WaitingSites !!!");
         }
         else
+        {
+            Debug.LogWarning("New Server");
             servers.Add(server);
-    }
-    private void AssignBubble(ServerAI server)
-    {
+        }
     }
 }

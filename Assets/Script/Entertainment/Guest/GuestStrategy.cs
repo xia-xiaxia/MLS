@@ -113,8 +113,9 @@ public class GuestOrderStrategy : IStrategy
 
     private List<Recipe> OrderRandomly()
     {
-        int n = UnityEngine.Random.Range(1, Math.Min(inventory.items.Count, 5)); // 最多四道菜
-        return inventory.items.GetRandomElements(n);
+        //int n = UnityEngine.Random.Range(1, Math.Min(inventory.items.Count, 5)); // 最多四道菜
+        //return inventory.items.GetRandomElements(n);
+        return new List<Recipe> { ScriptableObject.CreateInstance<Recipe>() };
     }
 }
 
@@ -164,7 +165,7 @@ public class BillStrategy : IStrategy
         if (timer >= billTime)
         {
             //Debug.Log("Finish billing");
-            guest.state = GuestState.Leave;
+            guest.UpdateState(GuestState.Leave);
             SeatManager.Instance.EmptySeat(guest.index);
             return Node.State.Success;
         }

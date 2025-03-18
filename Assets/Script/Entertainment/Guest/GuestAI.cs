@@ -24,7 +24,7 @@ public class GuestAI : BTAI
         Selector GetIn = new Selector("GetIn");
         GetIn.AddChild(new Leaf("goToRandomDoor", new ExecuteOnceStrategy(new GotoRandomDoorStrategy(agent, transform))));
         GetIn.AddChild(new Leaf("chooseSeat", new GotoRandomSeatStrategy(agent, guest)));//此处给guest设置了index
-        GetIn.AddChild(new Leaf("seated", new ActionStrategy(() => guest.state = GuestState.WaitForOrder)));
+        GetIn.AddChild(new Leaf("seated", new ActionStrategy(() => guest.UpdateState(GuestState.WaitForOrder))));
 
         isSeated.AddChild(GetIn);
 
@@ -43,7 +43,7 @@ public class GuestAI : BTAI
 
         Sequence order = new Sequence("order");
         order.AddChild(new Leaf("order", new ExecuteOnceStrategy(new GuestOrderStrategy(guest))));
-        order.AddChild(new Leaf("waitForFood", new ActionStrategy(() => guest.state = GuestState.WaitForFood)));
+        order.AddChild(new Leaf("waitForFood", new ActionStrategy(() => guest.UpdateState(GuestState.WaitForFood))));
 
         waitOrOrder.AddChild(waitForOrder);
         waitOrOrder.AddChild(order);
@@ -66,7 +66,7 @@ public class GuestAI : BTAI
                 return true;
             else
             {
-                guest.state = GuestState.Eat;
+                guest.UpdateState(GuestState.Eat);
                 return false;
             }
         })));
@@ -89,7 +89,7 @@ public class GuestAI : BTAI
             if (guest.state == GuestState.Eat)
             {
                 guest.task = new BillTask(guest);//此处给guest更新了任务
-                guest.state = GuestState.WaitForBill;
+                guest.UpdateState(GuestState.WaitForBill);
             }
         })));
 
