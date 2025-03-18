@@ -21,12 +21,14 @@ public class HangoutFlow : MonoBehaviour
     private bool isAnyCloseButtonClicked = false;
 
     public Button closeButton1;
-    public Button startButton;//go to the street
-    public GameObject uiPanel;//底布加closebutton
+    public Button startButton;
+    public GameObject uiPanel;
     public QuickPurchase quickPurchase;
-
+    public AnimationController animationController;
     void Start()
     {
+        animationController = GetComponent<AnimationController>();
+        animationController.SetIdleAnimation(); // 初始静止
         uiPanel.SetActive(false);
         ResetTaskQueue(); //缓存
         startButton.onClick.AddListener(StartFlow);
@@ -59,13 +61,15 @@ public class HangoutFlow : MonoBehaviour
         if (flow == firstWalk)
         {
             
-            Debug.Log("第一阶段firstwalk结束，开始逛街抽卡");
-
+          
             quickPurchase.EnablePurchaseButtons();
             uiPanel.SetActive(false);
-        //实时更新closebutton的监听状态
+            //实时更新closebutton的监听状态
+            animationController.SetIdleAnimation(); // 确保静止
             closeButton1.onClick.RemoveListener(OnCloseButtonClicked);
-            closeButton1.onClick.AddListener(OnCloseButtonClicked); 
+            closeButton1.onClick.AddListener(OnCloseButtonClicked);
+            Debug.Log("第一阶段firstwalk结束，开始逛街抽卡");
+
         }
         else if (flow == secondWalk)
         {
@@ -73,8 +77,8 @@ public class HangoutFlow : MonoBehaviour
             Debug.Log("第二阶段结束，返程回shop");
             startButton.gameObject.SetActive(true); 
             startButton.interactable = true; //可交互
-
-         //实时更新startbutton的监听状态
+            animationController.SetIdleAnimation(); // 确保静止
+            //实时更新startbutton的监听状态
             startButton.onClick.RemoveListener(StartFlow); 
             startButton.onClick.AddListener(StartFlow);  
         }
@@ -125,6 +129,13 @@ public class HangoutFlow : MonoBehaviour
     {
         while (Vector3.Distance(transform.position, target) > 0.1f)
         {
+           Vector3  moveDirection = (target - transform.position).normalized;
+
+            // 角度
+            float currentAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+
+            // 动画
+            animationController.UpdateAnimation(moveDirection, currentAngle);
             transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
             yield return null;
         }

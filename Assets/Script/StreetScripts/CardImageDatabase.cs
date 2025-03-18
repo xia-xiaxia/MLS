@@ -7,7 +7,7 @@ public class CardImageDatabase : ScriptableObject
     [System.Serializable]
     public class CardImageEntry
     {
-        public string cardName; // 直接使用名称如"宫保鸡丁"
+        public string cardName; // 直接使用名称"宫保鸡丁"
         public Sprite image;
     }
 

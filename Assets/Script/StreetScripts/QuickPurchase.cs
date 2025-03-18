@@ -33,7 +33,7 @@ public class QuickPurchase : MonoBehaviour
 {
     private HashSet<string> collectedCardIDs = new HashSet<string>(); // id池，new有关
     private System.Random random = new System.Random();
-    private List<Card> drawnCards = new List<Card>(); //卡片池
+    private List<Card> drawnCards = new List<Card>(); 
     public bool hasSelectedMode = false; 
     //public float drawCooldown = 2f; 
     //private float lastDrawTime = 0f; 
@@ -43,8 +43,8 @@ public class QuickPurchase : MonoBehaviour
     public Button quickPurchaseButton;
     public Button bigPurchaseButton;
     public Button closeButton;
-    //public Sprite[] rarityBackgrounds; // 绿、蓝、紫、金、彩的底图//如果美术给的话
-    public GameObject uiPanel;//整个ui的显示
+    //public Sprite[] rarityBackgrounds; 
+    public GameObject uiPanel;
     public HangoutFlow hangoutFlow;
     public CardImageDatabase cardImageDatabase;
 
@@ -138,28 +138,31 @@ public class QuickPurchase : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        //遍历，生成UI
         for (int i = 0; i < cards.Count; i++)
         {
             Card card = cards[i];
-            Transform parent = i < 5 ? upperRowParent : lowerRowParent; // 前五个在上行，后五个在下行
-
+            Transform parent = i < 5 ? upperRowParent : lowerRowParent; 
            
             GameObject cardUI = Instantiate(cardPrefab, parent);
             Image cardImage = cardUI.transform.Find("cardImage").GetComponent<Image>();
             TMP_Text nameText = cardUI.transform.Find("NameText").GetComponent<TMP_Text>();
+            if (!nameText.enabled)
+            {
+                nameText.enabled = true; 
+            }
+            Debug.Log("NameText: " + nameText.text);
             TMP_Text typeText = cardUI.transform.Find("TypeText").GetComponent<TMP_Text>();
             TMP_Text rarityText = cardUI.transform.Find("RarityText").GetComponent<TMP_Text>();
-            Image newTagImage = cardUI.transform.Find("NewTagImage").GetComponent<Image>(); // 这里是 Image 组件
+            Image newTagImage = cardUI.transform.Find("NewTagImage").GetComponent<Image>(); 
 
            // Image newTagImage = cardUI.transform.Find("NewTagImage").GetComponent<Image>(); 
 
-            // 获取卡片的图片
+            // cardImageDatebase中的sprite
             Sprite cardSprite = cardImageDatabase.GetSprite(card.name);
 
             if (cardSprite != null)
             {
-                cardImage.sprite = cardSprite;  // 设置卡片的图片
+                cardImage.sprite = cardSprite; 
             }
 
 
@@ -170,9 +173,9 @@ public class QuickPurchase : MonoBehaviour
             typeText.color = GetTypeColor(card.type);
             nameText.color = GetTypeColor(card.type);
             rarityText.color = GetRarityColor(card.rarity);
-
+            Canvas.ForceUpdateCanvases();  //强制刷新
             string cardID = card.name + "_" + card.rarity.ToString();
-            bool isNew = !collectedCardIDs.Contains(cardID); // 判断是否是新卡
+            bool isNew = !collectedCardIDs.Contains(cardID); 
             newTagImage.gameObject.SetActive(isNew); 
             if (isNew)
             {
@@ -216,14 +219,14 @@ public class QuickPurchase : MonoBehaviour
         bigPurchaseButton.interactable = true;
         hasSelectedMode = false;
     }
-    //禁用抽卡
+ 
     public void DisablePurchaseButtons()
     {
         
         quickPurchaseButton.interactable = false;
         bigPurchaseButton.interactable = false;
     }
-    //quickpurchase的button
+    
     private void OnPurchaseClick(bool isBigMode)
     {
         if (hasSelectedMode) return;
@@ -238,7 +241,6 @@ public class QuickPurchase : MonoBehaviour
         List<Card> newCards = DrawCards(10, isBigMode ? bigPurchaseRates : quickPurchaseRates, isBigMode);
         ProcessDrawnCards(newCards);
 
-        // 显示 uiPanel
         uiPanel.SetActive(true);
         closeButton.gameObject.SetActive(true);  
         closeButton.onClick.AddListener(CloseUI); 
@@ -246,12 +248,12 @@ public class QuickPurchase : MonoBehaviour
 
     private void OnQuickPurchaseClick()
     {
-        OnPurchaseClick(false);  // 点击 quickPurchase
+        OnPurchaseClick(false);  
     }
 
     private void OnBigPurchaseClick()
     {
-        OnPurchaseClick(true);  // 点击 bigPurchase
+        OnPurchaseClick(true); 
     }
 
 
@@ -342,7 +344,6 @@ public class QuickPurchase : MonoBehaviour
         else return CardType.Partner;
     }
 
-    // 稀有度
     private Rarity RandomlySelectRarity(CardType type, float randomValue, Dictionary<CardType, Dictionary<Rarity, float>> rates)
     {
         float cumulative = 0f;
@@ -354,8 +355,7 @@ public class QuickPurchase : MonoBehaviour
         }
         return Rarity.Green;
     }
-
-    // 根据种类来挑选不同配方，食材，伙伴
+   //随机random从池中挑选name
     private string GetRandomNameForType(CardType type)
     {
         switch (type)
@@ -381,9 +381,7 @@ public class QuickPurchase : MonoBehaviour
        
         foreach (var card in drawnCards)
         {
-            Debug.Log($"抽到: {card.name} - {card.rarity}");
-
-            // 资源
+            Debug.Log($"抽到: {card.name} - {card.rarity}");     
             if (card.type == CardType.Recipe)
                 ConvertRecipeToResource(card);
             else if (card.type == CardType.Ingredient)
@@ -394,7 +392,6 @@ public class QuickPurchase : MonoBehaviour
          DisplayCards(drawnCards);
     }
 
-    // 转换配方经验
     private void ConvertRecipeToResource(Card card)
     {
         int recipeExperience = 0;
@@ -410,8 +407,6 @@ public class QuickPurchase : MonoBehaviour
         Debug.Log($"配方 {card.name} 转换为 {recipeExperience} 配方经验");
        
     }
-
-    // 转换食材碎片
     private void ConvertIngredientToResource(Card card)
     {
         int ingredientFragments = 0;
@@ -428,7 +423,6 @@ public class QuickPurchase : MonoBehaviour
        
     }
 
-    // 转换伙伴碎片
     private void ConvertPartnerToResource(Card card)
     {
         if (card.rarity == Rarity.Gold)
@@ -444,7 +438,7 @@ public class QuickPurchase : MonoBehaviour
             Debug.Log("伙伴碎片累加");
         }
     }
-    private void CloseUI()//隐藏ui和卡牌
+    private void CloseUI()
     {
         uiPanel.SetActive(false);
         foreach (Transform child in upperRowParent)
