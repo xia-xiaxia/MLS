@@ -1,18 +1,17 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// ���ѵ����ݴ洢ϵͳ
+// 数据存储系统
 public class GameDataManager : MonoBehaviour
 {
     public static GameDataManager Instance;
-
     public HashSet<string> fullPartners = new HashSet<string>();
     public int totalPartnerFragments = 0;
     public Dictionary<string, Rarity> recipeMaxRarity = new Dictionary<string, Rarity>();
     public int totalRecipeExperience = 0;
     public int totalIngredientExperience = 0;
-    public int totalGold;
+    public int totalGold; 
+    public PlayerInventory playerInventory = new PlayerInventory();
 
     void Awake()
     {
@@ -39,4 +38,13 @@ public class GameDataManager : MonoBehaviour
     public void AddRecipeExperience(int experience) => totalRecipeExperience += experience;
     public void AddPartnerFragments(int fragments) => totalPartnerFragments += fragments;
     public void SaveFullPartner(string partnerName) => fullPartners.Add(partnerName);
+    public int gameDays; // 游戏天数追踪
+
+    public void SaveGame()
+    {
+        // 实现存档逻辑
+        PlayerPrefs.SetString("SaveData", JsonUtility.ToJson(this));
+    }
 }
+
+
