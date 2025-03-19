@@ -146,9 +146,9 @@ GameObject:
   - component: {fileID: 8099390989493183999}
   - component: {fileID: 5209390854780718545}
   - component: {fileID: 429570199876861134}
-  - component: {fileID: 3489712677250553350}
+  - component: {fileID: 3664053771149211519}
   m_Layer: 5
-  m_Name: slot
+  m_Name: RecipeSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -256,8 +256,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3489712677250553350}
-        m_TargetAssemblyTypeName: slot, Assembly-CSharp
+      - m_Target: {fileID: 3664053771149211519}
+        m_TargetAssemblyTypeName: RecipeSlot, Assembly-CSharp
         m_MethodName: OnClicked
         m_Mode: 1
         m_Arguments:
@@ -268,7 +268,7 @@ MonoBehaviour:
           m_StringArgument: a nice dish
           m_BoolArgument: 1
         m_CallState: 2
---- !u!114 &3489712677250553350
+--- !u!114 &3664053771149211519
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -277,9 +277,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4767767162483918938}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 870db5394178a7240b80e7a90b849c7e, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ab0445aebe747347b53778e1dbb35fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotScipe: {fileID: 0}
-  slotIcon: {fileID: 5209390854780718545}
+  slotIcon: {fileID: 0}
   slotName: {fileID: 8967561227082509561}
+  infoWindow: {fileID: 0}
+  slotRecipe: {fileID: 0}
+  ingredientSlotPrefab: {fileID: 0}

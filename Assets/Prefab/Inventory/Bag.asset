@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: Bag
   m_EditorClassIdentifier: 
   items: []
+  ingredients:
+  - {fileID: 0}
+  - {fileID: 0}

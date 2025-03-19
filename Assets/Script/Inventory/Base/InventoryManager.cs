@@ -42,7 +42,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (instance != null && instance.slotGrid != null && instance.slotPrefab != null)
         {
-            slot newSlot = Instantiate(instance.slotPrefab, instance.slotGrid.transform);
+            RecipeSlot newSlot = Instantiate(instance.slotPrefab, instance.slotGrid.transform) as RecipeSlot;
             newSlot.gameObject.transform.SetParent(instance.slotGrid.transform);
             newSlot.slotRecipe = recipe;
             newSlot.slotName.text = recipe.RecipeName + "  LV:" + recipe.RecipeLevel.ToString();
@@ -63,9 +63,9 @@ public class InventoryManager : MonoBehaviour
             if (instance.slotGrid.transform.GetChild(i).gameObject != null)
                 Destroy(instance.slotGrid.transform.GetChild(i).gameObject);
         }
-        for (int i = 0; i < instance.inventory.items.Count; i++)
+        for (int i = 0; i < instance.inventory.Recipes.Count; i++)
         {
-            CreatNewSlot(instance.inventory.items[i]);
+            CreatNewSlot(instance.inventory.Recipes[i]);
         }
     }
 }

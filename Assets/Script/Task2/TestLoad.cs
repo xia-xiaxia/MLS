@@ -43,7 +43,7 @@ public class TestLoad : MonoBehaviour
 
     public int getRecipeCount()
     {
-        return menu.items.Count;
+        return menu.Recipes.Count;
     }
 
     public void OnUI()
