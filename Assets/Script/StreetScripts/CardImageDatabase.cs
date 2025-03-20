@@ -36,7 +36,7 @@ public class CardImageDatabase : ScriptableObject
         else
         {
             Debug.LogError($"Œ¥’“µΩø®≈∆Õº∆¨: {cardName}");
-            return null; // ªÚ∑µªÿƒ¨»œÕº∆¨
+            return null; 
         }
     }
 }

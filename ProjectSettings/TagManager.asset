@@ -6,11 +6,12 @@ TagManager:
   tags:
   - Grid
   - GridBag
+  - shopmanager
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - RarityLayer
   - Water
   - UI
   - 

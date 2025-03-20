@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class HangoutFlow : MonoBehaviour
 {
     [System.Serializable]
@@ -13,36 +14,55 @@ public class HangoutFlow : MonoBehaviour
     }
 
     public FlowPath firstWalk;
-    public FlowPath secondWalk;
     public float moveSpeed = 3f;
 
-    private Queue<FlowPath> taskQueue = new Queue<FlowPath>();
     private bool isExecuting = false;
-    private bool isAnyCloseButtonClicked = false;
+    private bool hasSelectedMode = false;
+    private bool isBigPurchaseMode = false;
 
-    public Button closeButton1;
     public Button startButton;
+    public Button bigPurchaseButton;
+    public Button quickPurchaseButton;
+    public Button confirmButton;
+    public Button closeButton;
     public GameObject uiPanel;
+
     public QuickPurchase quickPurchase;
     public AnimationController animationController;
+
     void Start()
     {
+        hasSelectedMode = false;
         animationController = GetComponent<AnimationController>();
-        animationController.SetIdleAnimation(); // 初始静止
-        uiPanel.SetActive(false);
-        ResetTaskQueue(); //缓存
-        startButton.onClick.AddListener(StartFlow);
-       
+        animationController.SetIdleAnimation();
+        uiPanel.SetActive(false);   
+        startButton.onClick.AddListener(StartFirstStep);
+        quickPurchaseButton.onClick.AddListener(() => SelectPurchaseMode(false));
+        bigPurchaseButton.onClick.AddListener(() => SelectPurchaseMode(true));
+        confirmButton.onClick.AddListener(ConfirmPurchase);
+        closeButton.onClick.AddListener(CloseUI);
+
+        quickPurchaseButton.gameObject.SetActive(false);
+        bigPurchaseButton.gameObject.SetActive(false);
+        confirmButton.gameObject.SetActive(false);
+        closeButton.gameObject.SetActive(false);
     }
 
-    public void StartFlow()
+    private void StartFirstStep()
     {
-        if (!isExecuting)  //点击startbutton后隐藏startbutton
-        {
-            startButton.gameObject.SetActive(false); 
-            ResetTaskQueue(); 
-            StartNextTask(); 
-        }
+        Debug.Log("开始逛街走到特定地方");
+        startButton.gameObject.SetActive(false);
+        confirmButton.gameObject.SetActive(false);
+        StartCoroutine(ExecuteFlow(firstWalk));
+      
+    }
+
+    private void ShowPurchaseButtons()
+    {
+        quickPurchaseButton.gameObject.SetActive(true);
+        bigPurchaseButton.gameObject.SetActive(true);
+        confirmButton.gameObject.SetActive(true);
+        ResetButtons(); 
     }
 
     private IEnumerator ExecuteFlow(FlowPath flow)
@@ -57,84 +77,60 @@ public class HangoutFlow : MonoBehaviour
         }
 
         isExecuting = false;
-
-        if (flow == firstWalk)
-        {
-            
-          
-            quickPurchase.EnablePurchaseButtons();
-            uiPanel.SetActive(false);
-            //实时更新closebutton的监听状态
-            animationController.SetIdleAnimation(); // 确保静止
-            closeButton1.onClick.RemoveListener(OnCloseButtonClicked);
-            closeButton1.onClick.AddListener(OnCloseButtonClicked);
-            Debug.Log("第一阶段firstwalk结束，开始逛街抽卡");
-
-        }
-        else if (flow == secondWalk)
-        {
-          
-            Debug.Log("第二阶段结束，返程回shop");
-            startButton.gameObject.SetActive(true); 
-            startButton.interactable = true; //可交互
-            animationController.SetIdleAnimation(); // 确保静止
-            //实时更新startbutton的监听状态
-            startButton.onClick.RemoveListener(StartFlow); 
-            startButton.onClick.AddListener(StartFlow);  
-        }
+        Debug.Log("开始抽卡");
+        ShowPurchaseButtons();
     }
 
-    public void OnCloseButtonClicked()
+    private void SelectPurchaseMode(bool isBig)
     {
-        if (!isAnyCloseButtonClicked)
-        {
-            isAnyCloseButtonClicked = true;
-            closeButton1.gameObject.SetActive(false);
-            StartCoroutine(StartNextTaskWithDelay());
-        }
+  
+
+        isBigPurchaseMode = isBig;
+        //hasSelectedMode = true;  
+
+        quickPurchaseButton.image.color = isBig ? Color.white : Color.red;
+        bigPurchaseButton.image.color = isBig ? Color.red : Color.white;
+        confirmButton.gameObject.SetActive(true);
     }
 
-    private IEnumerator StartNextTaskWithDelay()
+    private void ConfirmPurchase()
     {
-        Debug.Log("玩家关闭抽卡 UI，开始返程");
-        yield return new WaitForSeconds(1f);  
-        isAnyCloseButtonClicked = false; 
-        StartNextTask();  
+        if (!hasSelectedMode)
+        {
+            Debug.Log("至少选择一个抽卡模式");
+            return;
+        }
+
+        hasSelectedMode = true;
+        quickPurchaseButton.interactable = false;
+        bigPurchaseButton.interactable = false;
+        confirmButton.gameObject.SetActive(false);
+        closeButton.gameObject.SetActive(true);  
     }
 
-    private void StartNextTask()
+    private void CloseUI()
     {
-        if (taskQueue.Count > 0)
-        {
-            StartCoroutine(ExecuteFlow(taskQueue.Dequeue()));
-        }
-        else
-        {
-          
-            Debug.Log("所有流程结束，重新开始");
-            ResetTaskQueue();
-            startButton.gameObject.SetActive(true); 
-            startButton.interactable = true; 
-        }
+        ResetButtons();
+        ShowPurchaseButtons(); 
     }
-
-    private void ResetTaskQueue()
+    //reset 两个选购按钮，confirm按钮，close按钮
+    private void ResetButtons()
     {
-        taskQueue.Clear();
-        taskQueue.Enqueue(firstWalk);  
-        taskQueue.Enqueue(secondWalk); 
+        quickPurchaseButton.image.color = Color.white;
+        bigPurchaseButton.image.color = Color.white;
+        quickPurchaseButton.interactable = true;
+        bigPurchaseButton.interactable = true;
+        hasSelectedMode = false;
+        confirmButton.gameObject.SetActive(true);
     }
 
     private IEnumerator MoveToWaypoint(Vector3 target)
     {
         while (Vector3.Distance(transform.position, target) > 0.1f)
         {
-           Vector3  moveDirection = (target - transform.position).normalized;
-
-            // 角度
+            Vector3 moveDirection = (target - transform.position).normalized;
             float currentAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
 
-            // 动画
             animationController.UpdateAnimation(moveDirection, currentAngle);
             transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
             yield return null;

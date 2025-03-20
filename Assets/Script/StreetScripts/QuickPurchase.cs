@@ -43,7 +43,7 @@ public class QuickPurchase : MonoBehaviour
     public Button quickPurchaseButton;
     public Button bigPurchaseButton;
     public Button closeButton;
-    //public Sprite[] rarityBackgrounds; 
+    public Button confirmPurchaseButton;
     public GameObject uiPanel;
     public HangoutFlow hangoutFlow;
     public CardImageDatabase cardImageDatabase;
@@ -82,50 +82,21 @@ public class QuickPurchase : MonoBehaviour
 
     public Transform upperRowParent;  
     public Transform lowerRowParent; 
-    public GameObject cardPrefab;  
-                                     
-    public Color recipeColor;
-    public Color ingredientColor;
-    public Color partnerColor;
-    public Color greenColor;
-    public Color blueColor;
-    public Color purpleColor;
-    public Color goldColor;
-    public Color rainbowColor;
+    public GameObject cardPrefab;
+
+
 
     void Start()
     {
         collectedCardIDs.Clear();
-        quickPurchaseButton.gameObject.SetActive(false);
-        bigPurchaseButton.gameObject.SetActive(false);
-        quickPurchaseButton.onClick.AddListener(OnQuickPurchaseClick);
-        bigPurchaseButton.onClick.AddListener(OnBigPurchaseClick);
+        quickPurchaseButton.onClick.AddListener(() => SelectPurchaseMode(false));
+        bigPurchaseButton.onClick.AddListener(() => SelectPurchaseMode(true));
+        confirmPurchaseButton.onClick.AddListener(ConfirmPurchase);
         closeButton.onClick.AddListener(CloseUI);
+        confirmPurchaseButton.gameObject.SetActive(false);
         cardImageDatabase.Initialize();
-        DisablePurchaseButtons();
-      // LoadCardImages();  // 加载卡片图片
+      //  EnablePurchaseButtons();
     }
-    
-   /* private void LoadCardImages()
-    {
-        cardImages.Add("Recipe-1", Resources.Load<Sprite>("Images/Recipe_1"));
-        cardImages.Add("Recipe-2", Resources.Load<Sprite>("Images/Recipe_2"));
-        cardImages.Add("Recipe-3", Resources.Load<Sprite>("Images/Recipe_3"));
-        cardImages.Add("Recipe-4", Resources.Load<Sprite>("Images/Recipe_4"));
-        cardImages.Add("Recipe-5", Resources.Load<Sprite>("Images/Recipe_5"));
-
-        cardImages.Add("Ingredient-1", Resources.Load<Sprite>("Images/Ingredient_1"));
-        cardImages.Add("Ingredient-2", Resources.Load<Sprite>("Images/Ingredient_2"));
-        cardImages.Add("Ingredient-3", Resources.Load<Sprite>("Images/Ingredient_3"));
-        cardImages.Add("Ingredient-4", Resources.Load<Sprite>("Images/Ingredient_4"));
-        cardImages.Add("Ingredient-5", Resources.Load<Sprite>("Images/Ingredient_5"));
-
-        cardImages.Add("Partner-1", Resources.Load<Sprite>("Images/Partner_1"));
-        cardImages.Add("Partner-2", Resources.Load<Sprite>("Images/Partner_2"));
-        cardImages.Add("Partner-3", Resources.Load<Sprite>("Images/Partner_3"));
-        cardImages.Add("Partner-4", Resources.Load<Sprite>("Images/Partner_4"));
-        cardImages.Add("Partner-5", Resources.Load<Sprite>("Images/Partner_5"));
-    }*/
     public void DisplayCards(List<Card> cards)
     {
        //clear
@@ -145,19 +116,15 @@ public class QuickPurchase : MonoBehaviour
            
             GameObject cardUI = Instantiate(cardPrefab, parent);
             Image cardImage = cardUI.transform.Find("cardImage").GetComponent<Image>();
-            TMP_Text nameText = cardUI.transform.Find("NameText").GetComponent<TMP_Text>();
+            TextMeshProUGUI nameText = cardUI.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
             if (!nameText.enabled)
             {
-                nameText.enabled = true; 
+                nameText.enabled = true;
             }
             Debug.Log("NameText: " + nameText.text);
-            TMP_Text typeText = cardUI.transform.Find("TypeText").GetComponent<TMP_Text>();
-            TMP_Text rarityText = cardUI.transform.Find("RarityText").GetComponent<TMP_Text>();
+            //TextMeshProUGUI typeText = cardUI.transform.Find("TypeText").GetComponent<TextMeshProUGUI>();
+            //TextMeshProUGUI rarityText = cardUI.transform.Find("RarityText").GetComponent<TextMeshProUGUI>();
             Image newTagImage = cardUI.transform.Find("NewTagImage").GetComponent<Image>(); 
-
-           // Image newTagImage = cardUI.transform.Find("NewTagImage").GetComponent<Image>(); 
-
-            // cardImageDatebase中的sprite
             Sprite cardSprite = cardImageDatabase.GetSprite(card.name);
 
             if (cardSprite != null)
@@ -167,13 +134,7 @@ public class QuickPurchase : MonoBehaviour
 
 
             nameText.text = card.name;
-            typeText.text = card.type.ToString();
-            rarityText.text = card.rarity.ToString();
-   
-            typeText.color = GetTypeColor(card.type);
-            nameText.color = GetTypeColor(card.type);
-            rarityText.color = GetRarityColor(card.rarity);
-            Canvas.ForceUpdateCanvases();  //强制刷新
+            Canvas.ForceUpdateCanvases(); 
             string cardID = card.name + "_" + card.rarity.ToString();
             bool isNew = !collectedCardIDs.Contains(cardID); 
             newTagImage.gameObject.SetActive(isNew); 
@@ -184,80 +145,29 @@ public class QuickPurchase : MonoBehaviour
         }
     }
 
-    // 不同稀有度不同文本颜色
-    private Color GetRarityColor(Rarity rarity)
-    {
-        switch (rarity)
-        {
-            case Rarity.Green: return greenColor;
-            case Rarity.Blue: return blueColor;
-            case Rarity.Purple: return purpleColor;
-            case Rarity.Gold: return goldColor;
-            case Rarity.Rainbow: return rainbowColor;
-            default: return Color.white;
-        }
-    }
-
-    // 不同类型的底色
-    private Color GetTypeColor(CardType type)
-    {
-        switch (type)
-        {
-            case CardType.Recipe: return recipeColor;
-            case CardType.Ingredient: return ingredientColor;
-            case CardType.Partner: return partnerColor;
-            default: return Color.white;
-        }
-    }
-
-    //enable抽卡
-    public void EnablePurchaseButtons()
-    {
-        quickPurchaseButton.gameObject.SetActive(true);
-        bigPurchaseButton.gameObject.SetActive(true);
-        quickPurchaseButton.interactable = true;
-        bigPurchaseButton.interactable = true;
-        hasSelectedMode = false;
-    }
- 
     public void DisablePurchaseButtons()
     {
-        
-        quickPurchaseButton.interactable = false;
-        bigPurchaseButton.interactable = false;
-    }
-    
-    private void OnPurchaseClick(bool isBigMode)
-    {
-        if (hasSelectedMode) return;
-
         quickPurchaseButton.gameObject.SetActive(false);
         bigPurchaseButton.gameObject.SetActive(false);
+        confirmPurchaseButton.gameObject.SetActive(false);
+    }
+    private void SelectPurchaseMode(bool isBigPurchase)
+    {
+        isBigPurchaseMode = isBigPurchase;
+        confirmPurchaseButton.gameObject.SetActive(true); // 选择模式后显示确认按钮
 
-        isBigPurchaseMode = isBigMode;
-        hasSelectedMode = true;
-
+    }
+    private void ConfirmPurchase()
+    {
+        DisablePurchaseButtons(); 
+        confirmPurchaseButton.gameObject.SetActive(false); 
         drawnCards.Clear();
-        List<Card> newCards = DrawCards(10, isBigMode ? bigPurchaseRates : quickPurchaseRates, isBigMode);
+        List<Card> newCards = DrawCards(10, isBigPurchaseMode ? bigPurchaseRates : quickPurchaseRates, isBigPurchaseMode);
         ProcessDrawnCards(newCards);
 
         uiPanel.SetActive(true);
-        closeButton.gameObject.SetActive(true);  
-        closeButton.onClick.AddListener(CloseUI); 
+        closeButton.gameObject.SetActive(true);
     }
-
-    private void OnQuickPurchaseClick()
-    {
-        OnPurchaseClick(false);  
-    }
-
-    private void OnBigPurchaseClick()
-    {
-        OnPurchaseClick(true); 
-    }
-
-
-
     private List<Card> DrawCards(int count, Dictionary<CardType, Dictionary<Rarity, float>> purchaseRates, bool isBigPurchase)
     {
         List<Card> cards = new List<Card>();
@@ -449,7 +359,8 @@ public class QuickPurchase : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+
         DisablePurchaseButtons();
-        hangoutFlow.OnCloseButtonClicked();
+        collectedCardIDs.Clear();  
     }
 }
