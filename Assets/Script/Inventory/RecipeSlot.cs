@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using JetBrains.Annotations;
+using UnityEngine.UI;
 
 public class RecipeSlot : slot
 {
     public GameObject infoWindow;
     public Recipe slotRecipe;
     public GameObject ingredientSlotPrefab; // 预制件，用于生成ingredientSlot物体
+    private composeManager cM;
 
     public override void Start()
     {
+        cM = GameObject.Find("BagManager").GetComponent<composeManager>();
         if (slotRecipe != null)
         {
-            slotIcon.sprite = slotRecipe.RecipeImage;
+            //slotIcon.sprite = slotRecipe.RecipeImage;
             Color color = slotIcon.color;
             color.a = 0.5f;
             slotIcon.color = color;
@@ -25,12 +28,18 @@ public class RecipeSlot : slot
     {
         if (slotRecipe != null)
             InventoryManager.UpdateItemInfo(slotRecipe.RecipeDescription);
-        if (slotIcon != null)
+        
+        cM.recipe = this.slotRecipe;
+        if (cM.isEnable)
         {
-            Color color = slotIcon.color;
-            color.a = 1f;
-            slotIcon.color = color;
+            if (slotIcon != null)
+            {
+                Color color = slotIcon.color;
+                color.a = 1f;
+                slotIcon.color = color;
+            }
         }
+
     }
 
     public override void infoOfRecipe()

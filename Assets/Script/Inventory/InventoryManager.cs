@@ -46,7 +46,7 @@ public class InventoryManager : MonoBehaviour
             newSlot.gameObject.transform.SetParent(instance.slotGrid.transform);
             newSlot.slotRecipe = recipe;
             newSlot.slotName.text = recipe.RecipeName + "  LV:" + recipe.RecipeLevel.ToString();
-            newSlot.slotIcon.sprite = recipe.RecipeImage;
+            //newSlot.slotIcon.sprite = recipe.RecipeImage;
         }
     }
 
