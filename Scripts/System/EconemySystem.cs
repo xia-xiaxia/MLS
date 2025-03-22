@@ -4,8 +4,8 @@ using UnityEditor;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-#region Êı¾İ½á¹¹ºÍÅäÖÃ
-// ÊÕÖ§¼ÇÂ¼ÌõÄ¿
+#region æ•°æ®ç»“æ„å’Œé…ç½®
+// æ”¶æ”¯è®°å½•æ¡ç›®
 public struct FinancialRecord
 {
     public DateTime timestamp;
@@ -14,57 +14,57 @@ public struct FinancialRecord
     public FinanceType type;
 }
 
-// ²ÆÎñÀàĞÍ
+// è´¢åŠ¡ç±»å‹
 public enum FinanceType
 {
-    // ÊÕÈë
-    DailyRevenue,        // ÈÕ³£¾­ÓªÊÕÈë
-    SpecialEventBonus,   // ÌØÊâÊÂ¼ş½±Àø
+    // æ”¶å…¥
+    DailyRevenue,        // æ—¥å¸¸ç»è¥æ”¶å…¥
+    SpecialEventBonus,   // ç‰¹æ®Šäº‹ä»¶å¥–åŠ±
 
-    // Ö§³ö
-    GachaSpend,          // ³é¿¨Ïû·Ñ
-    IngredientPurchase,  // Ê³²Ä²É¹º
-    FacilityUpgrade,     // ÉèÊ©Éı¼¶
-    StaffSalary,         // Ô±¹¤¹¤×Ê
-    RecipeResearch       // Åä·½ÑĞ·¢
+    // æ”¯å‡º
+    GachaSpend,          // æŠ½å¡æ¶ˆè´¹
+    IngredientPurchase,  // é£Ÿæé‡‡è´­
+    FacilityUpgrade,     // è®¾æ–½å‡çº§
+    StaffSalary,         // å‘˜å·¥å·¥èµ„
+    RecipeResearch       // é…æ–¹ç ”å‘
 }
 
-// ¾­¼ÃÏµÍ³ÅäÖÃ£¨ScriptableObject£©
+// ç»æµç³»ç»Ÿé…ç½®ï¼ˆScriptableObjectï¼‰
 [CreateAssetMenu(menuName = "Economy/EconomyConfig")]
 public class EconomyConfig : ScriptableObject
 {
-    [Header("»ù´¡²ÎÊı")]
+    [Header("åŸºç¡€å‚æ•°")]
     public int initialGold = 1000;
     public int dailyBaseRent = 1000;
     public int dailyBaseSalary = 500;
 
-    [Header("Éú²ú²ÎÊı")]
+    [Header("ç”Ÿäº§å‚æ•°")]
     public int seats = 5;
     public float dishPrepTime = 0.1f;
     public float tableCleanTime = 60f;
     public float customerMoveTime = 5f;
 
-    [Header("¾­¼ÃÏµÊı")]
+    [Header("ç»æµç³»æ•°")]
     public int goldPerDish = 3;
     public int dishesPerCustomer = 2;
 
-    [Header("Éı¼¶ÏµÊı")]
+    [Header("å‡çº§ç³»æ•°")]
     public AnimationCurve upgradeCostCurve;
 }
 
 #endregion
 
-#region ºËĞÄ¾­¼ÃÏµÍ³
+#region æ ¸å¿ƒç»æµç³»ç»Ÿ
 public class EconomySystem : MonoBehaviour
 {
-    // µ±Ç°×´Ì¬
+    // å½“å‰çŠ¶æ€
     public int _currentGold { get; set; }
     private List<FinancialRecord> _financialRecords = new();
 
-    // ÅäÖÃÒıÓÃ
+    // é…ç½®å¼•ç”¨
     [SerializeField] private EconomyConfig _config;
     [SerializeField] private BuildingUpgradeManager buildingManager;
-    // ÊÂ¼şÏµÍ³
+    // äº‹ä»¶ç³»ç»Ÿ
     public event Action<int> OnGoldChanged;
     public event Action<FinancialRecord> OnFinancialRecordAdded;
 
@@ -73,34 +73,33 @@ public class EconomySystem : MonoBehaviour
         Initialize(_config.initialGold);
     }
 
-    /// <summary>
-    /// ³õÊ¼»¯¾­¼ÃÏµÍ³
-    /// </summary>
+    
+    /// åˆå§‹åŒ–ç»æµç³»ç»Ÿ
     public void Initialize(int initialGold)
     {
         _currentGold = initialGold;
-        AddFinancialRecord("³õÊ¼×Ê½ğ", initialGold, FinanceType.DailyRevenue);
+        AddFinancialRecord("åˆå§‹èµ„é‡‘", initialGold, FinanceType.DailyRevenue);
     }
 
-    #region Ã¿ÈÕ¾­ÓªÁ÷³Ì
+    #region æ¯æ—¥ç»è¥æµç¨‹
     public void ProcessDailyOperation()
     {
-        // ¼ÆËã»ù´¡¾­ÓªÊı¾İ
+        // è®¡ç®—åŸºç¡€ç»è¥æ•°æ®
         int customers = CalculateCustomerCapacity();
         int maxDishes = CalculateMaxProduction();
         int actualDishes = Mathf.Min(customers * _config.dishesPerCustomer, maxDishes);
 
-        // ¼ÇÂ¼ÊÕÈë
+        // è®°å½•æ”¶å…¥
         int revenue = actualDishes * _config.goldPerDish;
-        AddGold(revenue, FinanceType.DailyRevenue, "ÈÕ³£¾­ÓªÊÕÈë");
+        AddGold(revenue, FinanceType.DailyRevenue, "æ—¥å¸¸ç»è¥æ”¶å…¥");
 
-        // ¼ÇÂ¼¹Ì¶¨Ö§³ö
-        SpendGold(_config.dailyBaseRent, FinanceType.DailyRevenue, "»ù´¡×â½ğ");
-        SpendGold(_config.dailyBaseSalary, FinanceType.StaffSalary, "Ô±¹¤¹¤×Ê");
+        // è®°å½•å›ºå®šæ”¯å‡º
+        SpendGold(_config.dailyBaseRent, FinanceType.DailyRevenue, "åŸºç¡€ç§Ÿé‡‘");
+        SpendGold(_config.dailyBaseSalary, FinanceType.StaffSalary, "å‘˜å·¥å·¥èµ„");
     }
     #endregion
 
-    #region ½ğ±Ò²Ù×÷
+    #region é‡‘å¸æ“ä½œ
     public void AddGold(int amount, FinanceType type, string description = "")
     {
         _currentGold += amount;
@@ -119,10 +118,10 @@ public class EconomySystem : MonoBehaviour
     }
     #endregion
 
-    #region Éú²ú¼ÆËã
+    #region ç”Ÿäº§è®¡ç®—
     private int CalculateCustomerCapacity()
     {
-        // »ñÈ¡²ÍÌüÈİÁ¿
+        // è·å–é¤å…å®¹é‡
         float restaurantCapacity = buildingManager.GetCurrentValue(BuildingType.RestaurantCapacity);
         float totalServiceTime =
             (_config.dishPrepTime * _config.dishesPerCustomer) +
@@ -134,14 +133,14 @@ public class EconomySystem : MonoBehaviour
     }
     private int CalculateMaxProduction()
     {
-        // »ñÈ¡³ø·¿ÈİÁ¿
+        // è·å–å¨æˆ¿å®¹é‡
         float kitchenCapacity = buildingManager.GetCurrentValue(BuildingType.KitchenCapacity);
         float dailySeconds = 50400f;
         return Mathf.FloorToInt(kitchenCapacity * (dailySeconds / _config.dishPrepTime));
     }
     #endregion
 
-    #region Éı¼¶ÏµÍ³
+    #region å‡çº§ç³»ç»Ÿ
     public int GetUpgradeCost(int currentLevel)
     {
         return Mathf.RoundToInt(_config.upgradeCostCurve.Evaluate(currentLevel));
@@ -150,11 +149,11 @@ public class EconomySystem : MonoBehaviour
     public bool TryUpgradeFacility(int currentLevel)
     {
         int cost = GetUpgradeCost(currentLevel);
-        return SpendGold(cost, FinanceType.FacilityUpgrade, $"ÉèÊ©Éı¼¶µ½Lv{currentLevel + 1}");
+        return SpendGold(cost, FinanceType.FacilityUpgrade, $"è®¾æ–½å‡çº§åˆ°Lv{currentLevel + 1}");
     }
     #endregion
 
-    #region Êı¾İ¹ÜÀí
+    #region æ•°æ®ç®¡ç†
     private void AddFinancialRecord(string desc, int amount, FinanceType type)
     {
         var record = new FinancialRecord
@@ -189,7 +188,7 @@ public class EconomySystem : MonoBehaviour
     }
     #endregion
 
-    #region ÊôĞÔ·ÃÎÊ
+    #region å±æ€§è®¿é—®
     public int CurrentGold => _currentGold;
     public EconomyConfig Config => _config;
     #endregion
@@ -209,14 +208,14 @@ public class EconomySystemEditor : Editor
         if (system == null) return;
 
         GUILayout.Space(20);
-        GUILayout.Label($"µ±Ç°½ğ±Ò: {system.CurrentGold}");
+        GUILayout.Label($"å½“å‰é‡‘å¸: {system.CurrentGold}");
 
-        if (GUILayout.Button("Ä£Äâµ¥ÈÕ¾­Óª"))
+        if (GUILayout.Button("æ¨¡æ‹Ÿå•æ—¥ç»è¥"))
         {
             system.ProcessDailyOperation();
         }
 
-        if (GUILayout.Button("ÏÔÊ¾ÍêÕû²ÆÎñ±¨¸æ"))
+        if (GUILayout.Button("æ˜¾ç¤ºå®Œæ•´è´¢åŠ¡æŠ¥å‘Š"))
         {
             DisplayFinancialReport(system);
         }
