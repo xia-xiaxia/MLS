@@ -4,13 +4,13 @@ using UnityEngine;
 
 public enum UpgradeFormula
 {
-    Linear,      // ÏßĞÔ£ºcost = param1 * level
-    Exponential, // Ö¸Êı£ºcost = param1 * (param2^level)
-    Polynomial,  // ¶àÏîÊ½£ºcost = param1 * level^param2
-    CustomCurve  // ×Ô¶¨ÒåÇúÏß£¨ĞèÅäºÏAnimationCurve£©
+    Linear,      // çº¿æ€§ï¼šcost = param1 * level
+    Exponential, // æŒ‡æ•°ï¼šcost = param1 * (param2^level)
+    Polynomial,  // å¤šé¡¹å¼ï¼šcost = param1 * level^param2
+    CustomCurve  // è‡ªå®šä¹‰æ›²çº¿ï¼ˆéœ€é…åˆAnimationCurveï¼‰
 }
 
-// Ê³²ÄÅäÖÃÊı¾İ
+// é£Ÿæé…ç½®æ•°æ®
 [CreateAssetMenu(menuName = "Data/IngredientConfig")]
 public class IngredientConfig : ScriptableObject
 {
@@ -18,33 +18,33 @@ public class IngredientConfig : ScriptableObject
     public string displayName;
     public Rarity baseRarity = Rarity.white;
 
-    [Header("ÉıÏ¡ÓĞµÄÅäÖÃ")]
+    [Header("å‡ç¨€æœ‰çš„é…ç½®")]
     public int[] rarityUpgradeCosts = { 10, 50, 200, 500, 1500 };
     public int maxLevel = 10;
     public int levelUpgradeBaseCost = 100;
 
-    [Header("ÆÀ·ÖÏµÊı")]
+    [Header("è¯„åˆ†ç³»æ•°")]
     public int scorePerLevel = 15;
     public int scorePerRarity = 20;
 
-    [Header("µÈ¼¶Éı¼¶")]
+    [Header("ç­‰çº§å‡çº§")]
     public UpgradeFormula levelFormula = UpgradeFormula.Linear;
     public int levelBaseCost = 100;
     public float levelGrowthFactor = 1.2f;
 
-    [Header("Ï¡ÓĞ¶ÈÏµÊı")]
-    public float rarityProfitMultiplier = 30f; // Ã¿¼¶Ï¡ÓĞ¶ÈµÄÊÕÒæ¼Ó³É
-    public float rarityCostMultiplier = 15f;   // Ã¿¼¶Ï¡ÓĞ¶ÈµÄ²É¹º·Ñ¼Ó³É
+    [Header("ç¨€æœ‰åº¦ç³»æ•°")]
+    public float rarityProfitMultiplier = 30f; // æ¯çº§ç¨€æœ‰åº¦çš„æ”¶ç›ŠåŠ æˆ
+    public float rarityCostMultiplier = 15f;   // æ¯çº§ç¨€æœ‰åº¦çš„é‡‡è´­è´¹åŠ æˆ
 
-    [Header("µÈ¼¶ÏµÊı")]
-    public int baseProfit = 15;      // Ã¿µÈ¼¶µÄÊÕÒæÔö¼ÓÖµ
-    public int basePurchaseCost = 30;// »ù´¡²É¹º·Ñ
+    [Header("ç­‰çº§ç³»æ•°")]
+    public int baseProfit = 15;      // æ¯ç­‰çº§çš„æ”¶ç›Šå¢åŠ å€¼
+    public int basePurchaseCost = 30;// åŸºç¡€é‡‡è´­è´¹
 
-    [Header("¿ÉÓÃÅä·½")]
+    [Header("å¯ç”¨é…æ–¹")]
     public List<RecipeConfig> compatibleRecipes;
 }
 
-// Ê³²ÄºËĞÄÂß¼­
+// é£Ÿææ ¸å¿ƒé€»è¾‘
 public class Ingredient
 {
     public string ID { get; }
@@ -92,7 +92,7 @@ public class Ingredient
     }
 }
 
-// ĞÂÔö³É±¾¼ÆËã·şÎñ
+// æˆæœ¬è®¡ç®—
 public static class UpgradeCostCalculator
 {
     public static int CalculateCost(UpgradeFormula type, int currentLevel, float param1, float param2)
@@ -108,18 +108,18 @@ public static class UpgradeCostCalculator
             UpgradeFormula.Polynomial =>
                 Mathf.RoundToInt(param1 * Mathf.Pow(currentLevel, param2)),
 
-            _ => Mathf.RoundToInt(param1 * currentLevel) // Ä¬ÈÏÏßĞÔ
+            _ => Mathf.RoundToInt(param1 * currentLevel) // é»˜è®¤çº¿æ€§
         };
     }
 
-    // ×Ô¶¨ÒåÇúÏß°æ±¾£¨ĞèÔÚconfigÖĞÌí¼ÓAnimationCurve×Ö¶Î£©
+    // è‡ªå®šä¹‰æ›²çº¿ç‰ˆæœ¬ï¼ˆéœ€åœ¨configä¸­æ·»åŠ AnimationCurveå­—æ®µï¼‰
     public static int CalculateCostByCurve(AnimationCurve curve, int currentLevel)
     {
         return Mathf.RoundToInt(curve.Evaluate(currentLevel));
     }
 }
 
-// Ê³²ÄÉı¼¶·şÎñ
+// é£Ÿæå‡çº§
 public class IngredientUpgradeService
 {
     public bool TryUpgradeRarity(
@@ -127,18 +127,18 @@ public class IngredientUpgradeService
         PlayerInventory inventory,
         IngredientConfig config)
     {
-        // »ñÈ¡ÏÂÒ»Ï¡ÓĞ¶È
+        // è·å–ä¸‹ä¸€ç¨€æœ‰åº¦
         var nextRarity = GetNextRarity(ingredient.CurrentRarity);
 
-        // ÑéÖ¤Ìõ¼ş
+        // éªŒè¯æ¡ä»¶
         if (nextRarity == ingredient.CurrentRarity) return false;
         if (!GetRarityUpgradeCost(ingredient.CurrentRarity, config, out var cost)) return false;
         if (!inventory.ingredients.TryGetValue(ingredient.ID, out var data)) return false;
         if (data.fragments < cost) return false;
 
-        // Ö´ĞĞÉı¼¶
+        // æ‰§è¡Œå‡çº§
         data.fragments -= cost;
-        ingredient.UpgradeRarity(nextRarity); // µ÷ÓÃĞÂÔö·½·¨
+        ingredient.UpgradeRarity(nextRarity); 
         return true;
     }
     public bool TryUpgradeLevel(
@@ -155,10 +155,10 @@ public class IngredientUpgradeService
             return false;
 
         gold -= cost;
-        ingredient.UpgradeLevel(); // µ÷ÓÃÒÑÓĞ·½·¨
+        ingredient.UpgradeLevel(); 
         return true;
     }
-    // »ñÈ¡ÏÂÒ»Ï¡ÓĞ¶ÈµÄ·½·¨
+    // è·å–ä¸‹ä¸€ç¨€æœ‰åº¦çš„æ–¹æ³•
     private Rarity GetNextRarity(Rarity current) => current switch
     {
         Rarity.white => Rarity.Green,
@@ -193,7 +193,7 @@ public class IngredientUpgradeService
     private bool IsMaxRarity(Rarity rarity) => rarity >= Rarity.Rainbow;
 }
 
-// ÊÂ¼şÏµÍ³
+// äº‹ä»¶ç³»ç»Ÿ
 public static class IngredientEvents
 {
     public static event Action<Ingredient> OnLevelUpgraded;
