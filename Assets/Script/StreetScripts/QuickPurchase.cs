@@ -121,9 +121,9 @@ public class QuickPurchase : MonoBehaviour
             {
                 nameText.enabled = true;
             }
-            Debug.Log("NameText: " + nameText.text);
-            //TextMeshProUGUI typeText = cardUI.transform.Find("TypeText").GetComponent<TextMeshProUGUI>();
-            //TextMeshProUGUI rarityText = cardUI.transform.Find("RarityText").GetComponent<TextMeshProUGUI>();
+          //  Debug.Log("NameText: " + nameText.text);
+           // TextMeshProUGUI typeText = cardUI.transform.Find("TypeText").GetComponent<TextMeshProUGUI>();
+          //  TextMeshProUGUI rarityText = cardUI.transform.Find("RarityText").GetComponent<TextMeshProUGUI>();
             Image newTagImage = cardUI.transform.Find("NewTagImage").GetComponent<Image>(); 
             Sprite cardSprite = cardImageDatabase.GetSprite(card.name);
 
@@ -133,7 +133,9 @@ public class QuickPurchase : MonoBehaviour
             }
 
 
-            nameText.text = card.name;
+            nameText.text = card.rarity.ToString();
+           
+
             Canvas.ForceUpdateCanvases(); 
             string cardID = card.name + "_" + card.rarity.ToString();
             bool isNew = !collectedCardIDs.Contains(cardID); 
