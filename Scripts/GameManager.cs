@@ -1,14 +1,20 @@
+using System.Collections.Generic;
 using UnityEngine;
+
+
 public class GameManager : MonoBehaviour
 {
+    // µ¥Àı
     public static GameManager Instance { get; private set; }
 
-    public PlayerInventory inventory;
+    // Í¨¹ıDataManager·ÃÎÊ
+    [Header("ÏµÍ³ÒıÓÃ")]
     public GachaSystem gachaSystem;
     public EconomySystem economySystem;
 
     void Awake()
     {
+        // µ¥Àı
         if (Instance == null)
         {
             Instance = this;
@@ -23,121 +29,58 @@ public class GameManager : MonoBehaviour
 
     void InitializeSystems()
     {
-        // åŒæ­¥åˆå§‹é‡‘å¸
-        economySystem.gold = GameDataManager.Instance.totalGold;
+        // Í¬²½¾­¼ÃÏµÍ³³õÊ¼×´Ì¬
+        economySystem.Initialize(GameDataManager.Instance.totalGold);
     }
 
-    // å¤„ç†æŠ½å¡ç»“æœ
+    // ³é¿¨´¦Àí
     public void ProcessGachaResult(ShoppingItem item)
     {
+        var dataManager = GameDataManager.Instance;
+
         switch (item.itemType)
         {
             case ItemType.Recipe:
-                HandleRecipe(item);
+                HandleRecipe(item, dataManager);
                 break;
 
             case ItemType.Ingredient:
-                HandleIngredient(item);
+                HandleIngredient(item, dataManager);
                 break;
 
             case ItemType.Partner:
-                HandlePartner(item);
+                HandlePartner(item, dataManager);
                 break;
         }
 
-        GameDataManager.Instance.totalGold = economySystem.gold;
+        // Í³Ò»Êı¾İÍ¬²½
+        dataManager.totalGold = economySystem._currentGold;
+        dataManager.SaveGame();
     }
 
-    // æŠ½å¡çš„é…æ–¹è½¬åŒ–
-    private void HandleRecipe(ShoppingItem item)
+    // Åä·½´¦Àí
+    private void HandleRecipe(ShoppingItem item, GameDataManager dataManager)
     {
-        bool isNewRecipe = !inventory.recipes.ContainsKey(item.itemID);
+        bool isNew = !dataManager.recipeMaxRarity.ContainsKey(item.itemID);
+        Rarity currentRarity = isNew ? Rarity.white : dataManager.recipeMaxRarity[item.itemID];
 
-        if (isNewRecipe)
+        if (item.rarity > currentRarity)
         {
-            // ç›´æ¥è®°å½•æ–°é…æ–¹
-            inventory.recipes.Add(item.itemID, item.rarity);
-            Debug.Log($"è§£é”æ–°é…æ–¹ï¼š{item.itemID}");
+            // Ï¡ÓĞ¶ÈÉı¼¶Âß¼­
+            int expValue = GetRecipeExpValue(currentRarity);
+            dataManager.AddRecipeExperience(expValue);
+            dataManager.UpdateRecipeMaxRarity(item.itemID, item.rarity);
+
+            Debug.Log($"Åä·½Éı¼¶£º{item.itemID} ¡ú {item.rarity} (+{expValue}¾­Ñé)");
         }
         else
         {
-            // è·å–å½“å‰é…æ–¹ç¨€æœ‰åº¦
-            Rarity currentRarity = inventory.recipes[item.itemID];
-
-            if (item.rarity > currentRarity)
-            {
-                // ç¨€æœ‰åº¦å‡çº§ï¼šæ›¿æ¢å¹¶è¡¥å¿ç»éªŒ
-                int expValue = GetRecipeExpValue(currentRarity);
-                inventory.recipeExpPool += expValue;
-                inventory.recipes[item.itemID] = item.rarity;
-                Debug.Log($"é…æ–¹[{item.itemID}]å‡çº§åˆ°{item.rarity}ï¼Œè·å¾—è¡¥å¿ç»éªŒ+{expValue}");
-            }
-            else
-            {
-                // è½¬æ¢ç»éªŒå€¼
-                inventory.recipeExpPool += item.conversionValue;
-                Debug.Log($"è·å¾—é…æ–¹ç»éªŒ+{item.conversionValue}");
-            }
+            // ¾­Ñé×ª»»Âß¼­
+            dataManager.AddRecipeExperience(item.conversionValue);
+            Debug.Log($"»ñµÃÅä·½¾­Ñé£º+{item.conversionValue}");
         }
     }
-
-    // æŠ½å¡è·å¾—çš„é£Ÿæè½¬åŒ–
-    private void HandleIngredient(ShoppingItem item)
-    {
-        bool exists = inventory.ingredients.TryGetValue(item.itemID, out var data);
-
-        if (!exists)
-        {
-            // åˆæ¬¡è·å¾—ï¼šåˆå§‹åŒ–æ•°æ®
-            data = new PlayerInventory.IngredientData
-            {
-                highestRarity = item.rarity,
-                fragments = 0,
-                level = 1
-            };
-            inventory.ingredients.Add(item.itemID, data);
-            Debug.Log($"è§£é”æ–°é£Ÿæï¼š{item.itemID}");
-        }
-
-        // å¤„ç†ç¨€æœ‰åº¦å˜åŒ–
-        if (item.rarity > data.highestRarity)
-        {
-            // è·å¾—ç¨€æœ‰åº¦æå‡è¡¥å¿
-            int fragmentValue = GetFragmentValue(data.highestRarity);
-            data.fragments += fragmentValue;
-            data.highestRarity = item.rarity;
-            Debug.Log($"é£Ÿæ[{item.itemID}]æœ€é«˜ç¨€æœ‰åº¦æå‡è‡³{item.rarity}ï¼Œè·å¾—è¡¥å¿ç¢ç‰‡+{fragmentValue}");
-        }
-
-        // ç´¯åŠ ç¢ç‰‡
-        data.fragments += item.conversionValue;
-        Debug.Log($"å½“å‰ç¢ç‰‡ï¼š{data.fragments}");
-    }
-
-    // æŠ½å¡è·å¾—çš„ä¼™ä¼´ç¢ç‰‡è½¬åŒ–
-    private void HandlePartner(ShoppingItem item)
-    {
-        string partnerID = item.itemID.Split('_')[0]; // ç¤ºä¾‹IDå¤„ç†é€»è¾‘
-
-        if (!inventory.partnerFragments.ContainsKey(partnerID))
-            inventory.partnerFragments[partnerID] = 0;
-
-        inventory.partnerFragments[partnerID] += item.conversionValue;
-        Debug.Log($"ä¼™ä¼´[{partnerID}]ç¢ç‰‡+{item.conversionValue}");
-    }
-
-    // é…æ–¹ç»éªŒå¯¹ç…§è¡¨
-    private int GetRecipeExpValue(Rarity r) => r switch
-    {
-        Rarity.Green => 1,
-        Rarity.Blue => 2,
-        Rarity.Purple => 3,
-        Rarity.Gold => 5,
-        Rarity.Rainbow => 10,
-        _ => 0
-    };
-
-    // é£Ÿæç¢ç‰‡å¯¹ç…§è¡¨
+    // ËéÆ¬×ª»»±í
     private int GetFragmentValue(Rarity r) => r switch
     {
         Rarity.Green => 1,
@@ -145,6 +88,85 @@ public class GameManager : MonoBehaviour
         Rarity.Purple => 4,
         Rarity.Gold => 8,
         Rarity.Rainbow => 15,
-        _ => 0
+        _ => 0 // °×É«Æ·ÖÊ²»²úÉúËéÆ¬
     };
+    // Ê³²Ä´¦Àí
+    private void HandleIngredient(ShoppingItem item, GameDataManager dataManager)
+    {
+        // »ñÈ¡Íæ¼Ò¿â´æÒıÓÃ
+        var inventory = dataManager.playerInventory; // ĞÂÔöÒıÓÃ
+
+        // »ñÈ¡»ò³õÊ¼»¯Ê³²ÄÊı¾İ
+        if (!inventory.ingredients.TryGetValue(item.itemID, out var data))
+        {
+            data = new PlayerInventory.IngredientData
+            {
+                highestRarity = Rarity.white,
+                fragments = 0,
+                currentLevel = 1
+            };
+            inventory.ingredients.Add(item.itemID, data);
+        }
+
+        // ¸üĞÂ×î¸ßÏ¡ÓĞ¶È
+        if (item.rarity > data.highestRarity)
+        {
+            data.highestRarity = item.rarity;
+            Debug.Log($"Ê³²Ä{item.itemID}×î¸ßÏ¡ÓĞ¶ÈÌáÉıÖÁ{item.rarity}");
+        }
+
+        // ÀÛ¼ÓËéÆ¬£¨¸ù¾İÏ¡ÓĞ¶È×ª»»±í£©
+        int fragmentValue = GetFragmentValue(item.rarity);
+        data.fragments += fragmentValue;
+
+        Debug.Log($"»ñµÃ{item.itemID}ËéÆ¬+{fragmentValue}£¬µ±Ç°£º{data.fragments}");
+    }
+    // »ï°é´¦Àí
+    private void HandlePartner(ShoppingItem item, GameDataManager dataManager)
+    {
+        string partnerID = ParsePartnerID(item.itemID);
+        int total = dataManager.totalPartnerFragments + item.conversionValue;
+
+        // ÍêÕû»ï°é¼ì²â
+        if (total >= 10)
+        {
+            dataManager.SaveFullPartner(partnerID);
+            dataManager.totalPartnerFragments = total % 10;
+            Debug.Log($"½âËøÍêÕû»ï°é£º{partnerID}");
+        }
+        else
+        {
+            dataManager.totalPartnerFragments = total;
+            Debug.Log($"»ï°éËéÆ¬½ø¶È£º{total}/10");
+        }
+    }
+
+    // ¸¨Öú·½·¨±£³Ö²»±ä
+    private string ParsePartnerID(string rawID) => rawID.Split('_')[0];
+
+    // ¾­Ñé¶ÔÕÕ±í
+    private static readonly Dictionary<Rarity, int> RecipeExpTable = new()
+    {
+        [Rarity.Green] = 1,
+        [Rarity.Blue] = 2,
+        [Rarity.Purple] = 3,
+        [Rarity.Gold] = 5,
+        [Rarity.Rainbow] = 10
+    };
+
+    private int GetRecipeExpValue(Rarity r) =>
+        RecipeExpTable.TryGetValue(r, out var value) ? value : 0;
+}
+
+// ´æ´¢Ã¿ÈÕÍ³¼ÆÊı¾İ
+public struct DailyStats
+{
+    public int day;
+    public int customers;
+    public int revenue;
+    public int expenses;
+    public int profit;
+    public int totalGold; // ½áËãºóµÄ½ğ±ÒÓà¶î
+    public int maxDishes;    
+    public int actualSales;  
 }

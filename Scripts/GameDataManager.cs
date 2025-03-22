@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// 鏁版嵁瀛樺偍绯荤粺
+// 数据存储系统
 public class GameDataManager : MonoBehaviour
 {
     public static GameDataManager Instance;
@@ -38,11 +38,11 @@ public class GameDataManager : MonoBehaviour
     public void AddRecipeExperience(int experience) => totalRecipeExperience += experience;
     public void AddPartnerFragments(int fragments) => totalPartnerFragments += fragments;
     public void SaveFullPartner(string partnerName) => fullPartners.Add(partnerName);
-    public int gameDays; // 娓告垙澶╂暟杩借釜
+    public int gameDays; // 游戏天数追踪
 
     public void SaveGame()
     {
-        // 瀹炵幇瀛樻。閫昏緫
+        // 实现存档逻辑
         PlayerPrefs.SetString("SaveData", JsonUtility.ToJson(this));
     }
 }

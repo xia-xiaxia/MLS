@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,7 +25,7 @@ public class TaskDetails
     [System.Serializable]
     public class Dishes//菜肴 包括ID 名称 价格
     {
-        public int dishID;    
+        public int dishID;
         public string dishName;
         public int dishCost;
     }
