@@ -50,6 +50,7 @@ public class ServerManager : MonoBehaviour
     public void AddServer(Transform assignedWaitingSite = null)
     {
         GameObject server = Instantiate(serverPrefab, Servers);
+        server.name += servers.Count;
         ServerAI serverAI = server.GetComponent<ServerAI>();
         serverAI.server.hangOrderSite = hangOrderSite;
         serverAI.server.dishSite = dishSite;

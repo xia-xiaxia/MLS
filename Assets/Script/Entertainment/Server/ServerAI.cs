@@ -48,7 +48,8 @@ public class ServerAI : BTAI
         isAcceptTask.AddChild(new Leaf("isNewTaskToDo", new ConditionStrategy(() => RestaurantManager.Instance.curTask != null)));
         isAcceptTask.AddChild(new Leaf("acceptWork", new ActionStrategy(() =>
         {
-            if (server.willingness > 20 && !RestaurantManager.Instance.CheckWillinger(this))
+            Debug.Log(name + " " + server.willingness);
+            if (server.willingness >= 20 && !RestaurantManager.Instance.CheckWillinger(this))
             {
                 //Debug.Log("WillingToAcccept");
                 RestaurantManager.Instance.AddWillinger(this);
@@ -79,6 +80,7 @@ public class ServerAI : BTAI
                 case BillTask _:
                     return 3;
                 default:
+                    Debug.LogError("Unknown Task");
                     return 0;
             }
         });

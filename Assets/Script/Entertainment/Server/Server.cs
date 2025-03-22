@@ -12,6 +12,6 @@ public class Server
     public Queue<TaskBase> leftTasks = new Queue<TaskBase>();
     public TaskBase curTask;
 
-    public int willingness = 60;
+    public int willingness = 40;
     public float cleanTime = 3f;
 }
