@@ -12,12 +12,15 @@ public class RecipeSlot : slot
     public GameObject ingredientSlotPrefab; // 预制件，用于生成ingredientSlot物体
     private composeManager cM;
 
+
     public override void Start()
     {
         cM = GameObject.Find("BagManager").GetComponent<composeManager>();
+        slotIcon = GetComponent<Image>();
         if (slotRecipe != null)
         {
-            //slotIcon.sprite = slotRecipe.RecipeImage;
+            Sprite recipeImage = slotRecipe.RecipeImage;
+            slotIcon.sprite = recipeImage;
             Color color = slotIcon.color;
             color.a = 0.5f;
             slotIcon.color = color;
@@ -26,10 +29,13 @@ public class RecipeSlot : slot
 
     public override void OnClicked()
     {
+        Debug.Log("RecipeSlot clicked");
         if (slotRecipe != null)
             InventoryManager.UpdateItemInfo(slotRecipe.RecipeDescription);
         
         cM.recipe = this.slotRecipe;
+        CreatMenu.instance.recipe = this.slotRecipe;
+
         if (cM.isEnable)
         {
             if (slotIcon != null)
@@ -39,6 +45,8 @@ public class RecipeSlot : slot
                 slotIcon.color = color;
             }
         }
+
+
 
     }
 

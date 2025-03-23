@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
-    static InventoryManager instance;
+    public static InventoryManager instance;
 
     public GameObject slotGrid;
     public slot slotPrefab;
@@ -30,6 +31,7 @@ public class InventoryManager : MonoBehaviour
         RefreshItem();
     }
 
+
     public static void UpdateItemInfo(string information)
     {
         if (instance != null && instance.scipeDescription != null)
@@ -46,7 +48,8 @@ public class InventoryManager : MonoBehaviour
             newSlot.gameObject.transform.SetParent(instance.slotGrid.transform);
             newSlot.slotRecipe = recipe;
             newSlot.slotName.text = recipe.RecipeName + "  LV:" + recipe.RecipeLevel.ToString();
-            //newSlot.slotIcon.sprite = recipe.RecipeImage;
+            newSlot.slotIcon = newSlot.GetComponent<Image>();
+            newSlot.slotIcon.sprite = recipe.RecipeImage;
         }
     }
 

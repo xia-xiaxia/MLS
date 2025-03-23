@@ -21,7 +21,7 @@ public class slot : MonoBehaviour
         
     }
 
-    public virtual void infoOfRecipe ()
+    public virtual void infoOfRecipe()
     {
 
     }

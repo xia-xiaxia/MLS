@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BagControl : MonoBehaviour
 {
@@ -46,6 +47,7 @@ public class BagControl : MonoBehaviour
             newSlot.gameObject.transform.SetParent(instance.slotGrid.transform);
             newSlot.slotIngredient = ingredient;
             newSlot.slotName.text = ingredient.IngredientName + "  LV:" + ingredient.IngredientLevel.ToString();
+            newSlot.slotIcon = newSlot.GetComponent<Image>();
             newSlot.slotIcon.sprite = ingredient.IngredientImage;
         }
     }

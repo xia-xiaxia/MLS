@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Meat
   m_EditorClassIdentifier: 
   IngredientName: Meat
-  IngredientImage: {fileID: 0}
+  IngredientImage: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   IngredientDescription: aaaaaaaaaa
   IngredientID: 1
   IngredientLevel: 1

@@ -16,6 +16,7 @@ public class composeManager : MonoBehaviour
     {
         ingredientGrid.SetActive(true);
         int ingreCountInBag = 0;
+        
 
         if (recipe != null)
         {
@@ -25,20 +26,26 @@ public class composeManager : MonoBehaviour
                 ingredientsTexts[i].text = recipe.ingredients[i].IngredientName;
                 ingredientsTexts[i].color = Color.white;
             }
-        }
 
-        for (int i = 0; i < recipe.ingredients.Count; i++)
-        {
-            if (ingredientBag.ingredients.Contains(recipe.ingredients[i]))
+            for (int i = 0; i < recipe.ingredients.Count; i++)
             {
-                ingredientsTexts[i].color = Color.green;
-                ingreCountInBag++;
+                if (ingredientBag.ingredients.Contains(recipe.ingredients[i]))
+                {
+                    ingredientsTexts[i].color = Color.green;
+                    ingreCountInBag++;
+                }
+            }
+
+            if (ingreCountInBag == recipe.ingredients.Count)
+            {
+                isEnable = true;
             }
         }
-
-        if (ingreCountInBag == recipe.ingredients.Count)
+        else
         {
-            isEnable = true;
+            Debug.Log("No recipe is selected.");
         }
+
+
     }
 }

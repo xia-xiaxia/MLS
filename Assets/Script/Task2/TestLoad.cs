@@ -14,6 +14,8 @@ public class TestLoad : MonoBehaviour
     public TextMeshProUGUI taskName;
     public TextMeshProUGUI description;
     public TextMeshProUGUI progress;
+    public MissionBase current;
+
 
     void Start()
     {
@@ -38,7 +40,9 @@ public class TestLoad : MonoBehaviour
         {
             MissionManager.SetInt("New Missions Config", "get_dishes_count", getRecipeCount());
         }
-        OnUI();
+        //do
+        //    OnUI();
+        //while (current == null);
     }
 
     public int getRecipeCount()
@@ -56,10 +60,14 @@ public class TestLoad : MonoBehaviour
                 taskName.text = mission.MissionConfig.mission_name;
                 description.text = mission.MissionConfig.description;
                 progress.text = mission.Progress.ToString();
+                current = mission;
                 break;
             }
         }
-        
+        //if (current.Progress == 1)
+        //{
+        //    return;
+        //}
         
     }
 }

@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ingredientSlot : slot
 {
     public Ingredient slotIngredient;
 
+
     public override void Start()
     {
+        slotIcon = GetComponent<Image>();
         if (slotIngredient != null)
         {
             slotIcon.sprite = slotIngredient.IngredientImage;
