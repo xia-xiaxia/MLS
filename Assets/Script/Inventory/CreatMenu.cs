@@ -53,8 +53,7 @@ public class CreatMenu : MonoBehaviour
         {
             for (int i = 0; i < menu.recipes.Count; i++)
             {
-
-                if (menu.recipes[i] != null)
+                if (menu.recipes[i] != null && menu.recipes[i].isEnable)
                     Names[i].text = menu.recipes[i].RecipeName;
             }
         }
@@ -93,7 +92,7 @@ public class CreatMenu : MonoBehaviour
 
         if (recipe != null)
         {
-            if (menu.recipes.Contains(recipe))
+            if (menu.recipes.Contains(recipe) && !recipe.isEnable)
             {
                 return;
             }

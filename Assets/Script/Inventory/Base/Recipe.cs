@@ -18,4 +18,7 @@ public class Recipe : ScriptableObject
     [Header("Recipe Ingredients")]
     public List<Ingredient> ingredients;
 
+    [HideInInspector]
+    public bool isEnable ;
+
 }

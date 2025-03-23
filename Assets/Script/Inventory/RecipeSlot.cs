@@ -11,7 +11,7 @@ public class RecipeSlot : slot
     public Recipe slotRecipe;
     public GameObject ingredientSlotPrefab; // 预制件，用于生成ingredientSlot物体
     private composeManager cM;
-
+    public bool isEnable = false;
 
     public override void Start()
     {
@@ -24,6 +24,7 @@ public class RecipeSlot : slot
             Color color = slotIcon.color;
             color.a = 0.5f;
             slotIcon.color = color;
+            slotRecipe.isEnable = false;
         }
     }
 
@@ -34,10 +35,13 @@ public class RecipeSlot : slot
             InventoryManager.UpdateItemInfo(slotRecipe.RecipeDescription);
         
         cM.recipe = this.slotRecipe;
+        slotRecipe.isEnable = cM.CheckEnable();
         CreatMenu.instance.recipe = this.slotRecipe;
+        Debug.Log(slotRecipe.RecipeName + "Recipe is enable: " + slotRecipe.isEnable);
 
-        if (cM.isEnable)
+        if (slotRecipe.isEnable)
         {
+            Debug.Log("Recipe is enable");
             if (slotIcon != null)
             {
                 Color color = slotIcon.color;

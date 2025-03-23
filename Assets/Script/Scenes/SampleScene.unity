@@ -2418,7 +2418,6 @@ MonoBehaviour:
   - {fileID: 1491853923}
   - {fileID: 897479862}
   ingredientGrid: {fileID: 2003315165}
-  isEnable: 0
 --- !u!1 &1067775349
 GameObject:
   m_ObjectHideFlags: 0
