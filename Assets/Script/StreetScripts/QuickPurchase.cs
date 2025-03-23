@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI; 
-
+using UnityEngine.UI;
+using UnityEngine.Video;
 public enum Rarity
 {
     Green, Blue, Purple, Gold, Rainbow
@@ -37,7 +37,7 @@ public class QuickPurchase : MonoBehaviour
     public bool hasSelectedMode = false; 
     //public float drawCooldown = 2f; 
     //private float lastDrawTime = 0f; 
-    private int consecutiveDrawsWithoutPurple = 0; // 连续不出紫色的次数（5为界限）
+    private int consecutiveDrawsWithoutPurple = 0; // 连续不出紫色的次数（5）
     private int consecutiveDrawsWithoutGold = 0;//不出金
     private bool isBigPurchaseMode = false; 
     public Button quickPurchaseButton;
@@ -84,7 +84,8 @@ public class QuickPurchase : MonoBehaviour
     public Transform lowerRowParent; 
     public GameObject cardPrefab;
 
-
+    public RawImage videoDisplay; // 显示视频的 UI
+    public VideoPlayer videoPlayer; // 播放器
 
     void Start()
     {
@@ -95,7 +96,8 @@ public class QuickPurchase : MonoBehaviour
         closeButton.onClick.AddListener(CloseUI);
         confirmPurchaseButton.gameObject.SetActive(false);
         cardImageDatabase.Initialize();
-      //  EnablePurchaseButtons();
+        videoDisplay.gameObject.SetActive(false); // 先隐藏视频 UI
+                                                 
     }
     public void DisplayCards(List<Card> cards)
     {
@@ -164,9 +166,25 @@ public class QuickPurchase : MonoBehaviour
         DisablePurchaseButtons(); 
         confirmPurchaseButton.gameObject.SetActive(false); 
         drawnCards.Clear();
+        StartCoroutine(PlayVideoAndDrawCards());
+    }
+    private IEnumerator PlayVideoAndDrawCards()
+    {
+        videoDisplay.gameObject.SetActive(true);  // 显示 Raw Image
+        videoPlayer.Play(); // 开始播放视频
+
+        // 等待视频播放完毕
+        while (videoPlayer.isPlaying)
+        {
+            yield return null;
+        }
+
+        // 关闭视频 UI
+        videoDisplay.gameObject.SetActive(false);
+
+        // 进行抽卡
         List<Card> newCards = DrawCards(10, isBigPurchaseMode ? bigPurchaseRates : quickPurchaseRates, isBigPurchaseMode);
         ProcessDrawnCards(newCards);
-
         uiPanel.SetActive(true);
         closeButton.gameObject.SetActive(true);
     }
