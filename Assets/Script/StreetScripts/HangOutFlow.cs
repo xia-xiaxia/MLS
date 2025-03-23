@@ -77,6 +77,7 @@ public class HangoutFlow : MonoBehaviour
         }
 
         isExecuting = false;
+        animationController.SetIdleAnimation();
         Debug.Log("¿ªÊ¼³é¿¨");
         ShowPurchaseButtons();
     }
@@ -106,6 +107,7 @@ public class HangoutFlow : MonoBehaviour
         bigPurchaseButton.interactable = false;
         confirmButton.gameObject.SetActive(false);
         closeButton.gameObject.SetActive(true);  
+
     }
 
     private void CloseUI()
