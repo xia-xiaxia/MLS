@@ -85,7 +85,7 @@ public class ServerManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("New Server");
+            //Debug.LogWarning("New Server");
             servers.Add(server);
         }
     }
