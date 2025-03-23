@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // µ¥Àı
+    // å•ä¾‹
     public static GameManager Instance { get; private set; }
 
-    // Í¨¹ıDataManager·ÃÎÊ
-    [Header("ÏµÍ³ÒıÓÃ")]
-    public GachaSystem gachaSystem;
+    // é€šè¿‡DataManagerè®¿é—®
+    [Header("ç³»ç»Ÿå¼•ç”¨")]
+    public QuickPurchase gachaSystem;
     public EconomySystem economySystem;
 
     void Awake()
     {
-        // µ¥Àı
+        // å•ä¾‹
         if (Instance == null)
         {
             Instance = this;
@@ -29,11 +29,11 @@ public class GameManager : MonoBehaviour
 
     void InitializeSystems()
     {
-        // Í¬²½¾­¼ÃÏµÍ³³õÊ¼×´Ì¬
+        // åŒæ­¥ç»æµç³»ç»Ÿåˆå§‹çŠ¶æ€
         economySystem.Initialize(GameDataManager.Instance.totalGold);
     }
 
-    // ³é¿¨´¦Àí
+    // æŠ½å¡å¤„ç†
     public void ProcessGachaResult(ShoppingItem item)
     {
         var dataManager = GameDataManager.Instance;
@@ -53,12 +53,12 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        // Í³Ò»Êı¾İÍ¬²½
+        // ç»Ÿä¸€æ•°æ®åŒæ­¥
         dataManager.totalGold = economySystem._currentGold;
         dataManager.SaveGame();
     }
 
-    // Åä·½´¦Àí
+    // é…æ–¹å¤„ç†
     private void HandleRecipe(ShoppingItem item, GameDataManager dataManager)
     {
         bool isNew = !dataManager.recipeMaxRarity.ContainsKey(item.itemID);
@@ -66,21 +66,21 @@ public class GameManager : MonoBehaviour
 
         if (item.rarity > currentRarity)
         {
-            // Ï¡ÓĞ¶ÈÉı¼¶Âß¼­
+            // ç¨€æœ‰åº¦å‡çº§é€»è¾‘
             int expValue = GetRecipeExpValue(currentRarity);
             dataManager.AddRecipeExperience(expValue);
             dataManager.UpdateRecipeMaxRarity(item.itemID, item.rarity);
 
-            Debug.Log($"Åä·½Éı¼¶£º{item.itemID} ¡ú {item.rarity} (+{expValue}¾­Ñé)");
+            Debug.Log($"é…æ–¹å‡çº§ï¼š{item.itemID} â†’ {item.rarity} (+{expValue}ç»éªŒ)");
         }
         else
         {
-            // ¾­Ñé×ª»»Âß¼­
+            // ç»éªŒè½¬æ¢é€»è¾‘
             dataManager.AddRecipeExperience(item.conversionValue);
-            Debug.Log($"»ñµÃÅä·½¾­Ñé£º+{item.conversionValue}");
+            Debug.Log($"è·å¾—é…æ–¹ç»éªŒï¼š+{item.conversionValue}");
         }
     }
-    // ËéÆ¬×ª»»±í
+    // ç¢ç‰‡è½¬æ¢è¡¨
     private int GetFragmentValue(Rarity r) => r switch
     {
         Rarity.Green => 1,
@@ -88,15 +88,15 @@ public class GameManager : MonoBehaviour
         Rarity.Purple => 4,
         Rarity.Gold => 8,
         Rarity.Rainbow => 15,
-        _ => 0 // °×É«Æ·ÖÊ²»²úÉúËéÆ¬
+        _ => 0 // ç™½è‰²å“è´¨ä¸äº§ç”Ÿç¢ç‰‡
     };
-    // Ê³²Ä´¦Àí
+    // é£Ÿæå¤„ç†
     private void HandleIngredient(ShoppingItem item, GameDataManager dataManager)
     {
-        // »ñÈ¡Íæ¼Ò¿â´æÒıÓÃ
-        var inventory = dataManager.playerInventory; // ĞÂÔöÒıÓÃ
+        // è·å–ç©å®¶åº“å­˜å¼•ç”¨
+        var inventory = dataManager.playerInventory; // æ–°å¢å¼•ç”¨
 
-        // »ñÈ¡»ò³õÊ¼»¯Ê³²ÄÊı¾İ
+        // è·å–æˆ–åˆå§‹åŒ–é£Ÿææ•°æ®
         if (!inventory.ingredients.TryGetValue(item.itemID, out var data))
         {
             data = new PlayerInventory.IngredientData
@@ -108,43 +108,43 @@ public class GameManager : MonoBehaviour
             inventory.ingredients.Add(item.itemID, data);
         }
 
-        // ¸üĞÂ×î¸ßÏ¡ÓĞ¶È
+        // æ›´æ–°æœ€é«˜ç¨€æœ‰åº¦
         if (item.rarity > data.highestRarity)
         {
             data.highestRarity = item.rarity;
-            Debug.Log($"Ê³²Ä{item.itemID}×î¸ßÏ¡ÓĞ¶ÈÌáÉıÖÁ{item.rarity}");
+            Debug.Log($"é£Ÿæ{item.itemID}æœ€é«˜ç¨€æœ‰åº¦æå‡è‡³{item.rarity}");
         }
 
-        // ÀÛ¼ÓËéÆ¬£¨¸ù¾İÏ¡ÓĞ¶È×ª»»±í£©
+        // ç´¯åŠ ç¢ç‰‡ï¼ˆæ ¹æ®ç¨€æœ‰åº¦è½¬æ¢è¡¨ï¼‰
         int fragmentValue = GetFragmentValue(item.rarity);
         data.fragments += fragmentValue;
 
-        Debug.Log($"»ñµÃ{item.itemID}ËéÆ¬+{fragmentValue}£¬µ±Ç°£º{data.fragments}");
+        Debug.Log($"è·å¾—{item.itemID}ç¢ç‰‡+{fragmentValue}ï¼Œå½“å‰ï¼š{data.fragments}");
     }
-    // »ï°é´¦Àí
+    // ä¼™ä¼´å¤„ç†
     private void HandlePartner(ShoppingItem item, GameDataManager dataManager)
     {
         string partnerID = ParsePartnerID(item.itemID);
         int total = dataManager.totalPartnerFragments + item.conversionValue;
 
-        // ÍêÕû»ï°é¼ì²â
+        // å®Œæ•´ä¼™ä¼´æ£€æµ‹
         if (total >= 10)
         {
             dataManager.SaveFullPartner(partnerID);
             dataManager.totalPartnerFragments = total % 10;
-            Debug.Log($"½âËøÍêÕû»ï°é£º{partnerID}");
+            Debug.Log($"è§£é”å®Œæ•´ä¼™ä¼´ï¼š{partnerID}");
         }
         else
         {
             dataManager.totalPartnerFragments = total;
-            Debug.Log($"»ï°éËéÆ¬½ø¶È£º{total}/10");
+            Debug.Log($"ä¼™ä¼´ç¢ç‰‡è¿›åº¦ï¼š{total}/10");
         }
     }
 
-    // ¸¨Öú·½·¨±£³Ö²»±ä
+    // è¾…åŠ©æ–¹æ³•ä¿æŒä¸å˜
     private string ParsePartnerID(string rawID) => rawID.Split('_')[0];
 
-    // ¾­Ñé¶ÔÕÕ±í
+    // ç»éªŒå¯¹ç…§è¡¨
     private static readonly Dictionary<Rarity, int> RecipeExpTable = new()
     {
         [Rarity.Green] = 1,
@@ -158,7 +158,7 @@ public class GameManager : MonoBehaviour
         RecipeExpTable.TryGetValue(r, out var value) ? value : 0;
 }
 
-// ´æ´¢Ã¿ÈÕÍ³¼ÆÊı¾İ
+// å­˜å‚¨æ¯æ—¥ç»Ÿè®¡æ•°æ®
 public struct DailyStats
 {
     public int day;
@@ -166,7 +166,7 @@ public struct DailyStats
     public int revenue;
     public int expenses;
     public int profit;
-    public int totalGold; // ½áËãºóµÄ½ğ±ÒÓà¶î
+    public int totalGold; // ç»“ç®—åçš„é‡‘å¸ä½™é¢
     public int maxDishes;    
     public int actualSales;  
 }
