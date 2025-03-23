@@ -3,35 +3,35 @@ using UnityEngine;
 using System;
 using JetBrains.Annotations;
 
-// ÎïÆ·Ï¡ÓĞ¶È
+// ç‰©å“ç¨€æœ‰åº¦
 public enum Rarity
 {
-    white,   //°×£¬ÊµÖÊÉÏÊÇÃ»ÓĞ»ñµÃ
-    Green,  // ÂÌ
-    Blue,   // À¶
-    Purple, // ×Ï
-    Gold,   // ½ğ
-    Rainbow // ²Ê
+    white,   //ç™½ï¼Œå®è´¨ä¸Šæ˜¯æ²¡æœ‰è·å¾—
+    Green,  // ç»¿
+    Blue,   // è“
+    Purple, // ç´«
+    Gold,   // é‡‘
+    Rainbow // å½©
 }
 
-// ÎïÆ·Àà±ğ
-public enum ItemType
+// ç‰©å“ç±»åˆ«
+public enum CardType
 {
-    Recipe, // Åä·½
-    Ingredient, // Ê³²Ä
-    Partner, // »ï°é
-    //PartnerFragments//»ï°éËéÆ¬
+    Recipe, // é…æ–¹
+    Ingredient, // é£Ÿæ
+    Partner, // ä¼™ä¼´
+    //PartnerFragments//ä¼™ä¼´ç¢ç‰‡
 }
 
-// ÎïÆ·Êı¾İ
+// ç‰©å“æ•°æ®
 public class ShoppingItem
 {
-    public readonly string itemID;    // ÎïÆ·Î¨Ò»±êÊ¶
-    public readonly ItemType itemType;
+    public readonly string itemID;    // ç‰©å“å”¯ä¸€æ ‡è¯†
+    public readonly CardType itemType;
     public readonly Rarity rarity;
     public readonly int conversionValue;
 
-    public ShoppingItem(ItemType type, Rarity rarity, int value, string id)
+    public ShoppingItem(CardType type, Rarity rarity, int value, string id)
     {
         itemType = type;
         this.rarity = rarity;
