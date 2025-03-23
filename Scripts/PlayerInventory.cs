@@ -4,7 +4,7 @@ using System;
 using JetBrains.Annotations;
 using static PlayerInventory;
 [System.Serializable]
-//Íæ¼ÒÒÑÓĞÎïÆ·Çåµ¥
+//ç©å®¶å·²æœ‰ç‰©å“æ¸…å•
 public class PlayerInventory
 {
     [System.Serializable]
@@ -14,56 +14,52 @@ public class PlayerInventory
         public int currentLevel;
     }
 
-    // Åä·½Êı¾İ£¨¼ÇÂ¼Åä·½×î¸ßÏ¡ÓĞ¶È£©
+    // é…æ–¹æ•°æ®ï¼ˆè®°å½•é…æ–¹æœ€é«˜ç¨€æœ‰åº¦ï¼‰
     public Dictionary<int, RecipeProgress> recipes = new Dictionary<int, RecipeProgress>();
 
-    // Ê³²ÄÊı¾İ£¨¼ÇÂ¼×î¸ßÏ¡ÓĞ¶ÈºÍËéÆ¬£©
+    // é£Ÿææ•°æ®ï¼ˆè®°å½•æœ€é«˜ç¨€æœ‰åº¦å’Œç¢ç‰‡ï¼‰
     public Dictionary<string, IngredientData> ingredients = new Dictionary<string, IngredientData>();
-
-    // »ï°éËéÆ¬
+    // ä¼™ä¼´ç¢ç‰‡
     public Dictionary<string, int> partnerFragments = new Dictionary<string, int>();
-
-    // Åä·½¾­Ñé³Ø
+    // é…æ–¹ç»éªŒæ± 
     public int recipeExpPool;
-
-    //Ê³²Ä
-
+    //é£Ÿæ
     [System.Serializable]
     public class IngredientProgress
     {
+        //åˆå§‹åŒ–
         public int currentLevel = 1;
         public Rarity highestRarity = Rarity.white;
         public int ownedFragments = 0;
     }
     public class IngredientData
     {
-        public Rarity highestRarity; // µ±Ç°×î¸ßÏ¡ÓĞ¶È
-        public int fragments;        // µ±Ç°³ÖÓĞËéÆ¬
-        public int currentLevel;     // µ±Ç°Ê¹ÓÃµÈ¼¶
-
+        public Rarity highestRarity; // å½“å‰æœ€é«˜ç¨€æœ‰åº¦
+        public int fragments;        // å½“å‰æŒæœ‰ç¢ç‰‡
+        public int currentLevel;     // å½“å‰ä½¿ç”¨ç­‰çº§
     }
-    public int gold = 1000; // ³õÊ¼½ğ±Ò
+    public int gold = 1000; // åˆå§‹é‡‘å¸
 
     public Dictionary<string, IngredientData> ingredient = new();
 }
 
-// Êı¾İÍ¬²½·şÎñ
+// æ•°æ®åŒæ­¥æœåŠ¡
 public class InventoryBridge : MonoBehaviour
 {
-    [SerializeField] private Inventory _uiInventory; // ¶ÓÓÑµÄInventory
+    [SerializeField] private Inventory _uiInventory; // é˜Ÿå‹çš„Inventory
     [SerializeField] private PlayerInventory _playerInventory;
 
-    // µ±»ñµÃĞÂÅä·½Ê±Í¬²½
+    // å½“è·å¾—æ–°é…æ–¹æ—¶åŒæ­¥
     public void SyncNewRecipe(Recipe recipe)
     {
-        // ¸üĞÂUI¿â´æ
+        // æ›´æ–°UIåº“å­˜
         if (!_uiInventory.items.Contains(recipe))
         {
             _uiInventory.items.Add(recipe);
             InventoryManager.RefreshItem();
         }
 
-        // ¸üĞÂÊıÖµ¿â´æ
+        // æ›´æ–°æ•°å€¼åº“å­˜
         if (!_playerInventory.recipes.ContainsKey(recipe.RecipeID))
         {
             _playerInventory.recipes.Add(recipe.RecipeID, new RecipeProgress
