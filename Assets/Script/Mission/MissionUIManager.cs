@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +18,10 @@ public class MissionUIManager : MonoBehaviour
 
     public RectTransform switchButton;
     public GameObject missionScroll;
-    public Image progressBar;
+    public GameObject progressBar;
+    public TextMeshProUGUI missionDescription;
+    public Image bar;
+    public TextMeshProUGUI count;
 
 
 
@@ -36,16 +41,25 @@ public class MissionUIManager : MonoBehaviour
             curState = MissionUIState.Unfolded;
             switchButton.rotation = Quaternion.Euler(0, 0, -90);
             missionScroll.SetActive(false);
+            progressBar.SetActive(false);
         }
         else
         {
             curState = MissionUIState.Expanded;
             switchButton.rotation = Quaternion.Euler(0, 0, 90);
             missionScroll.SetActive(true);
+            progressBar.SetActive(true);
         }
     }
-    public void UpdateProgressBar(float progress)
+    public void UpdateMissionView(Mission mission)
     {
-        progressBar.fillAmount = progress;
+        missionDescription.text = mission.description;
+        bar.fillAmount = (float)mission.progress / mission.maxProgress;
+        count.text = mission.progress + " / " + mission.maxProgress;
+    }
+    public void UpdateProgressBar(int progress, int maxProgress)
+    {
+        bar.fillAmount = (float)progress / maxProgress;
+        count.text = progress + " / " + maxProgress;
     }
 }

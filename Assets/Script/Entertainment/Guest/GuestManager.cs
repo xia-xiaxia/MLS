@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class GuestManager : MonoBehaviour
@@ -14,16 +15,22 @@ public class GuestManager : MonoBehaviour
     private float timer = 10f;
     private float newGuestInterval = 10f;
     private List<GameObject> guests = new List<GameObject>();
+    private int guestCount;
 
 
 
     private void Awake()
-    {
+    { 
         if (Instance != null && Instance != this)
         {
-            Destroy(Instance);
+            Destroy(this);
+            return;
         }
         Instance = this;
+    }
+    private void Start()
+    {
+        MissionManager.Instance.RegisterMission("guestCount", guestCount);
     }
     private void Update()
     {
@@ -43,6 +50,7 @@ public class GuestManager : MonoBehaviour
     }
     public void AddGuest()
     {
+        MissionManager.Instance.UpdateValue("guestCount", ++guestCount);
         GameObject guest = Instantiate(guestPrefab, Guests);
         GuestAI guestAI = guest.GetComponent<GuestAI>();
         Bubble bubble = Instantiate(bubblePrefab, Bubbles).GetComponent<Bubble>();

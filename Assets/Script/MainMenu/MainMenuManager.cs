@@ -79,19 +79,43 @@ public class MainMenuManager : MonoBehaviour
         Debug.Log(curState + " Switch To " + state);
         buttons[curState].color = unselectedColor;
         buttons[state].color = selectedColor;
-        curState = state;
 
-        StartCoroutine(LoadSceneAsync(state.ToString()));
+        StartCoroutine(LoadSceneAsync(state));
     }
 
-    private IEnumerator LoadSceneAsync(string sceneName)
+    private IEnumerator LoadSceneAsync(MenuState state)
     {
         isLoadingScene = true;
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+        string sceneName = state.ToString();
+        AsyncOperation asyncOperation;
+        if (curState == MenuState.Restaurant)//由餐厅切换到其他场景
+        {
+            asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        }
+        else if (state == MenuState.Restaurant)//由其他场景切换到餐厅
+        {
+            asyncOperation = SceneManager.UnloadSceneAsync(curState.ToString());
+        }
+        else//由其他场景切换到其他场景
+        {
+            SceneManager.UnloadSceneAsync(curState.ToString());
+            asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        }
         while (!asyncOperation.isDone)
         {
             yield return null;
         }
+        curState = state;
         isLoadingScene = false;
     }
+    //private IEnumerator LoadSceneAsync(string sceneName)
+    //{
+    //    isLoadingScene = true;
+    //    AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+    //    while (!asyncOperation.isDone)
+    //    {
+    //        yield return null;
+    //    }
+    //    isLoadingScene = false;
+    //}
 }

@@ -48,7 +48,7 @@ public class ServerAI : BTAI
         isAcceptTask.AddChild(new Leaf("isNewTaskToDo", new ConditionStrategy(() => RestaurantManager.Instance.curTask != null)));
         isAcceptTask.AddChild(new Leaf("acceptWork", new ActionStrategy(() =>
         {
-            Debug.Log(name + " " + server.willingness);
+            //Debug.Log(name + " " + server.willingness);
             if (server.willingness >= 20 && !RestaurantManager.Instance.CheckWillinger(this))
             {
                 //Debug.Log("WillingToAcccept");
