@@ -20,12 +20,6 @@ public class SeatManager : MonoBehaviour
         }
         Instance = this;
     }
-    
-    //public void AddSeat(int index, Seat seat)//初始时Table向TableManager注册
-    //{
-    //    tables.Add(index, new Pair<bool, Seat>(false, seat));
-    //    freeTables.Add(index);
-    //}
     public int AddSeat(Seat seat)//初始时Table向TableManager注册
     {
         int index = tables.Count;
@@ -55,4 +49,8 @@ public class SeatManager : MonoBehaviour
         return freeTables;
     }
     public Seat GetSeat(int index) => tables[index].second;
+    public Seat.SeatDir CheckSeatDir(int index)
+    {
+        return tables[index].second.seatDir;
+    }
 }

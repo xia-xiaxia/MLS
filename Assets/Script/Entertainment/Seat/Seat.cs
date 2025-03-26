@@ -6,9 +6,18 @@ public class Seat : MonoBehaviour
 {
     [SerializeField]
     private int index;
+    public enum SeatDir
+    {
+        None,
+        Forward,
+        Back,
+        Left,
+        Right
+    }
+    public SeatDir seatDir;
 
 
-    
+
     private void Start()
     {
         index = SeatManager.Instance.AddSeat(this);

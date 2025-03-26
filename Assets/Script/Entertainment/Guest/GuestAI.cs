@@ -6,12 +6,16 @@ using UnityEngine.AI;
 public class GuestAI : BTAI
 {
     public Guest guest = new Guest();
+    public Animator animator;
 
 
 
     protected override void Start()
     {
         base.Start();
+        animator = GetComponent<Animator>();
+
+
 
         root = new Selector("root");
 
@@ -140,5 +144,26 @@ public class GuestAI : BTAI
     protected override void Update()
     {
         base.Update();
+
+        //¿ØÖÆ¶¯»­µÄÇÐ»»
+        if (guest.state == GuestState.GetIn || guest.state == GuestState.Leave)
+        {
+            if (agent.velocity.magnitude > 0)
+            {
+                float angle = Vector2.SignedAngle(new Vector2(1, 1), new Vector2(agent.velocity.x, agent.velocity.y));
+                if (angle >= 0 && angle < 90)
+                    animator.Play("Back");
+                else if (angle >= 90 && angle <= 180)
+                    animator.Play("Left");
+                else if (angle >= -180 && angle < -90)
+                    animator.Play("Forward");
+                else if (angle >= -90 && angle < 0)
+                    animator.Play("Right");
+            }
+            else
+                animator.Play("IdleForward");
+        }
+        else if (guest.state == GuestState.WaitForOrder)
+            animator.Play("Idle" + guest.seatDir);
     }
 }

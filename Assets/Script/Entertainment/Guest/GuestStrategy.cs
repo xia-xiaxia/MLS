@@ -60,6 +60,7 @@ public class GotoRandomSeatStrategy : IStrategy
             isSeatChosen = true;
             List<int> freeSeats = SeatManager.Instance.CheckEmptySeatCounts();
             guest.index = freeSeats[UnityEngine.Random.Range(0, freeSeats.Count)];
+            guest.seatDir = SeatManager.Instance.CheckSeatDir(guest.index);
             SeatManager.Instance.OccupySeat(guest.index);
             return Node.State.Success;
         }

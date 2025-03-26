@@ -101,7 +101,7 @@ MonoBehaviour:
   m_OverrideArea: 1
   m_Area: 1
   m_IgnoreFromBuild: 0
-  m_AffectedAgents: ffffffff
+  m_AffectedAgents: 00000000
 --- !u!114 &6094573453677068410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,3 +114,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f24cfd1547d18b4cbcb8825e807196d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  index: 0
+  seatDir: 0

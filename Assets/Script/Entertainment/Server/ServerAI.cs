@@ -7,11 +7,18 @@ using UnityEngine.AI;
 public class ServerAI : BTAI
 {
     public Server server = new Server();
+    //自身组件在ServerAI里面写，直接获取；外部组件通过单例的ServerManager在创建的时候赋值
+    public Animator animator;
 
 
 
     protected override void Start()
     {
+        base.Start();
+        animator = GetComponent<Animator>();
+
+
+
         /*
         sequence：1.意愿接取？
                   2.有任务？有left任务？没有当前任务？加入到当前任务
@@ -20,12 +27,9 @@ public class ServerAI : BTAI
                                         3.bill
                                         ：回到前台
         */
-
-        base.Start();
-
         root = new ExecuteAll("root");
 
-        /*
+        /* //调试节点
         root.AddChild(new Leaf("Debug", new ActionStrategy(() =>
         {
             if (curTask != null)
@@ -151,6 +155,22 @@ public class ServerAI : BTAI
     protected override void Update()
     {
         base.Update();
+
+        //控制动画的切换
+        if (agent.velocity.magnitude > 0)
+        {
+            float angle = Vector2.SignedAngle(new Vector2(1,1), new Vector2(agent.velocity.x, agent.velocity.y));
+            if (angle >= 0 && angle < 90)
+                animator.Play("Back");
+            else if (angle >= 90 && angle <= 180)
+                animator.Play("Left");
+            else if (angle >= -180 && angle < -90)
+                animator.Play("Forward");
+            else if (angle >= -90 && angle < 0)
+                animator.Play("Right");
+        }
+        else
+            animator.Play("Idle");
     }
     public void AcceptTask(TaskBase task)
     {

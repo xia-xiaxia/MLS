@@ -16,6 +16,7 @@ public enum GuestState
 public class Guest
 {
     public int index;
+    public Seat.SeatDir seatDir;
     public GuestState state;
     public Bubble bubble;
     public TaskBase task;
