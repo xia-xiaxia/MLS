@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: "\u5BAB\u4FDD\u9E21\u4E01"
+  m_EditorClassIdentifier: Assembly-CSharp::RecipeConfig
+  id: 0
+  recipeName: "\u5BAB\u4FDD\u9E21\u4E01"
+  rarityBaseProfit: 50
+  levelProfitIncrement: 40
+  baseProfit: 200
+  requirements:
+  - ingredient: {fileID: 11400000, guid: 5ed9892ee6ba9084ba0ac165d65c76b0, type: 2}
+    amount: 0
+    IngredientName: "\u9E21\u8089"
+  - ingredient: {fileID: 11400000, guid: 2f49aa1ac81cc8c4dad9f412aa5260f2, type: 2}
+    amount: 0
+    IngredientName: "\u76D0"
+  - ingredient: {fileID: 11400000, guid: 9f9ff9e4dbcb5ae4da00e458caf60ee6, type: 2}
+    amount: 0
+    IngredientName: "\u82B1\u751F"
+  - ingredient: {fileID: 11400000, guid: 4b248268b169a0244b44675e2d8849cc, type: 2}
+    amount: 0
+    IngredientName: "\u8FA3\u6912"

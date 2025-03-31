@@ -19,10 +19,7 @@ public class RestaurantManager : MonoBehaviour
     private Queue<TaskBase> waitForBilling = new Queue<TaskBase>();
     private List<ServerAI> willingers = new List<ServerAI>();
     public TaskBase curTask;
-
-
-
-
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)

@@ -57,6 +57,23 @@ public class EconomyConfig : ScriptableObject
 #region 核心经济系统
 public class EconomySystem : MonoBehaviour
 {
+    public static EconomySystem Instance { get; private set; }
+
+    [Header("经济参数")]
+    public float dishIncomeMultiplier = 1f;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     // 当前状态
     public int _currentGold { get; set; }
     private List<FinancialRecord> _financialRecords = new();
@@ -72,10 +89,7 @@ public class EconomySystem : MonoBehaviour
     {
         Initialize(_config.initialGold);
     }
-
-    /// <summary>
     /// 初始化经济系统
-    /// </summary>
     public void Initialize(int initialGold)
     {
         _currentGold = initialGold;
@@ -233,6 +247,39 @@ public class EconomySystemEditor : Editor
         }
 
         Debug.Log(sb.ToString());
+    }
+}
+
+public class BasicResourceService : IResourceService
+{
+    private Dictionary<string, int> fragments = new Dictionary<string, int>();
+    private int gold = 10000;
+
+    public bool SpendGold(int amount)
+    {
+        if (gold >= amount)
+        {
+            gold -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    public bool SpendFragments(string partnerID, int amount)
+    {
+        fragments.TryGetValue(partnerID, out int current);
+        if (current >= amount)
+        {
+            fragments[partnerID] = current - amount;
+            return true;
+        }
+        return false;
+    }
+
+    public int GetFragments(string partnerID)
+    {
+        fragments.TryGetValue(partnerID, out int value);
+        return value;
     }
 }
 #endif

@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using static RecipeConfig;
 
 [CreateAssetMenu(fileName = "New Recipe", menuName = "Inventory/Recipe")]
 public class Recipe : ScriptableObject
@@ -16,19 +15,24 @@ public class Recipe : ScriptableObject
     public float RecipePrice;
     public float RecipeCost;
     public List<IngredientRequirement> requirements = new List<IngredientRequirement>();
-}
-// 成长数据
-[System.Serializable]
-public class RecipeProgressData
-{
-    public int recipeId;
-    public Rarity rarity;
-    public int level;
-    public int exp;
-}
-[CreateAssetMenu(fileName = "RecipeLevelConfig", menuName = "Data/RecipeLevelConfig")]
-public class RecipeLevelConfig : ScriptableObject
-{
+
+    [Header("稀有度收益")]
+    public int rarityBaseProfit = 50;    // 配方稀有度基础收益
+
+    [Header("等级收益")]
+    public int levelProfitIncrement = 40;// 每级增加的收益
+
+    [Header("基础属性")]
+    public int baseProfit = 200;        // 基础收益
+
+    [System.Serializable]
+    public class IngredientRequirement
+    {
+        public IngredientConfig ingredient;
+        public int amount;
+        public Ingredient ingredients;
+        public string IngredientName;
+    }
     [Header("升级配置")]
     public int maxLevel = 5;
     public int scorePerLevel = 20;
@@ -45,40 +49,23 @@ public class RecipeLevelConfig : ScriptableObject
             expRequirements[currentLevel] : int.MaxValue;
     }
 }
-
-[CreateAssetMenu(menuName = "Data/Recipe")]
-public class RecipeConfig : ScriptableObject
+// 成长数据
+[System.Serializable]
+public class RecipeProgressData
 {
-    public int id;
-    public string recipeName;
-
-    [Header("稀有度收益")]
-    public int rarityBaseProfit = 50;    // 配方稀有度基础收益
-
-    [Header("等级收益")]
-    public int levelProfitIncrement = 40;// 每级增加的收益
-
-    [Header("基础属性")]
-    public int baseProfit = 200;        // 基础收益
-
-    [Header("所需食材")]
-    public List<IngredientRequirement> requirements;
-
-    [System.Serializable]
-    public class IngredientRequirement
-    {
-        public IngredientConfig ingredient;
-        public int amount;
-        public Ingredient ingredients;
-        public string IngredientName;
-    }
+    public int recipeId;
+    public Rarity rarity;
+    public int level;
+    public int exp;
 }
+
+
 // Recipe数值系统
 public class RecipeSystem
 {
     #region 核心数据
     private readonly Recipe _baseRecipe; // 读配置
-    private readonly RecipeLevelConfig _config;
+    private readonly Recipe _config;
 
     // 独立运行
     public Rarity CurrentRarity { get; private set; }
@@ -88,7 +75,7 @@ public class RecipeSystem
     #endregion
 
     #region 初始化
-    public RecipeSystem(Recipe baseRecipe, RecipeLevelConfig config)
+    public RecipeSystem(Recipe baseRecipe, Recipe config)
     {
         _baseRecipe = baseRecipe;
         _config = config;

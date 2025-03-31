@@ -7,7 +7,7 @@ using System;
 public class DishConfig : ScriptableObject
 {
     public string dishName;
-    public RecipeConfig baseRecipe;
+    public Recipe baseRecipe;
 
     [Header("²É¹º·Ñ·¶Î§")]
     public int minPurchaseCost;

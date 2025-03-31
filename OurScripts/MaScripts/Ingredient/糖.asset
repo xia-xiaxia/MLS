@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: "\u7CD6"
+  m_EditorClassIdentifier: Assembly-CSharp::IngredientConfig
+  id: 0
+  displayName: 
+  baseRarity: 0
+  ingredientImage: {fileID: 2379486772871979185, guid: d70968d5effcb284ab2281aa0b00b877, type: 3}
+  rarityUpgradeCosts: 0a00000032000000c8000000f4010000dc050000
+  maxLevel: 10
+  levelUpgradeBaseCost: 100
+  scorePerLevel: 15
+  scorePerRarity: 20
+  levelFormula: 0
+  levelBaseCost: 100
+  levelGrowthFactor: 1.2
+  rarityProfitMultiplier: 50
+  rarityCostMultiplier: 20
+  baseProfit: 20
+  basePurchaseCost: 30
+  compatibleRecipes:
+  - {fileID: 11400000, guid: fc475ef6a7dcde242820fd8d6c5daf66, type: 2}

@@ -10,6 +10,16 @@ public class GameManager : MonoBehaviour
     public QuickPurchase gachaSystem;
     public EconomySystem economySystem;
 
+    [SerializeField] private PartnerSystem partnerSystem;
+    [SerializeField] private List<PartnerConfig> partnerConfigs;
+
+    private void Start()
+    {
+        // 实现资源服务接口
+        IResourceService resourceService = new BasicResourceService();
+        partnerSystem.Initialize(resourceService);
+    }
+
     void Awake()
     {
         // 单例

@@ -126,9 +126,9 @@ public class DataImporter : EditorWindow
 
             try
             {
-                var config = ScriptableObject.CreateInstance<RecipeConfig>();
-                config.id = int.Parse(fields[0]);
-                config.recipeName = fields[1].Trim();
+                var config = ScriptableObject.CreateInstance<Recipe>();
+                config.RecipeID = int.Parse(fields[0]);
+                config.RecipeName = fields[1].Trim();
                 config.rarityBaseProfit = int.Parse(fields[2]);
                 config.levelProfitIncrement = int.Parse(fields[3]);
                 config.baseProfit = int.Parse(fields[4]);
@@ -149,7 +149,7 @@ public class DataImporter : EditorWindow
 
                     if (ingredientCache.TryGetValue(ingredientName, out var ingredient))
                     {
-                        config.requirements.Add(new RecipeConfig.IngredientRequirement
+                        config.requirements.Add(new Recipe.IngredientRequirement
                         {
                             ingredient = ingredient,
                             amount = amount
@@ -157,12 +157,12 @@ public class DataImporter : EditorWindow
                     }
                     else
                     {
-                        Debug.LogWarning($"找不到食材[{ingredientName}]，配方: {config.recipeName}");
+                        Debug.LogWarning($"找不到食材[{ingredientName}]，配方: {config.RecipeName}");
                     }
                 }
 
                 // 保存资产
-                string safeName = config.recipeName.Replace(" ", "_");
+                string safeName = config.RecipeName.Replace(" ", "_");
                 string assetPath = $"Assets/Data/Recipes/{safeName}.asset";
 
                 if (!File.Exists(assetPath))

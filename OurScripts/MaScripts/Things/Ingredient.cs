@@ -43,7 +43,7 @@ public class IngredientConfig : ScriptableObject
     public int basePurchaseCost = 30;// 基础采购费
 
     [Header("可用配方")]
-    public List<RecipeConfig> compatibleRecipes;
+    public List<Recipe> compatibleRecipes;
 }
 
 // 食材核心逻辑
