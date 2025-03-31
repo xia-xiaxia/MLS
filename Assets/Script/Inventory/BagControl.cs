@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class BagControl : MonoBehaviour
 {
-    static BagControl instance;
+    public static BagControl instance;
 
     public GameObject slotGrid;
     public slot slotPrefab;
@@ -15,6 +15,7 @@ public class BagControl : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("Awake");
         if (instance != null)
         {
             Destroy(this);
@@ -26,6 +27,7 @@ public class BagControl : MonoBehaviour
 
     public void OnEnable()
     {
+        Debug.Log("OnEnable");
         if (scipeDescription != null)
             scipeDescription.text = "00";
         RefreshItem();
@@ -43,6 +45,7 @@ public class BagControl : MonoBehaviour
     {
         if (instance != null && instance.slotGrid != null && instance.slotPrefab != null)
         {
+            Debug.Log("Creating new slot");
             ingredientSlot newSlot = Instantiate(instance.slotPrefab, instance.slotGrid.transform) as ingredientSlot;
             newSlot.gameObject.transform.SetParent(instance.slotGrid.transform);
             newSlot.slotIngredient = ingredient;
