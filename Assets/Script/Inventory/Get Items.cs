@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GetRecipe : MonoBehaviour
+public class GetItems : MonoBehaviour
 {
     public Recipe recipe;
     public Inventory theInventory;
