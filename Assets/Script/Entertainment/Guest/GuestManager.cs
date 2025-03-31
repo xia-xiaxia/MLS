@@ -11,6 +11,7 @@ public class GuestManager : MonoBehaviour
     public GameObject guestPrefab;
     public Transform Bubbles;
     public GameObject bubblePrefab;
+    public Menu menu;
 
     private float timer = 10f;
     private float newGuestInterval = 10f;

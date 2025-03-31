@@ -94,7 +94,6 @@ public class WaitingStrategy : IStrategy
 public class GuestOrderStrategy : IStrategy
 {
     private Guest guest;
-    public static Inventory inventory;
 
     public GuestOrderStrategy(Guest guest)
     {
@@ -114,9 +113,17 @@ public class GuestOrderStrategy : IStrategy
 
     private List<Recipe> OrderRandomly()
     {
-        //int n = UnityEngine.Random.Range(1, Math.Min(inventory.items.Count, 5)); // 最多四道菜
-        //return inventory.items.GetRandomElements(n);
-        return new List<Recipe> { ScriptableObject.CreateInstance<Recipe>() };
+        Menu menu = GuestManager.Instance.menu;
+        if (menu.recipes.Count == 0)
+        {
+            Debug.LogWarning("No Recipes");
+            return new List<Recipe> { ScriptableObject.CreateInstance<Recipe>() };
+        }
+        else
+        {
+            int n = UnityEngine.Random.Range(1, Math.Min(menu.recipes.Count, 5)); // 最多四道菜
+            return GuestManager.Instance.menu.recipes.GetRandomElements(n);
+        }
     }
 }
 
