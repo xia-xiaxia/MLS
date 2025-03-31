@@ -13,5 +13,6 @@ public class Ingredient : ScriptableObject
     public int IngredientID;
     public int IngredientLevel;
     public float IngredientPrice;
+    public string color;
 
 }
