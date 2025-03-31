@@ -14,6 +14,7 @@ public class Recipe : ScriptableObject
     public int RecipeLevel;
     public float RecipePrice;
     public float RecipeCost;
+    public string color;
 
     [Header("Recipe Ingredients")]
     public List<Ingredient> ingredients;
