@@ -98,7 +98,7 @@ public class HangoutFlow : MonoBehaviour
     {
         if (!hasSelectedMode)
         {
-            Debug.Log("至少选择一个抽卡模式");
+           // Debug.Log("至少选择一个抽卡模式");
             return;
         }
 

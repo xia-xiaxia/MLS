@@ -31,7 +31,7 @@ public class Card
 
 public class QuickPurchase : MonoBehaviour
 {
-    private HashSet<string> collectedCardIDs = new HashSet<string>(); // id池，new有关
+    private HashSet<string> collectedCardIDs => GameDataManager.Instance.collectedCardIDs;
     private System.Random random = new System.Random();
     private List<Card> drawnCards = new List<Card>(); 
     public bool hasSelectedMode = false; 
@@ -50,7 +50,7 @@ public class QuickPurchase : MonoBehaviour
 
     private List<string> recipePool = new List<string> { "宫保鸡丁", "麻婆豆腐", "北京烤鸭", "红烧肉", "鱼香肉丝" ,"水煮鱼","糖醋里脊"};
     private List<string> ingredientPool = new List<string> { "鸡肉", "花生", "辣椒", "盐", "大豆" ,"牛肉","鸭肉","猪肉","胡萝卜","鱼肉","鸡蛋","糖"};
-    private List<string> partnerPool = new List<string> { "伙伴1", "伙伴2", "伙伴3", "伙伴4", "伙伴5" };
+    private List<string> partnerPool = new List<string> { "晓明哥", "海璐姐", "凯凯", "小猴紫", "林大厨" };
 
     
     // quick权重
@@ -96,7 +96,7 @@ public class QuickPurchase : MonoBehaviour
         closeButton.onClick.AddListener(CloseUI);
         confirmPurchaseButton.gameObject.SetActive(false);
         cardImageDatabase.Initialize();
-        videoDisplay.gameObject.SetActive(false); // 先隐藏视频 UI
+        videoDisplay.gameObject.SetActive(false); // 隐藏视频 UI
                                                  
     }
     public void DisplayCards(List<Card> cards)
@@ -140,11 +140,11 @@ public class QuickPurchase : MonoBehaviour
 
             Canvas.ForceUpdateCanvases(); 
             string cardID = card.name + "_" + card.rarity.ToString();
-            bool isNew = !collectedCardIDs.Contains(cardID); 
-            newTagImage.gameObject.SetActive(isNew); 
+            bool isNew = !GameDataManager.Instance.IsCardCollected(cardID); 
+            newTagImage.gameObject.SetActive(isNew);
             if (isNew)
             {
-                collectedCardIDs.Add(cardID);  //new完加到id池中，id是配方三-绿这种
+             GameDataManager.Instance.collectedCardIDs.Add(cardID);
             }
         }
     }
@@ -167,11 +167,12 @@ public class QuickPurchase : MonoBehaviour
         confirmPurchaseButton.gameObject.SetActive(false); 
         drawnCards.Clear();
         StartCoroutine(PlayVideoAndDrawCards());
+        GameDataManager.Instance.SaveGameData();
     }
     private IEnumerator PlayVideoAndDrawCards()
     {
         videoDisplay.gameObject.SetActive(true);  // 显示 Raw Image
-        videoPlayer.Play(); // 开始播放视频
+        videoPlayer.Play(); // 播放视频
 
         // 等待视频播放完毕
         while (videoPlayer.isPlaying)
@@ -367,6 +368,7 @@ public class QuickPurchase : MonoBehaviour
             GameDataManager.Instance.AddPartnerFragments(1);
             Debug.Log("伙伴碎片累加");
         }
+        GameDataManager.Instance.SaveGameData();
     }
     private void CloseUI()
     {
