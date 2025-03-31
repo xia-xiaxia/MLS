@@ -12,4 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d19d27a5b41ed1e45a63b4729cb2b443, type: 3}
   m_Name: Bag
   m_EditorClassIdentifier: 
-  items: []
+  Recipes: []
+  ingredients:
+  - {fileID: 11400000, guid: ca4303189648a164a877e9f2df162326, type: 2}
+  - {fileID: 11400000, guid: 9797ba148cab1ac4db45c3bb806b2f61, type: 2}
+  - {fileID: 11400000, guid: 15ca4200b3cd57a4d842a2aebbd85b3f, type: 2}
+  - {fileID: 11400000, guid: a6e42d25a8878dd47a0d213093bb0436, type: 2}
+  - {fileID: 11400000, guid: dd417c7ddc3123b41ac7353af47c8667, type: 2}
+  - {fileID: 11400000, guid: 3b223accb51b3114d8544cb51b5a0828, type: 2}
+  - {fileID: 11400000, guid: 1d5e614635470e5448cdf75a8b6cddfe, type: 2}
+  - {fileID: 11400000, guid: 6947d8bdfb045734099b8475fc292b76, type: 2}
+  - {fileID: 11400000, guid: d75a461cea24f8140a7f77a794a78661, type: 2}
+  - {fileID: 11400000, guid: 97c0a2d98cf440342beebeb40b236ec3, type: 2}
+  - {fileID: 11400000, guid: fa6322fe0fb410b47b6ed5d042dcb9b3, type: 2}
+  - {fileID: 11400000, guid: d763dbd9a95d8a342bb35e56896b73ad, type: 2}
+  - {fileID: 11400000, guid: 890afd7b6314ad24e85d9e896fc88e07, type: 2}

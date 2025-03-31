@@ -19,9 +19,9 @@ public class GetRecipe : MonoBehaviour
 
     public void AddNewRecipe()
     {
-        if (!theInventory.items.Contains(recipe))
+        if (!theInventory.Recipes.Contains(recipe))
         {
-            theInventory.items.Add(recipe);
+            theInventory.Recipes.Add(recipe);
             InventoryManager.CreatNewSlot(recipe);
             Debug.Log("Recipe added to inventory: " + recipe.RecipeName);
         }

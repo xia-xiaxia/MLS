@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
-    static InventoryManager instance;
+    public static InventoryManager instance;
 
     public GameObject slotGrid;
     public slot slotPrefab;
@@ -30,6 +31,7 @@ public class InventoryManager : MonoBehaviour
         RefreshItem();
     }
 
+
     public static void UpdateItemInfo(string information)
     {
         if (instance != null && instance.scipeDescription != null)
@@ -42,10 +44,11 @@ public class InventoryManager : MonoBehaviour
     {
         if (instance != null && instance.slotGrid != null && instance.slotPrefab != null)
         {
-            slot newSlot = Instantiate(instance.slotPrefab, instance.slotGrid.transform);
+            RecipeSlot newSlot = Instantiate(instance.slotPrefab, instance.slotGrid.transform) as RecipeSlot;
             newSlot.gameObject.transform.SetParent(instance.slotGrid.transform);
             newSlot.slotRecipe = recipe;
             newSlot.slotName.text = recipe.RecipeName + "  LV:" + recipe.RecipeLevel.ToString();
+            newSlot.slotIcon = newSlot.GetComponent<Image>();
             newSlot.slotIcon.sprite = recipe.RecipeImage;
         }
     }
@@ -63,9 +66,9 @@ public class InventoryManager : MonoBehaviour
             if (instance.slotGrid.transform.GetChild(i).gameObject != null)
                 Destroy(instance.slotGrid.transform.GetChild(i).gameObject);
         }
-        for (int i = 0; i < instance.inventory.items.Count; i++)
+        for (int i = 0; i < instance.inventory.Recipes.Count; i++)
         {
-            CreatNewSlot(instance.inventory.items[i]);
+            CreatNewSlot(instance.inventory.Recipes[i]);
         }
     }
 }
