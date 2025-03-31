@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbdb75fb57499e04b93f4a09f0ae5d6d, type: 3}
+  m_Name: Beef
+  m_EditorClassIdentifier: 
+  IngredientName: "\u725B\u8089"
+  IngredientImage: {fileID: -8023478001369510702, guid: 59a4e2dd6010c2249bdb0a20641062c4, type: 3}
+  IngredientDescription: "\u65B0\u9C9C\u7684\u725B\u8089"
+  IngredientID: 3
+  IngredientLevel: 1
+  IngredientPrice: 25
