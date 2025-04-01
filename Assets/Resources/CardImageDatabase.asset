@@ -18,7 +18,7 @@ MonoBehaviour:
   - cardName: "\u6C34\u716E\u9C7C"
     image: {fileID: 1042059244126719408, guid: 38b277c31fbd6ed4b84f776ef30defc9, type: 3}
   - cardName: "\u9EBB\u5A46\u8C46\u8150"
-    image: {fileID: 8993766006479529710, guid: fdd41165b80b4c749b626f1687b47e08, type: 3}
+    image: {fileID: 1561535874312274677, guid: efe66b79d557dba4b8caefe8c452f8c2, type: 3}
   - cardName: "\u5317\u4EAC\u70E4\u9E2D"
     image: {fileID: -7045645071965398319, guid: 491373560a5b68f40b35f0564f195542, type: 3}
   - cardName: "\u7EA2\u70E7\u8089"
