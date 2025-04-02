@@ -91,7 +91,7 @@ public class GridControl : MonoBehaviour
             }
         }
 
-        // 从 bag 中获取子物体并分配到 Grid
+        // 从 inventory 中获取子物体并分配到 Grid
         int itemCount = 0;
         foreach (Recipe recipe in inventoryManager.inventory.Recipes)
         {
