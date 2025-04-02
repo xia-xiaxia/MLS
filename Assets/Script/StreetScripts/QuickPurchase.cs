@@ -123,7 +123,7 @@ public class QuickPurchase : MonoBehaviour
             {
                 nameText.enabled = true;
             }
-          //  Debug.Log("NameText: " + nameText.text);
+          //  Debug.Log("NameText: " + nameText.guide);
            // TextMeshProUGUI typeText = cardUI.transform.Find("TypeText").GetComponent<TextMeshProUGUI>();
           //  TextMeshProUGUI rarityText = cardUI.transform.Find("RarityText").GetComponent<TextMeshProUGUI>();
             Image newTagImage = cardUI.transform.Find("NewTagImage").GetComponent<Image>(); 

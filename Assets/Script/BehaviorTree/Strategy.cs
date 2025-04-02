@@ -125,13 +125,13 @@ public class ElderPatrolStrategy : IStrategy
 
 //    public Node.State Execute()
 //    {
-//        if (Vector3.Distance(entity.position, target.position) < 1f)
+//        if (Vector3.Distance(entity.target, target.target) < 1f)
 //        {
 //            return Node.State.Success;
 //        }
 
-//        agent.SetDestination(target.position);
-//        entity.LookAt(target.position.With(y: entity.position.y));
+//        agent.SetDestination(target.target);
+//        entity.LookAt(target.target.With(y: entity.target.y));
 
 //        if (agent.pathPending)
 //        {
