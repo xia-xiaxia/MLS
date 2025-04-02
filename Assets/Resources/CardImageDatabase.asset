@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0bd78b817cd9df44bf994cd07c0caaa, type: 3}
+  m_Name: CardImageDatabase
+  m_EditorClassIdentifier: 
+  imageEntries:
+  - cardName: "\u5BAB\u4FDD\u9E21\u4E01"
+    image: {fileID: -1909985644166821414, guid: 51927ac9ce064dd41be9642034a3c247, type: 3}
+  - cardName: "\u6C34\u716E\u9C7C"
+    image: {fileID: 1042059244126719408, guid: 38b277c31fbd6ed4b84f776ef30defc9, type: 3}
+  - cardName: "\u9EBB\u5A46\u8C46\u8150"
+    image: {fileID: 8993766006479529710, guid: fdd41165b80b4c749b626f1687b47e08, type: 3}
+  - cardName: "\u5317\u4EAC\u70E4\u9E2D"
+    image: {fileID: -7045645071965398319, guid: 491373560a5b68f40b35f0564f195542, type: 3}
+  - cardName: "\u7EA2\u70E7\u8089"
+    image: {fileID: -1019440375055593361, guid: 11604fbb104d21e4281b3152c9de7530, type: 3}
+  - cardName: "\u9C7C\u9999\u8089\u4E1D"
+    image: {fileID: -8798124312292116389, guid: bf634d10db36c2c44b210aaffd2f2e29, type: 3}
+  - cardName: "\u7CD6\u918B\u91CC\u810A"
+    image: {fileID: 34390651661342135, guid: 26039ad22bdedbd4f8ba75d5b7eb56fe, type: 3}
+  - cardName: "\u76D0"
+    image: {fileID: -4735895386350343255, guid: 8af7e002680b9994f91d95074ca65ae8, type: 3}
+  - cardName: "\u725B\u8089"
+    image: {fileID: 5461745894110631578, guid: 39a195ee81a9c9c4d83456c77ede88a5, type: 3}
+  - cardName: "\u9E2D\u8089"
+    image: {fileID: 7057683939999683988, guid: 95ed341e71f84c44c898e7f7a640c707, type: 3}
+  - cardName: "\u8FA3\u6912"
+    image: {fileID: -7916802351101201182, guid: 8fab19c46bbe6b040973f7583589d890, type: 3}
+  - cardName: "\u9E21\u8089"
+    image: {fileID: 5892986611325148973, guid: 92fd4b5ca6bf42d469360bd2603da4de, type: 3}
+  - cardName: "\u82B1\u751F"
+    image: {fileID: -5791266946328652992, guid: dbf15308b7506a04ca26ad26b14083d9, type: 3}
+  - cardName: "\u5927\u8C46"
+    image: {fileID: -4373674041169729511, guid: 85e073d0a9b5ae04cbff783b02b77755, type: 3}
+  - cardName: "\u732A\u8089"
+    image: {fileID: 5265539010170962507, guid: ca918884ea238194ab792430a1502442, type: 3}
+  - cardName: "\u80E1\u841D\u535C"
+    image: {fileID: -5582008773896033235, guid: 6be8c16436705e740b948653a31b313d, type: 3}
+  - cardName: "\u9C7C\u8089"
+    image: {fileID: 5187199586706857118, guid: 3ee5263ae0f5296488a90a5c011770cc, type: 3}
+  - cardName: "\u9E21\u86CB"
+    image: {fileID: -1824251403013971435, guid: b88dbd167c408ba4c9220c5b720de669, type: 3}
+  - cardName: "\u7CD6"
+    image: {fileID: -5131523626720785127, guid: 4db23dd10c5a86d43ad650e20cb5c7ba, type: 3}
+  - cardName: "\u6653\u660E\u54E5"
+    image: {fileID: 2563358266905783394, guid: 6bab7c4909cb4a9409e67b8f0ace5d8c, type: 3}
+  - cardName: "\u6D77\u7490\u59D0"
+    image: {fileID: 3789511937429220945, guid: ef73efed6dbecf14c9b50717b4395177, type: 3}
+  - cardName: "\u51EF\u51EF"
+    image: {fileID: 5452443526187509451, guid: 7fd98f47ba8e1f24dbc5736abe2604e7, type: 3}
+  - cardName: "\u5C0F\u7334\u7D2B"
+    image: {fileID: -4916726752242099484, guid: 88e4e12422062df4884b257ffc766203, type: 3}
+  - cardName: "\u6797\u5927\u53A8"
+    image: {fileID: -3216861226394558536, guid: 00e1f471fde9c704fb13ea91695be78a, type: 3}

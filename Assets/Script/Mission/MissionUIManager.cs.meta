@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Script/Mission/MissionUIManager.cs.meta
+guid: a73b6e06081fb954093d3b90c4b803ce
+========
+guid: 9fb2b1038d114bd4d90783925dd125aa
+>>>>>>>> 407c7128c28e2cd0b1f8305324ee65986fcc8337:Assets/Script/Inventory/Base/Menu.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

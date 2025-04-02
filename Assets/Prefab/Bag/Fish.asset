@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbdb75fb57499e04b93f4a09f0ae5d6d, type: 3}
+  m_Name: Fish
+  m_EditorClassIdentifier: 
+  IngredientName: "\u9C7C\u8089"
+  IngredientImage: {fileID: 4842300121714881319, guid: 4ee0478bd383fd845b2e5d108278cd5d, type: 3}
+  IngredientDescription: "\u5AE9\u5AE9\u7684\u9C7C\u8089"
+  IngredientID: 4
+  IngredientLevel: 1
+  IngredientPrice: 9
