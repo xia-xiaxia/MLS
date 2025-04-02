@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class GridControl : MonoBehaviour
 {
+    private static GridControl instance; 
     public Transform slotParent;
     public GameObject currentGrid;
     public GameObject GridPrefab;
@@ -90,7 +93,7 @@ public class GridControl : MonoBehaviour
 
         // 从 bag 中获取子物体并分配到 Grid
         int itemCount = 0;
-        foreach (Ingredient ingredient in inventoryManager.inventory.ingredients)
+        foreach (Recipe recipe in inventoryManager.inventory.Recipes)
         {
             if (itemCount % 6 == 0)
             {
@@ -105,11 +108,12 @@ public class GridControl : MonoBehaviour
                 currentGrid = Grids[itemCount / 6];
             }
 
-            GameObject newSlot = Instantiate(inventoryManager.slotPrefab.gameObject, currentGrid.transform);
-            ingredientSlot slot = newSlot.GetComponent<ingredientSlot>();
-            slot.slotIngredient = ingredient;
-            slot.slotName.text = ingredient.IngredientName + "  LV:" + ingredient.IngredientLevel.ToString();
-            slot.slotIcon.sprite = ingredient.IngredientImage;
+            RecipeSlot newSlot = Instantiate(inventoryManager.slotPrefab, currentGrid.transform) as RecipeSlot;
+            newSlot.gameObject.transform.SetParent(currentGrid.transform);
+            newSlot.slotRecipe = recipe;
+            newSlot.slotName.text = recipe.RecipeName + "  LV:" + recipe.RecipeLevel.ToString();
+            newSlot.slotIcon = newSlot.GetComponent<Image>();
+            newSlot.slotIcon.sprite = recipe.RecipeImage;
 
             itemCount++;
         }

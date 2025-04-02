@@ -1114,7 +1114,7 @@ MonoBehaviour:
   currentGrid: {fileID: 1149419222}
   GridPrefab: {fileID: 2970277984071041897, guid: 43e6116b1c8b9124ea063ee8773895af, type: 3}
   Grids: []
-  inventoryManager: {fileID: 0}
+  inventoryManager: {fileID: 215020754}
   index: 0
 --- !u!114 &215020756
 MonoBehaviour:
@@ -5221,11 +5221,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5d781e6b0501d048b34ed2c7b63cbeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menu: {fileID: 11400000, guid: de7eb243fdc8740439349b7417b90404, type: 2}
-  configs: {fileID: 0}
-  taskName: {fileID: 2136894427}
-  description: {fileID: 1479258204}
-  progress: {fileID: 1067775352}
 --- !u!1 &1759200817
 GameObject:
   m_ObjectHideFlags: 0
