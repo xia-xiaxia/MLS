@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbdb75fb57499e04b93f4a09f0ae5d6d, type: 3}
+  m_Script: {fileID: 11500000, guid: 61d73e76837b29243933fd143b320cea, type: 3}
   m_Name: Pork
   m_EditorClassIdentifier: 
   IngredientName: "\u732A\u8089"
-  IngredientImage: {fileID: 7529759685946321259, guid: 108d5848481e5ed48912ff40bf589b19, type: 3}
-  IngredientDescription: "\u9999\u9999\u7684\u732A\u8089"
-  IngredientID: 1
+  IngredientImage: {fileID: 0}
+  IngredientDescription: "\u4E00\u53EA\u732A\u8EAB\u4E0A\u7684\u8089"
+  IngredientID: 6
   IngredientLevel: 1
-  IngredientPrice: 10
+  IngredientPrice: 12
+  Rarity: 0
