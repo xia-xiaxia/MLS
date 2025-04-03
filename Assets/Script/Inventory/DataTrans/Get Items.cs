@@ -9,6 +9,7 @@ public enum Rarity
 
 public class GetItems : MonoBehaviour
 {
+    public static GetItems instance; 
     public Dictionary<string, Rarity> itemsRarity;
     public Inventory bag;
     public Inventory inventory;
@@ -21,6 +22,12 @@ public class GetItems : MonoBehaviour
 
     void Strat()
     {
+        if(instance != null)
+        {
+            Destroy(this);
+        }
+        instance = this;
+
         InitializeDictionaries();
     }
     void InitializeDictionaries()
