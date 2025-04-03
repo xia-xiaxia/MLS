@@ -25,23 +25,26 @@ public class DataTrans_kitchen : MonoBehaviour
 
     void Update()
     {
-        //BagAndInventory = GameDataManager.Instance.recipeMaxRarity;
-        if (GameDataManager.Instance.recipeMaxRarity != null)
+        if (GameDataManager.Instance != null)
         {
-            foreach (var kvp in GameDataManager.Instance.recipeMaxRarity)
+            //BagAndInventory = GameDataManager.Instance.recipeMaxRarity;
+            if (GameDataManager.Instance.recipeMaxRarity != null)
             {
-                string name = kvp.Key;
-                Rarity rarity = kvp.Value;
-                if (!BagAndInventory.ContainsKey(name))
+                Debug.Log("recipeMaxRarity: " + GameDataManager.Instance.recipeMaxRarity.Count);
+                foreach (var kvp in GameDataManager.Instance.recipeMaxRarity)
                 {
-                    BagAndInventory.Add(name, rarity);
-                }
-                if(BagAndInventory.ContainsKey(name))
-                {
+                    string name = kvp.Key;
+                    Rarity rarity = kvp.Value;
                     BagAndInventory[name] = rarity;
+                    Debug.Log("name: " + name + " rarity: " + rarity);
                 }
             }
+            else Debug.Log("recipeMaxRarity:" + null);
+            Debug.Log("BagAndInventory: " + BagAndInventory.Count);
         }
+        else Debug.Log("GameDataManager.Instance is null");
+        OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+        
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -55,7 +58,10 @@ public class DataTrans_kitchen : MonoBehaviour
     private void LoadScence()
     {
         if (GetItems.instance)
+        {
             GetItems.instance.itemsRarity = BagAndInventory;
+            Debug.Log("´«Êä³É¹¦");
+        }
         else return;
 
     }

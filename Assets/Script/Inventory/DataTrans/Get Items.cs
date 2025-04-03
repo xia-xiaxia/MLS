@@ -71,7 +71,23 @@ public class GetItems : MonoBehaviour
 
     public void DataTransToKithon()
     {
-
+        foreach(var kvp in itemsRarity)
+        {
+            string name = kvp.Key;
+            Rarity rarity = kvp.Value;
+            if (recipeCard.ContainsKey(name))
+            {
+                Recipe recipe = recipeCard[name];
+                recipe.Rarity = rarity;
+                inventory.Recipes.Add(recipe);
+            }
+            if (ingredientCard.ContainsKey(name))
+            {
+                Ingredient ingredient = ingredientCard[name];
+                ingredient.Rarity = rarity;
+                bag.ingredients.Add(ingredient);
+            }
+        }
     }
 }
 
