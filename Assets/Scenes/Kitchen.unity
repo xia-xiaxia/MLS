@@ -1132,6 +1132,8 @@ MonoBehaviour:
   menu: {fileID: 11400000, guid: 9d28e48daf84a8a45b603f1434af1973, type: 2}
   recipe: {fileID: 0}
   TextPrefab: {fileID: 2134491376441022145, guid: d4c4d558456855948864df43bdd7a6a3, type: 3}
+  index: 0
+  Names: []
 --- !u!1 &221341461
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
+<<<<<<< HEAD
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
@@ -17,5 +18,21 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Kitchen.unity
     guid: a1edb526827fd5841b7afcd376405550
+=======
+    path: Assets/Scenes/StreetAndPurchase.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Restaurant.unity
+    guid: 9e8b33fae094c494c822cbbe6aed8668
+  - enabled: 1
+    path: Assets/Scenes/Kitchen.unity
+    guid: dacd09d38c7e5c44e886abbfc591fd20
+  - enabled: 1
+    path: Assets/Scenes/Street.unity
+    guid: e730cc31843e9294e9ed8546d15754b4
+  - enabled: 1
+    path: Assets/Scenes/Shop.unity
+    guid: eead4376b2a7ba647aded258a7ab9d6a
+>>>>>>> 7f451fd908bab6e09b35e733de525f9ffa9eb79b
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

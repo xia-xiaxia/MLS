@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbdb75fb57499e04b93f4a09f0ae5d6d, type: 3}
+  m_Script: {fileID: 11500000, guid: 61d73e76837b29243933fd143b320cea, type: 3}
   m_Name: "\u82B1\u751F"
   m_EditorClassIdentifier: 
   IngredientName: "\u82B1\u751F"
   IngredientImage: {fileID: -3023610682688637363, guid: ee6c3fd80da7a4d47963097ff02f0e82, type: 3}
-  IngredientDescription: "\u767D\u767D\u7684\u82B1\u751F"
-  IngredientID: 5
+  IngredientDescription: "\u4E00\u4E9B\u82B1\u751F\u5473\u7684\u82B1\u751F"
+  IngredientID: 12
   IngredientLevel: 1
-  IngredientPrice: 3
+  IngredientPrice: 8
+  Rarity: 0

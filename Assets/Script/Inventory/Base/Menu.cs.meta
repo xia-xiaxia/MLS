@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Script/Mission/MissionUIManager.cs.meta
+guid: 39720306fbd93bb41b1adfc7fa29da58
+========
 guid: 9fb2b1038d114bd4d90783925dd125aa
+>>>>>>>> 407c7128c28e2cd0b1f8305324ee65986fcc8337:Assets/Script/Inventory/Base/Menu.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

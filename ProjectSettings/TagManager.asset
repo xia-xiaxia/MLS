@@ -6,11 +6,12 @@ TagManager:
   tags:
   - Grid
   - GridBag
+  - shopmanager
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - RarityLayer
   - Water
   - UI
   - 
@@ -40,6 +41,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3153104177
+    locked: 0
+  - name: Midground
+    uniqueID: 2820080609
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Foreground
+    uniqueID: 4049320733
     locked: 0

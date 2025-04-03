@@ -2,11 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Rarity
-{
-    Green, Blue, Purple, Gold, Rainbow
-}
-
 public class GetItems : MonoBehaviour
 {
     public static GetItems instance; 
@@ -61,17 +56,22 @@ public class GetItems : MonoBehaviour
             if(recipeCard.ContainsKey(name))
             {
                 Recipe recipe = recipeCard[name];
-                recipe.color = rarity.ToString();
+                recipe.Rarity = rarity;
                 inventory.Recipes.Add(recipe);
             }
 
             if(ingredientCard.ContainsKey(name))
             {
                 Ingredient ingredient = ingredientCard[name];
-                ingredient.color = rarity.ToString();
+                ingredient.Rarity = rarity;
                 bag.ingredients.Add(ingredient);
             }
         }
+    }
+
+    public void DataTransToKithon()
+    {
+
     }
 }
 
