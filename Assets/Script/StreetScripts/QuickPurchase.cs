@@ -144,6 +144,7 @@ public class QuickPurchase : MonoBehaviour
             if (isNew)
             {
                 GameDataManager.Instance.collectedCardIDs.Add(cardID);
+                Debug.Log("all ready");
             }
         }
     }

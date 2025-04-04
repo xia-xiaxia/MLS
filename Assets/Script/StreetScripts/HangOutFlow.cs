@@ -88,9 +88,9 @@ public class HangoutFlow : MonoBehaviour
 
         isBigPurchaseMode = isBig;
         //hasSelectedMode = true;  
-
-        quickPurchaseButton.image.color = isBig ? Color.white : Color.red;
-        bigPurchaseButton.image.color = isBig ? Color.red : Color.white;
+      
+        quickPurchaseButton.image.color = isBig ? Color.white :Color.cyan;
+        bigPurchaseButton.image.color = isBig ? Color.yellow: Color.white;
         confirmButton.gameObject.SetActive(true);
     }
 

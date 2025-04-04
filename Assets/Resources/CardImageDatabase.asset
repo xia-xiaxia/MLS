@@ -52,12 +52,12 @@ MonoBehaviour:
   - cardName: "\u7CD6"
     image: {fileID: -5131523626720785127, guid: 4db23dd10c5a86d43ad650e20cb5c7ba, type: 3}
   - cardName: "\u6653\u660E\u54E5"
-    image: {fileID: 2563358266905783394, guid: 6bab7c4909cb4a9409e67b8f0ace5d8c, type: 3}
+    image: {fileID: 7907969314029407199, guid: 68f3bae38179e864bbb11e8262b5da8e, type: 3}
   - cardName: "\u6D77\u7490\u59D0"
-    image: {fileID: 3789511937429220945, guid: ef73efed6dbecf14c9b50717b4395177, type: 3}
+    image: {fileID: 5465830596155918954, guid: 6b16c4fb5e8001545b77e932a43d4ddf, type: 3}
   - cardName: "\u51EF\u51EF"
-    image: {fileID: 5452443526187509451, guid: 7fd98f47ba8e1f24dbc5736abe2604e7, type: 3}
+    image: {fileID: 4143972045772071147, guid: c4a35ba5e2997084aa39b2820ae12c26, type: 3}
   - cardName: "\u5C0F\u7334\u7D2B"
-    image: {fileID: -4916726752242099484, guid: 88e4e12422062df4884b257ffc766203, type: 3}
+    image: {fileID: -4833512165573670424, guid: d06c42648670bf24f8f1299f067c0c4f, type: 3}
   - cardName: "\u6797\u5927\u53A8"
-    image: {fileID: -3216861226394558536, guid: 00e1f471fde9c704fb13ea91695be78a, type: 3}
+    image: {fileID: -8105601955726749417, guid: e532c353830369245be9b9fda129671d, type: 3}
