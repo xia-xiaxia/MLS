@@ -14,6 +14,7 @@ public enum CardType
 {
     Recipe, Ingredient, Partner
 }
+[System.Serializable]
 
 public class Card
 {
@@ -27,6 +28,7 @@ public class Card
         this.rarity = rarity;
         this.type = type;
     }
+    public Card() { }
 }
 
 public class QuickPurchase : MonoBehaviour
@@ -310,6 +312,7 @@ public class QuickPurchase : MonoBehaviour
         foreach (var card in drawnCards)
         {
             Debug.Log($"³éµ½: {card.name} - {card.rarity}");
+            GameDataManager.Instance.allDrawnCards.Add(card);
             if (card.type == CardType.Recipe)
                 ConvertRecipeToResource(card);
             else if (card.type == CardType.Ingredient)
