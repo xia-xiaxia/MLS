@@ -6,7 +6,8 @@ public class UIManager : MonoBehaviour
     public Button clearDataButton;  
     public GameObject confirmationPopup; 
     public Button confirmButton;   
-    public Button cancelButton;   
+    public Button cancelButton;
+   
     void Start()
     {
    

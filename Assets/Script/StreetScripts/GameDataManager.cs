@@ -12,7 +12,7 @@ public class GameDataManager : MonoBehaviour
     public Dictionary<string, Rarity> recipeMaxRarity = new Dictionary<string, Rarity>();  // 存储每个配方当前的最高稀有度
     public int totalRecipeExperience = 0;
     public int totalIngredientExperience = 0; // 存储配方碎片总经验和食材碎片总经验
-
+    public List<Card> allDrawnCards = new List<Card>();//抽到的卡。
     private string saveFilePath;
 
     void Awake()
@@ -84,7 +84,8 @@ public class GameDataManager : MonoBehaviour
             totalPartnerFragments = totalPartnerFragments,
             recipeMaxRarity = new Dictionary<string, int>(), 
             totalRecipeExperience = totalRecipeExperience,
-            totalIngredientExperience = totalIngredientExperience
+            totalIngredientExperience = totalIngredientExperience,
+            allDrawnCards = new List<Card>(allDrawnCards)
         };
 
         foreach (var recipe in recipeMaxRarity)
@@ -115,6 +116,10 @@ public class GameDataManager : MonoBehaviour
             {
                 recipeMaxRarity[recipe.Key] = (Rarity)recipe.Value;
             }
+            if (data.allDrawnCards != null)
+            {
+                allDrawnCards = new List<Card>(data.allDrawnCards);//加载卡片列表
+            }
         }
     }
 
@@ -124,9 +129,11 @@ public class GameDataManager : MonoBehaviour
         public List<string> collectedCardIDs = new List<string>();
         public List<string> fullPartners = new List<string>();
         public int totalPartnerFragments = 0;
-        public Dictionary<string, int> recipeMaxRarity = new Dictionary<string, int>();  
+        public Dictionary<string, int> recipeMaxRarity = new Dictionary<string, int>();
         public int totalRecipeExperience = 0;
         public int totalIngredientExperience = 0;
+        public List<Card> allDrawnCards = new List<Card>();
+
     }
     public void ClearAllData()
     {
