@@ -124,17 +124,11 @@ public class QuickPurchase : MonoBehaviour
             {
                 nameText.enabled = true;
             }
-<<<<<<< HEAD
-          //  Debug.Log("NameText: " + nameText.guide);
-           // TextMeshProUGUI typeText = cardUI.transform.Find("TypeText").GetComponent<TextMeshProUGUI>();
-          //  TextMeshProUGUI rarityText = cardUI.transform.Find("RarityText").GetComponent<TextMeshProUGUI>();
-            Image newTagImage = cardUI.transform.Find("NewTagImage").GetComponent<Image>(); 
-=======
+
             //  Debug.Log("NameText: " + nameText.text);
             // TextMeshProUGUI typeText = cardUI.transform.Find("TypeText").GetComponent<TextMeshProUGUI>();
             //  TextMeshProUGUI rarityText = cardUI.transform.Find("RarityText").GetComponent<TextMeshProUGUI>();
             Image newTagImage = cardUI.transform.Find("NewTagImage").GetComponent<Image>();
->>>>>>> 1893911af3a2b2246a0b496abeabb045b82da080
             Sprite cardSprite = cardImageDatabase.GetSprite(card.name);
 
             if (cardSprite != null)
