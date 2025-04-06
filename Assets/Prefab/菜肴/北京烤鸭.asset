@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37942423eedf8cb4986d28b9cf5bec5f, type: 3}
+  m_Name: "\u5317\u4EAC\u70E4\u9E2D"
+  m_EditorClassIdentifier: 
+  RecipeName: "\u5317\u4EAC\u70E4\u9E2D"
+  RecipeImage: {fileID: 6980294087324179629, guid: 89176f6199f71c64bbf75d897f11bd94, type: 3}
+  RecipeDescription: "\u5317\u4EAC\u70E4\u9E2D\u5317\u4EAC\u70E4\u9E2D\u5317\u4EAC\u70E4\u9E2D"
+  RecipeID: 4
+  RecipeLevel: 1
+  RecipePrice: 150
+  RecipeCost: 50
+  ingredients:
+  - {fileID: 11400000, guid: a6e42d25a8878dd47a0d213093bb0436, type: 2}
+  - {fileID: 11400000, guid: 6947d8bdfb045734099b8475fc292b76, type: 2}

@@ -137,9 +137,6 @@ public class QuickPurchase : MonoBehaviour
 
 
             nameText.text = card.rarity.ToString();
-
-
-            Canvas.ForceUpdateCanvases();
             string cardID = card.name + "_" + card.rarity.ToString();
             bool isNew = !GameDataManager.Instance.IsCardCollected(cardID);
             newTagImage.gameObject.SetActive(isNew);

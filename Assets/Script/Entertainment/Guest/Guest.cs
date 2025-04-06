@@ -16,8 +16,49 @@ public enum GuestState
 public class Guest
 {
     public int index;
-    public GuestState state = GuestState.GetIn;
+    public Seat.SeatDir seatDir;
+    public GuestState state;
+    public Bubble bubble;
     public TaskBase task;
+
+    public void UpdateState(GuestState newState)
+    {
+        switch (newState)
+        {
+            case GuestState.GetIn:
+                state = GuestState.GetIn;
+                bubble.UpdateState("新！");
+                break;
+            case GuestState.WaitForOrder:
+                state = GuestState.WaitForOrder;
+                bubble.UpdateState("等待点餐...");
+                break;
+            case GuestState.Order:
+                state = GuestState.Order;
+                bubble.UpdateState("点餐中~");
+                break;
+            case GuestState.WaitForFood:
+                state = GuestState.WaitForFood;
+                bubble.UpdateState("等待上菜...");
+                break;
+            case GuestState.Eat:
+                state = GuestState.Eat;
+                bubble.UpdateState("用餐中~");
+                break;
+            case GuestState.WaitForBill:
+                state = GuestState.WaitForBill;
+                bubble.UpdateState("等待结账...");
+                break;
+            case GuestState.Bill:
+                state = GuestState.Bill;
+                bubble.UpdateState("结账中~");
+                break;
+            case GuestState.Leave:
+                state = GuestState.Leave;
+                bubble.UpdateState("离开");
+                break;
+        }
+    }
 }
 
 public abstract class TaskBase

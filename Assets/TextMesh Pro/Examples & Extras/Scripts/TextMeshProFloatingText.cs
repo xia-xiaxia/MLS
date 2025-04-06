@@ -37,11 +37,11 @@ namespace TMPro.Examples
         void Awake()
         {
             m_transform = transform;
-            m_floatingText = new GameObject(this.name + " floating text");
+            m_floatingText = new GameObject(this.name + " floating guide");
 
             // Reference to Transform is lost when TMP component is added since it replaces it by a RectTransform.
             //m_floatingText_Transform = m_floatingText.transform;
-            //m_floatingText_Transform.position = m_transform.position + new Vector3(0, 15f, 0);
+            //m_floatingText_Transform.target = m_transform.target + new Vector3(0, 15f, 0);
 
             m_cameraTransform = Camera.main.transform;
         }
@@ -103,7 +103,7 @@ namespace TMPro.Examples
         //    }
         //    else
         //    {
-        //        m_textMesh.text = m_frame.ToString();
+        //        m_textMesh.guide = m_frame.ToString();
         //    }
         //    m_frame = (m_frame + 1) % 1000;
 
@@ -140,10 +140,10 @@ namespace TMPro.Examples
 
                 m_textMeshPro.color = new Color32(start_color.r, start_color.g, start_color.b, (byte)alpha);
 
-                // Move the floating text upward each update
+                // Move the floating guide upward each update
                 m_floatingText_Transform.position += new Vector3(0, starting_Count * Time.deltaTime, 0);
 
-                // Align floating text perpendicular to Camera.
+                // Align floating guide perpendicular to Camera.
                 if (!lastPOS.Compare(m_cameraTransform.position, 1000) || !lastRotation.Compare(m_cameraTransform.rotation, 1000))
                 {
                     lastPOS = m_cameraTransform.position;
@@ -195,10 +195,10 @@ namespace TMPro.Examples
 
                 m_textMesh.color = new Color32(start_color.r, start_color.g, start_color.b, (byte)alpha);
 
-                // Move the floating text upward each update
+                // Move the floating guide upward each update
                 m_floatingText_Transform.position += new Vector3(0, starting_Count * Time.deltaTime, 0);
 
-                // Align floating text perpendicular to Camera.
+                // Align floating guide perpendicular to Camera.
                 if (!lastPOS.Compare(m_cameraTransform.position, 1000) || !lastRotation.Compare(m_cameraTransform.rotation, 1000))
                 {
                     lastPOS = m_cameraTransform.position;

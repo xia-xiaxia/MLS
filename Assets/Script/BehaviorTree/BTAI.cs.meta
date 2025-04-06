@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Script/BehaviorTree/BTAI.cs.meta
 guid: 8b4aff17fe38b5944bdd16b1771ea970
+========
+guid: 60668d39d01245a4ca7f5cab6997bd20
+>>>>>>>> 407c7128c28e2cd0b1f8305324ee65986fcc8337:Assets/Script/Inventory/CreatMenu.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

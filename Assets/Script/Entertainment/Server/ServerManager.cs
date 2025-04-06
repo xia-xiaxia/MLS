@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ServerManager : MonoBehaviour
+public class ServerManager : Singleton<ServerManager>
 {
-    public static ServerManager Instance { get; set; }
-
     public Transform Servers;
     public GameObject serverPrefab;
     public Transform Bubbles;
@@ -17,22 +15,17 @@ public class ServerManager : MonoBehaviour
     public List<Transform> waitingsSitesTransform = new List<Transform>();
     public Dictionary<Transform, bool> waitingSites = new Dictionary<Transform, bool>();
 
+    private bool isOperating;
     private float timer = 0;
     private float CheckInterval = 10f;
     private List<GameObject> servers = new List<GameObject>();
 
 
 
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(Instance);
-        }
-        Instance = this;
-    }
     private void Update()
     {
+        if (!isOperating)
+            return;
         timer += Time.deltaTime;
         if (timer >= CheckInterval)
         {
@@ -45,21 +38,21 @@ public class ServerManager : MonoBehaviour
     {
         foreach (Transform w in waitingsSitesTransform)
             waitingSites.Add(w, false);
-        AddServer(assignedWaitingSite);
     }
-    public void AddServer(Transform assignedWaitingSite = null)
+    private void AddServer(Transform assignedWaitingSite = null)
     {
         GameObject server = Instantiate(serverPrefab, Servers);
+        server.name += servers.Count;
         ServerAI serverAI = server.GetComponent<ServerAI>();
-        serverAI.hangOrderSite = hangOrderSite;
-        serverAI.dishSite = dishSite;
+        serverAI.server.hangOrderSite = hangOrderSite;
+        serverAI.server.dishSite = dishSite;
         Bubble bubble = Instantiate(bubblePrefab, Bubbles).GetComponent<Bubble>();
-        bubble.server = server.transform;
-        serverAI.bubble = bubble;
+        bubble.owner = server.transform;
+        serverAI.server.bubble = bubble;
 
         if (assignedWaitingSite != null)
         {
-            serverAI.waitingSite = assignedWaitingSite;
+            serverAI.server.waitingSite = assignedWaitingSite;
             server.transform.position = assignedWaitingSite.position;
             if (waitingSites.ContainsKey(assignedWaitingSite))
                 waitingSites[assignedWaitingSite] = true;
@@ -71,21 +64,36 @@ public class ServerManager : MonoBehaviour
                 if (!w.Value)
                 {
                     waitingSites[w.Key] = true;
-                    serverAI.waitingSite = w.Key;
+                    serverAI.server.waitingSite = w.Key;
                     break;
                 }
             }
         }
 
-        if (serverAI.waitingSite == null)
+        if (serverAI.server.waitingSite == null)
         {
             Destroy(server);
-            //Debug.LogWarning("No More WaitingSites !!!");
+            Debug.LogWarning("No More WaitingSites !!!");
         }
         else
+        {
+            //Debug.LogWarning("New Server");
             servers.Add(server);
+        }
     }
-    private void AssignBubble(ServerAI server)
+    public void OnBeginOperation()
     {
+        isOperating = true;
+        AddServer(assignedWaitingSite);
+    }
+    public void OnEndOperation()
+    {
+        isOperating = false;
+        foreach(var server in servers)
+        {
+            Destroy(server.GetComponent<ServerAI>().server.bubble.gameObject);
+            Destroy(server);
+        }
+        servers.Clear();
     }
 }

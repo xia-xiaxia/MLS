@@ -9,17 +9,17 @@ using UnityEngine;
 3.TaskBase整合
 
 【优化】
-1.Debug输出名字
-2.整合所有移动的IStrategy
+4.分配任务时有优先级
+5.接取任务的判断
 
 【问题】
 1.模型碰撞
-2.两个人面对面撞上动不了
+2.客人和服务员的状态
+3.服务员会罢工
 
 【新增】
 1.思考Strategy
 2.动画
-5.文字跟随人物using UnityEngine.UI;
 
 
 */

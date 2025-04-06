@@ -23,16 +23,17 @@ public class GotoFrontDesk : IStrategy
 public class HeadToOrderStrategy : IStrategy
 {
     private NavMeshAgent agent;
-    private ServerAI server;
+    private Server server;
 
-    public HeadToOrderStrategy(NavMeshAgent agent, ServerAI server)
+    public HeadToOrderStrategy(NavMeshAgent agent, Server server)
     {
         this.agent = agent;
         this.server = server;
     }
     public Node.State Execute()
     {
-        agent.SetDestination(SeatManager.Instance.GetSeat(server.GetCurTask().guest.index).transform.position);
+        agent.SetDestination(SeatManager.Instance.GetSeat(server.curTask.guest.index).transform.position);
+        server.bubble.UpdateState("前往点单——");
         if (!agent.pathPending)
         {
             if (agent.remainingDistance >= agent.stoppingDistance)
@@ -40,8 +41,11 @@ public class HeadToOrderStrategy : IStrategy
             else
             {
                 //Debug.Log("Start Order");
-                if (server.GetCurTask().guest.state == GuestState.WaitForOrder)
-                    server.GetCurTask().guest.state = GuestState.Order;
+                if (server.curTask.guest.state == GuestState.WaitForOrder)
+                {
+                    server.curTask.guest.UpdateState(GuestState.Order);
+                    server.bubble.Hide();
+                }
                 agent.ResetPath();
                 return Node.State.Failure;
             }
@@ -54,9 +58,9 @@ public class TakeBackOrderStrategy : IStrategy
 {
     private NavMeshAgent agent;
     private Transform hangOrderSite;
-    private ServerAI server;
+    private Server server;
 
-    public TakeBackOrderStrategy(NavMeshAgent agent, Transform hangOrderSite, ServerAI server)
+    public TakeBackOrderStrategy(NavMeshAgent agent, Transform hangOrderSite, Server server)
     {
         this.agent = agent;
         this.hangOrderSite = hangOrderSite;
@@ -65,7 +69,7 @@ public class TakeBackOrderStrategy : IStrategy
     public Node.State Execute()
     {
         agent.SetDestination(hangOrderSite.position);
-        server.bubble.UpdateState("order");
+        server.bubble.UpdateState("取回菜单...");
         if (!agent.pathPending)
         {
             if (agent.remainingDistance >= agent.stoppingDistance)
@@ -78,7 +82,7 @@ public class TakeBackOrderStrategy : IStrategy
                 //Debug.Log("New Order hung on");
                 agent.ResetPath();
                 server.bubble.Hide();
-                RestaurantManager.Instance.AddOrder(((ServeTaskBase)server.GetCurTask().guest.task).serveTasks);
+                RestaurantManager.Instance.AddOrder(((ServeTaskBase)server.curTask.guest.task).serveTasks);
                 return Node.State.Failure;
             }
         }
@@ -91,9 +95,9 @@ public class FetchDishStrategy : IStrategy
 {
     private NavMeshAgent agent;
     private Transform dishSite;
-    private ServerAI server;
+    private Server server;
 
-    public FetchDishStrategy(NavMeshAgent agent, Transform dishSite, ServerAI server)
+    public FetchDishStrategy(NavMeshAgent agent, Transform dishSite, Server server)
     {
         this.agent = agent;
         this.dishSite = dishSite;
@@ -102,6 +106,7 @@ public class FetchDishStrategy : IStrategy
     public Node.State Execute()
     {
         agent.SetDestination(dishSite.position);
+        server.bubble.UpdateState("取菜中...");
         if (!agent.pathPending)
         {
             if (agent.remainingDistance >= agent.stoppingDistance)
@@ -113,7 +118,7 @@ public class FetchDishStrategy : IStrategy
             {
                 //Debug.Log("Get the dish");
                 agent.ResetPath();
-                ((ServeTask)server.GetCurTask()).isFetched = true;
+                ((ServeTask)server.curTask).isFetched = true;
                 return Node.State.Failure;
             }
         }
@@ -125,10 +130,10 @@ public class FetchDishStrategy : IStrategy
 public class ServeStrategy : IStrategy
 {
     private NavMeshAgent agent;
-    private ServerAI server;
+    private Server server;
     private TaskBase task;
 
-    public ServeStrategy(NavMeshAgent agent, ServerAI server)
+    public ServeStrategy(NavMeshAgent agent, Server server)
     {
         this.agent = agent;
         this.server = server;
@@ -137,9 +142,9 @@ public class ServeStrategy : IStrategy
     {
 
         if (task == null)
-            task = server.GetCurTask();
+            task = server.curTask;
         agent.SetDestination(SeatManager.Instance.GetSeat(task.guest.index).transform.position);
-        server.bubble.UpdateState("serve");
+        server.bubble.UpdateState("上菜——");
         //Debug.Log("Serving");
         if (!agent.pathPending)
         {
@@ -164,16 +169,17 @@ public class ServeStrategy : IStrategy
 public class HeadToBillStrategy : IStrategy
 {
     private NavMeshAgent agent;
-    private ServerAI server;
+    private Server server;
 
-    public HeadToBillStrategy(NavMeshAgent agent, ServerAI server)
+    public HeadToBillStrategy(NavMeshAgent agent, Server server)
     {
         this.agent = agent;
         this.server = server;
     }
     public Node.State Execute()
     {
-        agent.SetDestination(SeatManager.Instance.GetSeat(server.GetCurTask().guest.index).transform.position);
+        agent.SetDestination(SeatManager.Instance.GetSeat(server.curTask.guest.index).transform.position);
+        server.bubble.UpdateState("前往结账——");
         if (!agent.pathPending)
         {
             if (agent.remainingDistance >= agent.stoppingDistance)
@@ -181,8 +187,11 @@ public class HeadToBillStrategy : IStrategy
             else
             {
                 //Debug.Log("Start Bill");
-                if (server.GetCurTask().guest.state == GuestState.WaitForBill)
-                    server.GetCurTask().guest.state = GuestState.Bill;
+                if (server.curTask.guest.state == GuestState.WaitForBill)
+                {
+                    server.curTask.guest.UpdateState(GuestState.Bill);
+                    server.bubble.Hide();
+                }
                 agent.ResetPath();
                 return Node.State.Failure;
             }
@@ -196,9 +205,9 @@ public class CleanStrategy : IStrategy
     private float timer = 0;
     private float executeInterval;
     private float cleanTime;
-    private ServerAI server;
+    private Server server;
 
-    public CleanStrategy(float executeInterval, float cleanTime, ServerAI server)
+    public CleanStrategy(float executeInterval, float cleanTime, Server server)
     {
         this.executeInterval = executeInterval;
         this.cleanTime = cleanTime;
@@ -216,7 +225,7 @@ public class CleanStrategy : IStrategy
         }
         else
         {
-            server.bubble.UpdateState("clean");
+            server.bubble.UpdateState("收拾桌子...");
             //Debug.Log("Cleaning");
             return Node.State.Running;
         }
@@ -225,15 +234,15 @@ public class CleanStrategy : IStrategy
 
 //public class DetermineAcceptionStrategy : IStrategy
 //{
-//    private ServerAI server;
+//    private ServerAI owner;
 
-//    public DetermineAcceptionStrategy(ServerAI server)
+//    public DetermineAcceptionStrategy(ServerAI owner)
 //    {
-//        this.server = server;
+//        this.owner = owner;
 //    }
 //    public Node.State Execute()
 //    {
-//        if (server.willingness > 50)
+//        if (owner.willingness > 50)
 //            return Node.State.Success;
 //        else 
 //            return Node.State.Failure;

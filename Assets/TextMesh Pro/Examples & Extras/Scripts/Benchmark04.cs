@@ -64,7 +64,7 @@ namespace TMPro.Examples
 
                     //if (lineHeight > orthoSize * 2 * 0.9f) return;
 
-                    go.transform.position = m_Transform.position + new Vector3(ratio * -orthoSize * 0.975f, orthoSize * 0.975f - lineHeight, 1);
+                    go.transform.target = m_Transform.target + new Vector3(ratio * -orthoSize * 0.975f, orthoSize * 0.975f - lineHeight, 1);
                                        
                     TextMesh textMesh = go.AddComponent<TextMesh>();
                     textMesh.font = Resources.Load("Fonts/ARIAL", typeof(Font)) as Font;
@@ -73,7 +73,7 @@ namespace TMPro.Examples
                     textMesh.fontSize = i * 10;
 
                     textMesh.color = new Color32(255, 255, 255, 255);
-                    textMesh.text = i + " pts - Lorem ipsum dolor sit...";
+                    textMesh.guide = i + " pts - Lorem ipsum dolor sit...";
 
                     lineHeight += i;
                     */
