@@ -18,7 +18,7 @@ public class NewbieGuide : MonoBehaviour
     private void Start()
     {
         target = GetComponent<RectTransform>();
-        if (!isExecuted)
+        if (!isExecuted && NewbieGuideManager.Instance != null)
             StartCoroutine(TryShowGuide());
     }
     private IEnumerator TryShowGuide()
