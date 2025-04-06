@@ -1097,7 +1097,7 @@ MonoBehaviour:
   slotGrid: {fileID: 1149419222}
   slotPrefab: {fileID: 3664053771149211519, guid: bc40ee7c723f7664abec578c94bff2f4, type: 3}
   scipeDescription: {fileID: 1713618551}
-  inventory: {fileID: 11400000, guid: 2666411ae3c81c24aacafbdf007b2b90, type: 2}
+  inventory: {fileID: 11400000, guid: de7eb243fdc8740439349b7417b90404, type: 2}
 --- !u!114 &215020755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1453,7 +1453,7 @@ MonoBehaviour:
   slotGrid: {fileID: 2115132814}
   slotPrefab: {fileID: 560628439661940527, guid: 91188ef8116960443ac1384cde45ff02, type: 3}
   scipeDescription: {fileID: 892589989}
-  inventory: {fileID: 11400000, guid: 9d3bd27d2d55cfe4ba444b32b1d49eb8, type: 2}
+  inventory: {fileID: 11400000, guid: 999d9b2f69be3e341bf183b9ae5f86f8, type: 2}
 --- !u!1 &355119090
 GameObject:
   m_ObjectHideFlags: 0
@@ -2425,7 +2425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recipe: {fileID: 0}
-  ingredientBag: {fileID: 11400000, guid: 9d3bd27d2d55cfe4ba444b32b1d49eb8, type: 2}
+  ingredientBag: {fileID: 11400000, guid: 999d9b2f69be3e341bf183b9ae5f86f8, type: 2}
   ingredientsTexts:
   - {fileID: 2128082966}
   - {fileID: 1491853923}

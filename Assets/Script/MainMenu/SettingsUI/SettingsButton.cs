@@ -15,7 +15,6 @@ public class SettingsButton : MonoBehaviour
     }
     public SettingsButtonState curState = SettingsButtonState.Unfolded;
 
-    public AudioSource audioSource;
     public Toggle audioToggle;
     public Slider audioSlider;
     public GameObject scrollView;
@@ -49,16 +48,18 @@ public class SettingsButton : MonoBehaviour
         if (audioToggle.isOn)
         {
             audioSlider.interactable = true;
+            RestaurantAudioManager.Instance.OnStartMusic();
         }
         else
         {
             audioSlider.interactable = false;
+            RestaurantAudioManager.Instance.OnEndMusic();
         }
     }
     public void OnAudioSliderClicked()
     {
         float volume = audioSlider.value;
-        audioSource.volume = volume;
+        RestaurantAudioManager.Instance.SetVolume(volume);
     }
     public void OnQuitButtonClicked()
     {

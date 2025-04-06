@@ -88,6 +88,10 @@ public class MenuSwitchManager : MonoBehaviour
         isLoadingScene = true;
         string sceneName = state.ToString();
         AsyncOperation asyncOperation;
+        if (state == MenuState.Street)
+            RestaurantAudioManager.Instance.OnEndMusic();
+        else
+            RestaurantAudioManager.Instance.OnStartMusic();
         if (curState == MenuState.Restaurant)//由餐厅切换到其他场景
         {
             asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
