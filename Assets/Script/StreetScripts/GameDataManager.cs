@@ -74,7 +74,10 @@ public class GameDataManager : MonoBehaviour
         fullPartners.Add(partnerName);
     }
 
-
+    void Update()
+    {
+        Debug.Log("allDrawnCards:::" + allDrawnCards.Count);
+    }
     public void SaveGameData()
     {
         GameData data = new GameData

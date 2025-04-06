@@ -108,5 +108,10 @@ public class CreatMenu : MonoBehaviour
         RefreshItem();
 
     }
+
+    public void onClear()
+    {
+        menu.recipes.Clear();
+    }
 }
 

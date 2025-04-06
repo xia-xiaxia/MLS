@@ -164,7 +164,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Shuwei_0: -8105601955726749417
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
