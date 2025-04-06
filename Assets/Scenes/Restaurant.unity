@@ -8317,7 +8317,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curState: 1
-  audioSource: {fileID: 1848204732}
   audioToggle: {fileID: 371933555}
   audioSlider: {fileID: 481866422}
   scrollView: {fileID: 417339234}
@@ -10690,6 +10689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3eb29b2af13e49499225a17fd3fa8b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  staticCanvas: {fileID: 1981906049}
   images:
   - {fileID: 1452850983}
   - {fileID: 751861942}
