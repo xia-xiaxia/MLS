@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class GuestManager : MonoBehaviour
+public class GuestManager : Singleton<GuestManager>
 {
-    public static GuestManager Instance { get; set; }
-
     public Transform Guests;
     public GameObject guestPrefab;
     public Transform Bubbles;
     public GameObject bubblePrefab;
     public Menu menu;
 
+    private bool isOperating;
     private float timer = 10f;
     private float newGuestInterval = 10f;
     private List<GameObject> guests = new List<GameObject>();
@@ -20,21 +19,14 @@ public class GuestManager : MonoBehaviour
 
 
 
-    private void Awake()
-    { 
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-            return;
-        }
-        Instance = this;
-    }
     private void Start()
     {
         MissionManager.Instance.RegisterMission("guestCount", guestCount);
     }
     private void Update()
     {
+        if (!isOperating)
+            return;
         timer += Time.deltaTime;
         if (timer >= newGuestInterval)
         {
@@ -68,5 +60,13 @@ public class GuestManager : MonoBehaviour
         {
             guests.Remove(guest);
         }
+    }
+    public void OnBeginReceivingGuests()
+    {
+        isOperating = true;
+    }
+    public void OnEndReceivingGuests()
+    {
+        isOperating = false;
     }
 }

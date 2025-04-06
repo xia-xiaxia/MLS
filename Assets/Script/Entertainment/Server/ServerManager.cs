@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ServerManager : MonoBehaviour
+public class ServerManager : Singleton<ServerManager>
 {
-    public static ServerManager Instance { get; set; }
-
     public Transform Servers;
     public GameObject serverPrefab;
     public Transform Bubbles;
@@ -17,22 +15,17 @@ public class ServerManager : MonoBehaviour
     public List<Transform> waitingsSitesTransform = new List<Transform>();
     public Dictionary<Transform, bool> waitingSites = new Dictionary<Transform, bool>();
 
+    private bool isOperating;
     private float timer = 0;
     private float CheckInterval = 10f;
     private List<GameObject> servers = new List<GameObject>();
 
 
 
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(Instance);
-        }
-        Instance = this;
-    }
     private void Update()
     {
+        if (!isOperating)
+            return;
         timer += Time.deltaTime;
         if (timer >= CheckInterval)
         {
@@ -45,9 +38,8 @@ public class ServerManager : MonoBehaviour
     {
         foreach (Transform w in waitingsSitesTransform)
             waitingSites.Add(w, false);
-        AddServer(assignedWaitingSite);
     }
-    public void AddServer(Transform assignedWaitingSite = null)
+    private void AddServer(Transform assignedWaitingSite = null)
     {
         GameObject server = Instantiate(serverPrefab, Servers);
         server.name += servers.Count;
@@ -88,5 +80,20 @@ public class ServerManager : MonoBehaviour
             //Debug.LogWarning("New Server");
             servers.Add(server);
         }
+    }
+    public void OnBeginOperation()
+    {
+        isOperating = true;
+        AddServer(assignedWaitingSite);
+    }
+    public void OnEndOperation()
+    {
+        isOperating = false;
+        foreach(var server in servers)
+        {
+            Destroy(server.GetComponent<ServerAI>().server.bubble.gameObject);
+            Destroy(server);
+        }
+        servers.Clear();
     }
 }
