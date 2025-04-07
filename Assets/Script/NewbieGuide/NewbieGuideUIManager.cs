@@ -16,16 +16,19 @@ public class NewbieGuideUIManager : Singleton<NewbieGuideUIManager>, ICanvasRayc
     private Image mat;
     private Material material;
     private TextMeshProUGUI guide;
-    private TextMeshProUGUI skip;
+    private TextMeshProUGUI skipNote;
     //引用组件
     public Canvas canvas;
     private RectTransform target;
+    public RectTransform skipButton;
+    public GameObject skipConfirm;
 
     private bool isScaling = false;
     private float radius;
     private float scale = 2;
     private float timer = 0;
     private float time = 1;
+    private bool isSkipConfirmOn = false;
 
 
 
@@ -35,7 +38,7 @@ public class NewbieGuideUIManager : Singleton<NewbieGuideUIManager>, ICanvasRayc
         mat = GetComponent<Image>();
         material = mat.material;
         guide = transform.Find("Guide").GetComponent<TextMeshProUGUI>();
-        skip = transform.Find("Skip").GetComponent<TextMeshProUGUI>();
+        skipNote = transform.Find("SkipNote").GetComponent<TextMeshProUGUI>();
     }
     private void Update()
     {
@@ -88,31 +91,63 @@ public class NewbieGuideUIManager : Singleton<NewbieGuideUIManager>, ICanvasRayc
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.GetComponent<RectTransform>(), world, canvas.worldCamera, out localPoint);//把屏幕坐标转成局部坐标
         return localPoint;
     }
-    public bool IsRaycastLocationValid(Vector2 sp, Camera eventCamera) //处理事件渗透
+    public bool IsRaycastLocationValid(Vector2 sp, Camera eventCamera) //处理事件渗透 //注意这个方法不止点击时会调用，所以一帧内可能会调用多次
     {
-        if (target == null || !mat.enabled || !skip.enabled)
+        if (target == null || !mat.enabled || !skipNote.enabled)
             return false;// 如果没有目标，则可以射线穿透，事件渗透，return false to block raycast
         if (Input.GetMouseButtonDown(0))
         {
-            //StartCoroutine(NewbieGuideManager.Instance.FinishCurGuide());
-            NewbieGuideManager.Instance.FinishCurGuide();
-            StartCoroutine(DelayDisableUI());
+            if (!isSkipConfirmOn) // 如果没打开确认框，就判断是否按在了跳过键
+            {
+                if (RectTransformUtility.RectangleContainsScreenPoint(skipButton, sp)) // 按到了跳过键，就不遮挡
+                {
+                    skipConfirm.SetActive(true);
+                    isSkipConfirmOn = true;
+                }
+                else // 没有打开确认框，且没点击跳过键，则完成当前引导，并且
+                {
+                    //StartCoroutine(NewbieGuideManager.Instance.FinishCurGuide());
+                    NewbieGuideManager.Instance.FinishCurGuide();
+                    StartCoroutine(DelayDisableUI());
+                }
+            }
+            else // 如果打开了确认框，就用确认框内的按钮事件
+            {
+                return true;
+            }
         }
         return !RectTransformUtility.RectangleContainsScreenPoint(target, sp); //检查射线是否在目标矩形内
     }
     public void EnableUI()
     {
+        skipButton.gameObject.SetActive(true);
+        isSkipConfirmOn = false;
         mat.enabled = true;
-        skip.enabled = true;
+        skipNote.enabled = true;
         guide.enabled = true;
     }
     public IEnumerator DelayDisableUI()
     {
         yield return null;
+        skipButton.gameObject.SetActive(false);
+        skipConfirm.SetActive(false);
+        isSkipConfirmOn = false;
         isScaling = false;
         target = null;
         mat.enabled = false;
-        skip.enabled = false;
+        skipNote.enabled = false;
         guide.enabled = false;
+    }
+
+    public void OnSkipYButtonClicked()
+    {
+        NewbieGuideManager.Instance.FinishCurGuide();
+        NewbieGuideManager.Instance.SkipGuide();
+        StartCoroutine(DelayDisableUI());
+    }
+    public void OnSkipNButtonClicked()
+    {
+        isSkipConfirmOn = false;
+        skipConfirm.SetActive(false);
     }
 }

@@ -10,9 +10,10 @@ public class NewbieGuideManager : Singleton<NewbieGuideManager>
     private Dictionary<string, bool> guideStates = new Dictionary<string, bool>();//重复加载场景会导致TryShowGuide重复调用，所以需要字典
     private NewbieGuide curGuide;
 
-    private bool isSelecting = false;
     private float timer = 0;
     private float time = 0.3f;
+    private bool isSelecting = false;
+    private bool isSkip = false;
 
 
 
@@ -27,12 +28,17 @@ public class NewbieGuideManager : Singleton<NewbieGuideManager>
                 timer = 0;
                 isSelecting = false;
                 if (curGuide != null)
+                {
                     NewbieGuideUIManager.Instance.UpdateGuideUI(curGuide);
+                    guideStates[curGuide.name] = true;
+                }
             }
         }
     }
     public bool TryShowGuide(NewbieGuide guide)
     {
+        if (isSkip)
+            return true;
         //如果没有的话先添加
         if (!guideStates.ContainsKey(guide.name))
             guideStates.Add(guide.name, false);
@@ -47,7 +53,7 @@ public class NewbieGuideManager : Singleton<NewbieGuideManager>
             isSelecting = true;
             return true;
         }
-        //如果当前有了就不展示
+        //如果当前有了就根据优先级来决定
         else
         {
             if (guide.priority > curGuide.priority)
@@ -78,4 +84,10 @@ public class NewbieGuideManager : Singleton<NewbieGuideManager>
     //        curGuide = null;
     //    }
     //}
+
+    public void SkipGuide()
+    {
+        isSkip = true;
+        curGuide = null;
+    }
 }

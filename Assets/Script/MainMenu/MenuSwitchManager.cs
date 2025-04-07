@@ -43,7 +43,6 @@ public class MenuSwitchManager : Singleton<MenuSwitchManager>
 
     public void OnClicked(string name)
     {
-        Debug.Log(name);
         switch (name)
         {
             case "restaurant":
