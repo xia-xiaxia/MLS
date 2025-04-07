@@ -42,8 +42,8 @@ public class IngredientConfig : ScriptableObject
     public float levelGrowthFactor = 1.2f;
 
     [Header("稀有度系数")]
-    public float rarityProfitMultiplier = 30f; // 每级稀有度的收益加成
-    public float rarityCostMultiplier = 15f;   // 每级稀有度的采购费加成
+    public int rarityProfitMultiplier = 30; // 每级稀有度的收益加成
+    public int rarityCostMultiplier = 15;   // 每级稀有度的采购费加成
 
     [Header("等级系数")]
     public int baseProfit = 15;      // 每等级的收益增加值
@@ -58,14 +58,14 @@ public class Ingredient
 {
     public string ID { get; }
     public string IngredientName { get; }
-    public Rarity CurrentRarity { get; private set; }
-    public int CurrentLevel { get; private set; }
+    public Rarity Rarity;//由CurrentRarity改为Rarity
+    public int IngredientLevel { get; private set; }//由CurrentLevel改为IngredientLevel
     public int TotalScore { get; private set; }
     public Sprite IngredientImage { get; }
     [TextArea]
     public string IngredientDescription;
 
-    private readonly IngredientConfig _config;
+    public readonly IngredientConfig _config;
 
     public Ingredient(string id, string displayname, Sprite ingredientImage, IngredientConfig config)
     {
@@ -78,32 +78,41 @@ public class Ingredient
 
     public void ResetState()
     {
-        CurrentRarity = _config.baseRarity;
-        CurrentLevel = 1;
-        CalculateScore();
+        Rarity = _config.baseRarity;
+        IngredientLevel = 1;
+        CalculateIngredientScore();
     }
     public void UpgradeRarity(Rarity newRarity)
     {
-        if (newRarity <= CurrentRarity) return;
+        if (newRarity <= Rarity) return;
 
-        CurrentRarity = newRarity;
-        CalculateScore();
+        Rarity = newRarity;
+        CalculateIngredientScore();
         IngredientEvents.RaiseRarityUpgraded(this);
     }
 
     public void UpgradeLevel()
     {
-        if (CurrentLevel >= _config.maxLevel) return;
+        if (IngredientLevel >= _config.maxLevel) return;
 
-        CurrentLevel++;
-        CalculateScore();
+        IngredientLevel++;
+        CalculateIngredientScore();
         IngredientEvents.RaiseLevelUpgraded(this);
     }
 
-    private void CalculateScore()
+    public void CalculateIngredientScore()
     {
-        TotalScore = CurrentLevel * _config.scorePerLevel +
-                    ((int)CurrentRarity * _config.scorePerRarity);
+        int rarityScore = Mathf.Min(
+            (int)Rarity * _config.scorePerRarity,
+            100 // 稀有度上限100分
+        );
+
+        int levelScore = Mathf.Min(
+            IngredientLevel * _config.scorePerLevel,
+            150 // 等级上限150分
+        );
+
+        TotalScore = rarityScore + levelScore;
     }
 }
 
@@ -135,6 +144,47 @@ public static class UpgradeCostCalculator
 }
 
 // 食材升级服务
+public class AutoIngredientUpgrader
+{
+    private readonly IngredientUpgradeService _upgradeService;
+    private readonly PlayerInventory _inventory;
+    private readonly int _goldBudgetPerTick; // 每帧/每周期分配多少金币来自动升级
+
+    public AutoIngredientUpgrader(IngredientUpgradeService upgradeService, PlayerInventory inventory, int goldBudgetPerTick)
+    {
+        _upgradeService = upgradeService;
+        _inventory = inventory;
+        _goldBudgetPerTick = goldBudgetPerTick;
+    }
+
+    public void AutoUpgradeAllIngredients(List<Ingredient> ingredients, Dictionary<string, IngredientConfig> configs, ref int gold)
+    {
+        foreach (var ingredient in ingredients)
+        {
+            var config = configs[ingredient.ID];
+
+            // 自动升稀有度：一次升到最高
+            while (_upgradeService.TryUpgradeRarity(ingredient, _inventory, config)) { }
+
+            // 自动升等级：循环升级直到金币不足或到上限
+            while (true)
+            {
+                int cost = UpgradeCostCalculator.CalculateCost(
+                    config.levelFormula,
+                    ingredient.IngredientLevel,
+                    config.levelBaseCost,
+                    config.levelGrowthFactor
+                );
+
+                if (ingredient.IngredientLevel >= config.maxLevel || gold < cost) break;
+
+                gold -= cost;
+                ingredient.UpgradeLevel();
+            }
+        }
+    }
+}
+
 public class IngredientUpgradeService
 {
     public bool TryUpgradeRarity(
@@ -143,11 +193,11 @@ public class IngredientUpgradeService
         IngredientConfig config)
     {
         // 获取下一稀有度
-        var nextRarity = GetNextRarity(ingredient.CurrentRarity);
+        var nextRarity = GetNextRarity(ingredient.Rarity);
 
         // 验证条件
-        if (nextRarity == ingredient.CurrentRarity) return false;
-        if (!GetRarityUpgradeCost(ingredient.CurrentRarity, config, out var cost)) return false;
+        if (nextRarity == ingredient.Rarity) return false;
+        if (!GetRarityUpgradeCost(ingredient.Rarity, config, out var cost)) return false;
         if (!inventory.ingredients.TryGetValue(ingredient.ID, out var data)) return false;
         if (data.fragments < cost) return false;
 
@@ -162,10 +212,10 @@ public class IngredientUpgradeService
        IngredientConfig config,
        ref int gold)
     {
-        if (ingredient.CurrentLevel >= config.maxLevel)
+        if (ingredient.IngredientLevel >= config.maxLevel)
             return false;
 
-        int cost = config.levelUpgradeBaseCost * ingredient.CurrentLevel;
+        int cost = config.levelUpgradeBaseCost * ingredient.IngredientLevel;
         if (gold < cost)
             return false;
 

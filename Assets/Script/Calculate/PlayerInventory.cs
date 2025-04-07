@@ -20,7 +20,7 @@ public class PlayerInventory
     // 食材数据（记录最高稀有度和碎片）
     public Dictionary<string, IngredientData> ingredients = new Dictionary<string, IngredientData>();
     // 伙伴碎片
-    public Dictionary<string, int> partnerFragments = new Dictionary<string, int>();
+    public Dictionary<string, int> totalPartnerFragments = new Dictionary<string, int>();
     // 配方经验池
     public int recipeExpPool;
     //食材

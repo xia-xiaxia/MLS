@@ -16,6 +16,7 @@ public class GameDataManager : MonoBehaviour
     public int totalGold;
     public PlayerInventory playerInventory = new PlayerInventory();
     public int gameDays; // 游戏天数追踪
+    public List<Card> allDrawnCards = new List<Card>();//存储所有抽到的卡片
 
     void Awake()
     {
@@ -76,7 +77,10 @@ public class GameDataManager : MonoBehaviour
         fullPartners.Add(partnerName);
     }
 
-
+    void Update()
+    {
+        Debug.Log("allDrawnCards:::" + allDrawnCards.Count);
+    }
     public void SaveGameData()
     {
         GameData data = new GameData
@@ -84,21 +88,22 @@ public class GameDataManager : MonoBehaviour
             collectedCardIDs = new List<string>(collectedCardIDs),
             fullPartners = new List<string>(fullPartners),
             totalPartnerFragments = totalPartnerFragments,
-            recipeMaxRarity = new Dictionary<string, int>(), 
+            recipeMaxRarity = new Dictionary<string, int>(),
             totalRecipeExperience = totalRecipeExperience,
-            totalIngredientExperience = totalIngredientExperience
+            totalIngredientExperience = totalIngredientExperience,
+            allDrawnCards = new List<Card>(allDrawnCards)
         };
 
         foreach (var recipe in recipeMaxRarity)
         {
-            data.recipeMaxRarity[recipe.Key] = (int)recipe.Value; 
+            data.recipeMaxRarity[recipe.Key] = (int)recipe.Value;
         }
 
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(saveFilePath, json);
     }
 
-//JSON
+    //JSON
     public void LoadGameData()
     {
         if (File.Exists(saveFilePath))
@@ -111,11 +116,15 @@ public class GameDataManager : MonoBehaviour
             totalPartnerFragments = data.totalPartnerFragments;
             totalRecipeExperience = data.totalRecipeExperience;
             totalIngredientExperience = data.totalIngredientExperience;
-         
+
             recipeMaxRarity.Clear();
             foreach (var recipe in data.recipeMaxRarity)
             {
                 recipeMaxRarity[recipe.Key] = (Rarity)recipe.Value;
+            }
+            if (data.allDrawnCards != null)
+            {
+                allDrawnCards = new List<Card>(data.allDrawnCards);//加载卡片列表
             }
         }
     }
@@ -126,18 +135,20 @@ public class GameDataManager : MonoBehaviour
         public List<string> collectedCardIDs = new List<string>();
         public List<string> fullPartners = new List<string>();
         public int totalPartnerFragments = 0;
-        public Dictionary<string, int> recipeMaxRarity = new Dictionary<string, int>();  
+        public Dictionary<string, int> recipeMaxRarity = new Dictionary<string, int>();
         public int totalRecipeExperience = 0;
         public int totalIngredientExperience = 0;
+        public List<Card> allDrawnCards = new List<Card>();
+
     }
     public void ClearAllData()
     {
-        collectedCardIDs.Clear();                
-        fullPartners.Clear();                   
-        totalPartnerFragments = 0;             
-        recipeMaxRarity.Clear();               
-        totalRecipeExperience = 0;            
-        totalIngredientExperience = 0;       
+        collectedCardIDs.Clear();
+        fullPartners.Clear();
+        totalPartnerFragments = 0;
+        recipeMaxRarity.Clear();
+        totalRecipeExperience = 0;
+        totalIngredientExperience = 0;
         Debug.Log("所有存档数据已清除！");
     }
 }

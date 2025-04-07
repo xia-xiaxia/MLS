@@ -65,8 +65,6 @@ public class NewbieGuideUIManager : Singleton<NewbieGuideUIManager>, ICanvasRayc
 
         Vector3[] targetCorners = new Vector3[4];//获取目标的中心点
         target.GetWorldCorners(targetCorners);//获取目标的四个角的 世界坐标
-        foreach (Vector3 corner in targetCorners)
-            Debug.Log(corner);
         for (int i = 0; i < 4; i++)
             targetCorners[i] = WorldToScreenPoint(targetCorners[i]);
         Vector3 center = new Vector3();

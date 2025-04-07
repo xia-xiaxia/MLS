@@ -25,6 +25,8 @@ public enum FinanceType
     GachaSpend,          // 抽卡消费
     IngredientPurchase,  // 食材采购
     FacilityUpgrade,     // 设施升级
+    RecipeUpgrade,       // 菜谱升级
+    IngredientUpgrade,   // 食材升级
     StaffSalary,         // 员工工资
     RecipeResearch       // 配方研发
 }
@@ -53,6 +55,7 @@ public class EconomyConfig : ScriptableObject
 }
 
 #endregion
+
 
 #region 核心经济系统
 public class EconomySystem : MonoBehaviour
@@ -104,9 +107,15 @@ public class EconomySystem : MonoBehaviour
         int maxDishes = CalculateMaxProduction();
         int actualDishes = Mathf.Min(customers * _config.dishesPerCustomer, maxDishes);
 
+        // 计算基础收入
+        int baseRevenue = actualDishes * _config.goldPerDish;
+
+        // 应用伙伴加成
+        float incomeMultiplier = 1f + dishIncomeMultiplier;
+        int finalRevenue = Mathf.RoundToInt(baseRevenue * incomeMultiplier);
+
         // 记录收入
-        int revenue = actualDishes * _config.goldPerDish;
-        AddGold(revenue, FinanceType.DailyRevenue, "日常经营收入");
+        AddGold(finalRevenue, FinanceType.DailyRevenue, "日常经营收入");
 
         // 记录固定支出
         SpendGold(_config.dailyBaseRent, FinanceType.DailyRevenue, "基础租金");

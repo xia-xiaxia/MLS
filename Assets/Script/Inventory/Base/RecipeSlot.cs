@@ -61,7 +61,7 @@ public class RecipeSlot : slot
             }
 
             // 生成并添加ingredientSlot物体
-            foreach (var ingredient in slotRecipe.requirements)
+            foreach (var ingredient in slotRecipe.ingredients)
             {
                 GameObject ingredientSlotObject = Instantiate(ingredientSlotPrefab, infoWindow.transform);
                 // 假设ingredientSlotPrefab有一个TextMeshPro组件用于显示ingredient信息

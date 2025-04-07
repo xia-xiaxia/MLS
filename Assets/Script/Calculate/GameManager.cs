@@ -1,5 +1,42 @@
 using System.Collections.Generic;
 using UnityEngine;
+
+void Update()
+{
+    // 每隔一段时间检查自动升级
+    if (Time.time % 10f < Time.deltaTime) // 每10秒检查一次
+    {
+        CheckAutoUpgrades();
+    }
+}
+
+void CheckAutoUpgrades()
+{
+    // 自动升级食材
+    foreach (var ingredientData in GameDataManager.Instance.playerInventory.ingredients)
+    {
+        TryAutoUpgradeIngredient(ingredientData.Key, ingredientData.Value);
+    }
+
+    // 自动升级配方
+    foreach (var recipeData in GameDataManager.Instance.playerInventory.recipes)
+    {
+        TryAutoUpgradeRecipe(recipeData.Key, recipeData.Value);
+    }
+}
+
+void TryAutoUpgradeIngredient(string ingredientID, PlayerInventory.IngredientData data)
+{
+    // 检查是否可以升级等级
+    // 检查是否可以升级稀有度
+    // 使用IngredientUpgradeService自动执行
+}
+
+void TryAutoUpgradeRecipe(int recipeID, PlayerInventory.RecipeProgress data)
+{
+    // 检查是否可以升级等级
+    // 使用RecipeSystem自动执行
+}
 public class GameManager : MonoBehaviour
 {
     // 单例
@@ -161,6 +198,8 @@ public class GameManager : MonoBehaviour
     };
     private int GetRecipeExpValue(Rarity r) =>RecipeExpTable.TryGetValue(r, out var value) ? value : 0;
 }
+
+
 
 // 存储每日统计数据
 public struct DailyStats

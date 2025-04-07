@@ -8,7 +8,7 @@ public enum WorkPosition
     None,
     Manager,
     Chef,
-    Waiter
+    Server
 }
 
 // 效果类型枚举
@@ -118,7 +118,7 @@ public class PartnerSystem : MonoBehaviour
         {
             WorkPosition.Manager => current < maxManagers,
             WorkPosition.Chef => current < maxChefs,
-            WorkPosition.Waiter => current < maxWaiters,
+            WorkPosition.Server => current < maxWaiters,
             _ => false
         };
     }
@@ -241,7 +241,7 @@ public class PartnerSystem : MonoBehaviour
             case WorkPosition.Chef:
                 effects.Add(EffectType.CookSpeed, config.chefEffect);
                 break;
-            case WorkPosition.Waiter:
+            case WorkPosition.Server:
                 effects.Add(EffectType.CustomerFlow, config.waiterEffect);
                 break;
         }

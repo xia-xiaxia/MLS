@@ -6,6 +6,9 @@ using UnityEngine.UI;
 public class ingredientSlot : slot
 {
     public Ingredient slotIngredient;
+
+
+
     public override void Start()
     {
         slotIcon = GetComponent<Image>();

@@ -49,7 +49,7 @@ public class BagControl : MonoBehaviour
             ingredientSlot newSlot = Instantiate(instance.slotPrefab, instance.slotGrid.transform) as ingredientSlot;
             newSlot.gameObject.transform.SetParent(instance.slotGrid.transform);
             newSlot.slotIngredient = ingredient;
-            newSlot.slotName.text = ingredient.IngredientName + "  LV:" + ingredient.CurrentLevel.ToString();
+            newSlot.slotName.text = ingredient.IngredientName + "  LV:" + ingredient.IngredientLevel.ToString();
             newSlot.slotIcon = newSlot.GetComponent<Image>();
             newSlot.slotIcon.sprite = ingredient.IngredientImage;
         }

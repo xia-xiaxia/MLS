@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using JetBrains.Annotations;
 
 [CreateAssetMenu(fileName = "New Recipe", menuName = "Inventory/Recipe")]
 public class Recipe : ScriptableObject
@@ -14,7 +15,9 @@ public class Recipe : ScriptableObject
     public int RecipeLevel;
     public float RecipePrice;
     public float RecipeCost;
-    public List<IngredientRequirement> requirements = new List<IngredientRequirement>();
+    public Rarity Rarity = Rarity.white;//稀有度
+
+    public List<IngredientRequirement> ingredients = new List<IngredientRequirement>();//requirements改为ingredients
 
     [Header("稀有度收益")]
     public int rarityBaseProfit = 50;    // 配方稀有度基础收益
@@ -71,6 +74,7 @@ public class RecipeSystem
     public Rarity CurrentRarity { get; private set; }
     public int CurrentLevel { get; private set; }
     public int TotalScore { get; private set; }
+
     public bool IsUnlocked => CurrentRarity > Rarity.white;
     #endregion
 
@@ -81,17 +85,22 @@ public class RecipeSystem
         _config = config;
 
         // 初始状态
-        CurrentRarity = Rarity.white;
+        CurrentRarity = _baseRecipe.Rarity;
         CurrentLevel = 1;
         CalculateScore();
     }
     #endregion
 
+    public EconomySystem economySystem;
     #region 核心逻辑
+    //配方升级
     public bool TryUpgrade(int availableExp)
     {
+       
         if (!CanUpgrade(availableExp)) return false;
-
+        int cost=GetRequiredExp();
+        if (!economySystem.SpendGold(cost, FinanceType.RecipeUpgrade, $"升级菜谱{DisplayName}"))
+            return false;
         availableExp -= GetRequiredExp();
         CurrentLevel = Mathf.Min(CurrentLevel + 1, _config.maxLevel);
         CalculateScore();
@@ -119,6 +128,7 @@ public class RecipeSystem
     #endregion
 
     // 数值计算
+    //计算配方贡献分数
     private void CalculateScore()
     {
         float rarityBonus = Mathf.Pow((int)CurrentRarity, _config.rarityMultiplier);

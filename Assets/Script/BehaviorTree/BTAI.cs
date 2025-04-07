@@ -9,9 +9,11 @@ public class BTAI : MonoBehaviour
 
     protected float executeInterval = 1f;
     protected float timer = 0;
-    
+
     protected Node root;
-    
+
+
+
     protected virtual void Start()
     {
         agent = GetComponent<NavMeshAgent>();
