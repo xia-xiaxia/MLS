@@ -12,7 +12,7 @@ public class ingredientSlot : slot
     public override void Start()
     {
         slotIcon = GetComponent<Image>();
-        if (slotIngredient != null)
+        if (slotIngredient != null && !slotIngredient.isEnable)
         {
             slotIcon.sprite = slotIngredient.IngredientImage;
             Color color = slotIcon.color;
@@ -23,6 +23,7 @@ public class ingredientSlot : slot
 
     public override void OnClicked()
     {
+        slotIngredient.isEnable = true;
         if (slotIngredient != null)
             BagControl.UpdateItemInfo(slotIngredient.IngredientDescription);
         if (slotIcon != null)

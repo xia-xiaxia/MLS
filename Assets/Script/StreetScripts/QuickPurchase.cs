@@ -14,6 +14,7 @@ public enum CardType
 {
     Recipe, Ingredient, Partner
 }
+[System.Serializable]
 
 public class Card
 {
@@ -27,19 +28,20 @@ public class Card
         this.rarity = rarity;
         this.type = type;
     }
+    public Card() { }
 }
 
 public class QuickPurchase : MonoBehaviour
 {
     private HashSet<string> collectedCardIDs => GameDataManager.Instance.collectedCardIDs;
     private System.Random random = new System.Random();
-    private List<Card> drawnCards = new List<Card>(); 
-    public bool hasSelectedMode = false; 
+    private List<Card> drawnCards = new List<Card>();
+    public bool hasSelectedMode = false;
     //public float drawCooldown = 2f; 
     //private float lastDrawTime = 0f; 
     private int consecutiveDrawsWithoutPurple = 0; // 连续不出紫色的次数（5）
     private int consecutiveDrawsWithoutGold = 0;//不出金
-    private bool isBigPurchaseMode = false; 
+    private bool isBigPurchaseMode = false;
     public Button quickPurchaseButton;
     public Button bigPurchaseButton;
     public Button closeButton;
@@ -48,11 +50,11 @@ public class QuickPurchase : MonoBehaviour
     public HangoutFlow hangoutFlow;
     public CardImageDatabase cardImageDatabase;
 
-    private List<string> recipePool = new List<string> { "宫保鸡丁", "麻婆豆腐", "北京烤鸭", "红烧肉", "鱼香肉丝" ,"水煮鱼","糖醋里脊"};
-    private List<string> ingredientPool = new List<string> { "鸡肉", "花生", "辣椒", "盐", "大豆" ,"牛肉","鸭肉","猪肉","胡萝卜","鱼肉","鸡蛋","糖"};
+    private List<string> recipePool = new List<string> { "宫保鸡丁", "麻婆豆腐", "北京烤鸭", "红烧肉", "鱼香肉丝", "水煮鱼", "糖醋里脊" };
+    private List<string> ingredientPool = new List<string> { "鸡肉", "花生", "辣椒", "盐", "大豆", "牛肉", "鸭肉", "猪肉", "胡萝卜", "鱼肉", "鸡蛋", "糖" };
     private List<string> partnerPool = new List<string> { "晓明哥", "海璐姐", "凯凯", "小猴紫", "林大厨" };
 
-    
+
     // quick权重
     private Dictionary<CardType, Dictionary<Rarity, float>> quickPurchaseRates = new Dictionary<CardType, Dictionary<Rarity, float>>
 {
@@ -80,13 +82,12 @@ public class QuickPurchase : MonoBehaviour
 };
     private Dictionary<string, Sprite> cardImages = new Dictionary<string, Sprite>();
 
-    public Transform upperRowParent;  
-    public Transform lowerRowParent; 
+    public Transform upperRowParent;
+    public Transform lowerRowParent;
     public GameObject cardPrefab;
-
-    public RawImage videoDisplay; // 显示视频的 UI
-    public VideoPlayer videoPlayer; // 播放器
-
+    public VideoPlayer videoPlayer;
+    public RawImage videoDisplay;
+    private bool lastPurchaseModeIsBig = false;
     void Start()
     {
         collectedCardIDs.Clear();
@@ -97,11 +98,11 @@ public class QuickPurchase : MonoBehaviour
         confirmPurchaseButton.gameObject.SetActive(false);
         cardImageDatabase.Initialize();
         videoDisplay.gameObject.SetActive(false); // 隐藏视频 UI
-                                                 
+        lastPurchaseModeIsBig = false;  
     }
     public void DisplayCards(List<Card> cards)
     {
-       //clear
+        //clear
         foreach (Transform child in upperRowParent)
         {
             Destroy(child.gameObject);
@@ -114,8 +115,8 @@ public class QuickPurchase : MonoBehaviour
         for (int i = 0; i < cards.Count; i++)
         {
             Card card = cards[i];
-            Transform parent = i < 5 ? upperRowParent : lowerRowParent; 
-           
+            Transform parent = i < 5 ? upperRowParent : lowerRowParent;
+
             GameObject cardUI = Instantiate(cardPrefab, parent);
             Image cardImage = cardUI.transform.Find("cardImage").GetComponent<Image>();
             TextMeshProUGUI nameText = cardUI.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
@@ -123,28 +124,30 @@ public class QuickPurchase : MonoBehaviour
             {
                 nameText.enabled = true;
             }
-          //  Debug.Log("NameText: " + nameText.guide);
-           // TextMeshProUGUI typeText = cardUI.transform.Find("TypeText").GetComponent<TextMeshProUGUI>();
-          //  TextMeshProUGUI rarityText = cardUI.transform.Find("RarityText").GetComponent<TextMeshProUGUI>();
-            Image newTagImage = cardUI.transform.Find("NewTagImage").GetComponent<Image>(); 
+
+            //  Debug.Log("NameText: " + nameText.text);
+            // TextMeshProUGUI typeText = cardUI.transform.Find("TypeText").GetComponent<TextMeshProUGUI>();
+            //  TextMeshProUGUI rarityText = cardUI.transform.Find("RarityText").GetComponent<TextMeshProUGUI>();
+            Image newTagImage = cardUI.transform.Find("NewTagImage").GetComponent<Image>();
             Sprite cardSprite = cardImageDatabase.GetSprite(card.name);
 
             if (cardSprite != null)
             {
-                cardImage.sprite = cardSprite; 
+                cardImage.sprite = cardSprite;
             }
 
 
             nameText.text = card.rarity.ToString();
-           
 
-            Canvas.ForceUpdateCanvases(); 
+
+            Canvas.ForceUpdateCanvases();
             string cardID = card.name + "_" + card.rarity.ToString();
-            bool isNew = !GameDataManager.Instance.IsCardCollected(cardID); 
+            bool isNew = !GameDataManager.Instance.IsCardCollected(cardID);
             newTagImage.gameObject.SetActive(isNew);
             if (isNew)
             {
-             GameDataManager.Instance.collectedCardIDs.Add(cardID);
+                GameDataManager.Instance.collectedCardIDs.Add(cardID);
+                Debug.Log("all ready");
             }
         }
     }
@@ -157,38 +160,35 @@ public class QuickPurchase : MonoBehaviour
     }
     private void SelectPurchaseMode(bool isBigPurchase)
     {
+        lastPurchaseModeIsBig = isBigPurchase;
         isBigPurchaseMode = isBigPurchase;
         confirmPurchaseButton.gameObject.SetActive(true); // 选择模式后显示确认按钮
 
     }
     private void ConfirmPurchase()
     {
-        DisablePurchaseButtons(); 
-        confirmPurchaseButton.gameObject.SetActive(false); 
+        DisablePurchaseButtons();
+        confirmPurchaseButton.gameObject.SetActive(false);
         drawnCards.Clear();
         StartCoroutine(PlayVideoAndDrawCards());
         GameDataManager.Instance.SaveGameData();
     }
     private IEnumerator PlayVideoAndDrawCards()
     {
-        videoDisplay.gameObject.SetActive(true);  // 显示 Raw Image
-        videoPlayer.Play(); // 播放视频
-
-        // 等待视频播放完毕
+        videoDisplay.gameObject.SetActive(true);
+        videoPlayer.Play();
         while (videoPlayer.isPlaying)
         {
             yield return null;
         }
 
-        // 关闭视频 UI
         videoDisplay.gameObject.SetActive(false);
-
-        // 进行抽卡
         List<Card> newCards = DrawCards(10, isBigPurchaseMode ? bigPurchaseRates : quickPurchaseRates, isBigPurchaseMode);
         ProcessDrawnCards(newCards);
         uiPanel.SetActive(true);
         closeButton.gameObject.SetActive(true);
     }
+
     private List<Card> DrawCards(int count, Dictionary<CardType, Dictionary<Rarity, float>> purchaseRates, bool isBigPurchase)
     {
         List<Card> cards = new List<Card>();
@@ -261,7 +261,7 @@ public class QuickPurchase : MonoBehaviour
     //用随机数对应不同种类，quickpurchase配方0-20，食材20-93，伙伴93-100，总共产生1-100的随机数
     //bigpurchase配方0-30，食材30-85，伙伴85-100
     //然后再用种类中不同稀有度不同权重来抽取不同稀有度
-   
+
     private CardType RandomlySelectQuickPurchaseType(float randomValue)
     {
         if (randomValue < 20) return CardType.Recipe;
@@ -286,7 +286,7 @@ public class QuickPurchase : MonoBehaviour
         }
         return Rarity.Green;
     }
-   //随机random从池中挑选name
+    //随机random从池中挑选name
     private string GetRandomNameForType(CardType type)
     {
         switch (type)
@@ -306,13 +306,14 @@ public class QuickPurchase : MonoBehaviour
         } while (card.rarity < rarity);
         return card;
     }
-   
+
     private void ProcessDrawnCards(List<Card> drawnCards)
     {
-       
+
         foreach (var card in drawnCards)
         {
-            Debug.Log($"抽到: {card.name} - {card.rarity}");     
+            Debug.Log($"抽到: {card.name} - {card.rarity}");
+            GameDataManager.Instance.allDrawnCards.Add(card);
             if (card.type == CardType.Recipe)
                 ConvertRecipeToResource(card);
             else if (card.type == CardType.Ingredient)
@@ -320,7 +321,7 @@ public class QuickPurchase : MonoBehaviour
             else if (card.type == CardType.Partner)
                 ConvertPartnerToResource(card);
         }
-         DisplayCards(drawnCards);
+        DisplayCards(drawnCards);
     }
 
     private void ConvertRecipeToResource(Card card)
@@ -334,9 +335,9 @@ public class QuickPurchase : MonoBehaviour
             case Rarity.Gold: recipeExperience = 5; break;
             case Rarity.Rainbow: recipeExperience = 10; break;
         }
-        GameDataManager.Instance.AddRecipeExperience(recipeExperience); 
+        GameDataManager.Instance.AddRecipeExperience(recipeExperience);
         Debug.Log($"配方 {card.name} 转换为 {recipeExperience} 配方经验");
-       
+
     }
     private void ConvertIngredientToResource(Card card)
     {
@@ -349,9 +350,9 @@ public class QuickPurchase : MonoBehaviour
             case Rarity.Gold: ingredientFragments = 8; break;
             case Rarity.Rainbow: ingredientFragments = 15; break;
         }
-        GameDataManager.Instance.AddIngredientExperience(ingredientFragments); 
+        GameDataManager.Instance.AddIngredientExperience(ingredientFragments);
         Debug.Log($"食材 {card.name} 转换为 {ingredientFragments} 食材碎片");
-       
+
     }
 
     private void ConvertPartnerToResource(Card card)
@@ -381,8 +382,35 @@ public class QuickPurchase : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-
+        UpdatePurchaseButtonColors();
         DisablePurchaseButtons();
-        collectedCardIDs.Clear();  
+        collectedCardIDs.Clear();
+    }
+    private void UpdatePurchaseButtonColors()
+    {
+       
+        ColorBlock quickPurchaseColor = quickPurchaseButton.colors;
+        quickPurchaseColor.normalColor = Color.white;
+        quickPurchaseButton.colors = quickPurchaseColor;
+
+        ColorBlock bigPurchaseColor = bigPurchaseButton.colors;
+        bigPurchaseColor.normalColor = Color.white;
+        bigPurchaseButton.colors = bigPurchaseColor;
+
+        // 根据上次选择的模式设置颜色
+        if (lastPurchaseModeIsBig)
+        {
+           //大买
+            ColorBlock bigPurchaseSelectedColor = bigPurchaseButton.colors;
+            bigPurchaseSelectedColor.normalColor = new Color(1f, 0.647f, 0f); // 橙色
+            bigPurchaseButton.colors = bigPurchaseSelectedColor;
+        }
+        else
+        {
+           //快速
+            ColorBlock quickPurchaseSelectedColor = quickPurchaseButton.colors;
+            quickPurchaseSelectedColor.normalColor = new Color(1f, 0.647f, 0f); // 橙色
+            quickPurchaseButton.colors = quickPurchaseSelectedColor;
+        }
     }
 }

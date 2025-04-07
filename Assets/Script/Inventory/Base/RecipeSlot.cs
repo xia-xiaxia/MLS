@@ -17,7 +17,7 @@ public class RecipeSlot : slot
     {
         cM = GameObject.Find("BagManager").GetComponent<composeManager>();
         slotIcon = GetComponent<Image>();
-        if (slotRecipe != null)
+        if (slotRecipe != null && !slotRecipe.isEnable)
         {
             Sprite recipeImage = slotRecipe.RecipeImage;
             slotIcon.sprite = recipeImage;
@@ -38,6 +38,7 @@ public class RecipeSlot : slot
 
         if (cM.isEnable)
         {
+            slotRecipe.isEnable = true;
             if (slotIcon != null)
             {
                 Color color = slotIcon.color;

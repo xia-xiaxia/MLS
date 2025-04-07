@@ -15,4 +15,6 @@ public class Ingredient : ScriptableObject
     public float IngredientPrice;
     public Rarity Rarity;
 
+    public bool isEnable;
+
 }

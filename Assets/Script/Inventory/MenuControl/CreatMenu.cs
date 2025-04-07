@@ -22,7 +22,11 @@ public class CreatMenu : MonoBehaviour
             Destroy(this);
             return;
         }
-        instance = this;
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
 
@@ -107,6 +111,11 @@ public class CreatMenu : MonoBehaviour
 
         RefreshItem();
 
+    }
+
+    public void onClear()
+    {
+        menu.recipes.Clear();
     }
 }
 

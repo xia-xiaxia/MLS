@@ -4,33 +4,48 @@ using UnityEngine;
 
 public class GetItems : MonoBehaviour
 {
-    public static GetItems instance; 
-    public Dictionary<string, Rarity> itemsRarity;
+    public static GetItems instance;
+    public List<Card> gettenItems;
     public Inventory bag;
     public Inventory inventory;
     public List<Recipe> recipes = new List<Recipe>();
     public List<Ingredient> ingredients = new List<Ingredient>();
 
-
     public Dictionary<string, Recipe> recipeCard = new Dictionary<string, Recipe>();
     public Dictionary<string, Ingredient> ingredientCard = new Dictionary<string, Ingredient>();
 
-    void Strat()
+    void Start()
     {
-        if(instance != null)
+        if (instance != null)
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
-        instance = this;
-
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         InitializeDictionaries();
     }
+
     void InitializeDictionaries()
     {
+        if (recipes == null)
+        {
+            Debug.LogError("recipes list is null");
+            return;
+        }
+
+        if (ingredients == null)
+        {
+            Debug.LogError("ingredients list is null");
+            return;
+        }
+
         // 初始化 recipeCard 字典
         foreach (var recipe in recipes)
         {
-            if (!recipeCard.ContainsKey(recipe.RecipeName))
+            if (recipe != null && !recipeCard.ContainsKey(recipe.RecipeName))
             {
                 recipeCard.Add(recipe.RecipeName, recipe);
             }
@@ -39,56 +54,73 @@ public class GetItems : MonoBehaviour
         // 初始化 ingredientCard 字典
         foreach (var ingredient in ingredients)
         {
-            if (!ingredientCard.ContainsKey(ingredient.IngredientName))
+            if (ingredient != null && !ingredientCard.ContainsKey(ingredient.IngredientName))
             {
                 ingredientCard.Add(ingredient.IngredientName, ingredient);
             }
         }
-
     }
+
     public void RefreshItems()
     {
-        foreach (var kvp in itemsRarity)
+        foreach (var card in gettenItems)
         {
-            string name = kvp.Key;
-            Rarity rarity = kvp.Value;
-
-            if(recipeCard.ContainsKey(name))
+            string name = card.name;
+            if (card.type == CardType.Recipe)
             {
-                Recipe recipe = recipeCard[name];
-                recipe.Rarity = rarity;
-                inventory.Recipes.Add(recipe);
+                if (recipeCard.TryGetValue(card.name, out Recipe recipe))
+                {
+                    Debug.Log(recipe.RecipeName);
+                    if (inventory.Recipes.Contains(recipe))
+                    {
+                        int index = inventory.Recipes.IndexOf(recipe);
+                        if (card.rarity > inventory.Recipes[index].Rarity)
+                        {
+                            inventory.Recipes[index].Rarity = card.rarity;
+                            Debug.Log("recipes: " + index + "changed");
+                        }
+                    }
+                    else
+                    {
+                        recipe.Rarity = card.rarity;
+                        inventory.Recipes.Add(recipe);
+                        Debug.Log("Recipe added: " + recipe.RecipeName);
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"Recipe {card.name} not found in recipeCard dictionary");
+                }
             }
+            if (card.type == CardType.Ingredient)
+            {
+                if (ingredientCard.TryGetValue(card.name, out Ingredient ingredient))
+                {
+                    Debug.Log(ingredient.IngredientName);
+                    if (bag.ingredients.Contains(ingredient))
+                    {
+                        Debug.Log("111111111111111111111111");
+                        int index = bag.ingredients.IndexOf(ingredient);
+                        if (card.rarity > bag.ingredients[index].Rarity)
+                        {
+                            bag.ingredients[index].Rarity = card.rarity;
+                            Debug.Log("ingredients: " + index + "changed");
+                        }
+                        Debug.Log("111111111111111111111112222");
 
-            if(ingredientCard.ContainsKey(name))
-            {
-                Ingredient ingredient = ingredientCard[name];
-                ingredient.Rarity = rarity;
-                bag.ingredients.Add(ingredient);
+                    }
+                    else
+                    {
+                        ingredient.Rarity = card.rarity;
+                        bag.ingredients.Add(ingredient);
+                        Debug.Log("Ingredient added: " + ingredient.IngredientName);
+                    }
+                }
             }
-        }
-    }
-
-    public void DataTransToKithon()
-    {
-        foreach(var kvp in itemsRarity)
-        {
-            string name = kvp.Key;
-            Rarity rarity = kvp.Value;
-            if (recipeCard.ContainsKey(name))
+            else
             {
-                Recipe recipe = recipeCard[name];
-                recipe.Rarity = rarity;
-                inventory.Recipes.Add(recipe);
-            }
-            if (ingredientCard.ContainsKey(name))
-            {
-                Ingredient ingredient = ingredientCard[name];
-                ingredient.Rarity = rarity;
-                bag.ingredients.Add(ingredient);
+                Debug.LogWarning($"Ingredient {card.name} not found in ingredientCard dictionary");
             }
         }
     }
 }
-
-

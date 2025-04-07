@@ -8,7 +8,7 @@ public class DataTrans_kitchen : MonoBehaviour
 {
     public static DataTrans_kitchen instance;
 
-    public Dictionary<string, Rarity> BagAndInventory = new Dictionary<string, Rarity>();
+    public List<Card> gettenCards = new List<Card>();
 
     void Start()
     {
@@ -20,6 +20,7 @@ public class DataTrans_kitchen : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
     }
 
@@ -27,31 +28,28 @@ public class DataTrans_kitchen : MonoBehaviour
     {
         if (GameDataManager.Instance != null)
         {
-            //BagAndInventory = GameDataManager.Instance.recipeMaxRarity;
-            if (GameDataManager.Instance.recipeMaxRarity != null)
+            if (GameDataManager.Instance.allDrawnCards != null)
             {
-                Debug.Log("recipeMaxRarity: " + GameDataManager.Instance.recipeMaxRarity.Count);
-                foreach (var kvp in GameDataManager.Instance.recipeMaxRarity)
-                {
-                    string name = kvp.Key;
-                    Rarity rarity = kvp.Value;
-                    BagAndInventory[name] = rarity;
-                    Debug.Log("name: " + name + " rarity: " + rarity);
-                }
+                gettenCards = GameDataManager.Instance.allDrawnCards;
             }
-            else Debug.Log("recipeMaxRarity:" + null);
-            Debug.Log("BagAndInventory: " + BagAndInventory.Count);
+            else
+            {
+                Debug.Log("gettenCards: null");
+            }
+            Debug.Log("gettenCards: " + gettenCards.Count);
         }
-        else Debug.Log("GameDataManager.Instance is null");
-        OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
-        
+        else
+        {
+            Debug.Log("GameDataManager.Instance is null");
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Kitchen") // 替换 "Scene1" 为你要检测的场景名称
+        if (scene.name == "Kitchen") // 替换 "Kitchen" 为你要检测的场景名称
         {
             LoadScence();
+            Debug.Log("LoadScence::::::::::::::: kitchen");
         }
     }
 
@@ -59,10 +57,18 @@ public class DataTrans_kitchen : MonoBehaviour
     {
         if (GetItems.instance)
         {
-            GetItems.instance.itemsRarity = BagAndInventory;
+            GetItems.instance.gettenItems = gettenCards;
             Debug.Log("传输成功");
+            GetItems.instance.RefreshItems();
         }
-        else return;
+        else
+        {
+            Debug.Log("GetItems is null");
+        }
+    }
 
+    void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }
