@@ -15,11 +15,13 @@ public enum GuestState
 }
 public class Guest
 {
-    public int index;
+    public int seatIndex;
+    public int tableIndex;
     public Seat.SeatDir seatDir;
     public GuestState state;
     public Bubble bubble;
     public TaskBase task;
+    public bool isOrderer;//一桌只有一个点菜者
 
     public void UpdateState(GuestState newState)
     {

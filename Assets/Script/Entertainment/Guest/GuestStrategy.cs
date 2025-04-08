@@ -59,12 +59,12 @@ public class GotoRandomSeatStrategy : IStrategy
         {
             isSeatChosen = true;
             List<int> freeSeats = SeatManager.Instance.CheckEmptySeatCounts();
-            guest.index = freeSeats[UnityEngine.Random.Range(0, freeSeats.Count)];
-            guest.seatDir = SeatManager.Instance.CheckSeatDir(guest.index);
-            SeatManager.Instance.OccupySeat(guest.index);
+            guest.seatIndex = freeSeats[UnityEngine.Random.Range(0, freeSeats.Count)];
+            guest.seatDir = SeatManager.Instance.CheckSeatDir(guest.seatIndex);
+            SeatManager.Instance.OccupySeat(guest.seatIndex);
             return Node.State.Success;
         }
-        agent.SetDestination(SeatManager.Instance.GetSeat(guest.index).transform.position);
+        agent.SetDestination(SeatManager.Instance.GetSeat(guest.seatIndex).transform.position);
         if (!agent.pathPending)
         {
             if (agent.remainingDistance >= agent.stoppingDistance)
@@ -73,7 +73,7 @@ public class GotoRandomSeatStrategy : IStrategy
             }
             else
             {
-                //Debug.Log("Guest Seated  " + guest.index);
+                //Debug.Log("Guest Seated  " + guest.seatIndex);
                 agent.ResetPath();
                 return Node.State.Failure;
             }
@@ -107,7 +107,7 @@ public class GuestOrderStrategy : IStrategy
         foreach (var recipe in recipes)
             serveTasks.Add(new ServeTask(recipe, guest));
         guest.task = new ServeTaskBase(guest, serveTasks);
-        //Debug.Log("Seat " + guest.index + " Ordered");
+        //Debug.Log("Seat " + guest.seatIndex + " Ordered");
         return Node.State.Success;
     }
 
@@ -121,8 +121,9 @@ public class GuestOrderStrategy : IStrategy
         }
         else
         {
-            int n = UnityEngine.Random.Range(1, Math.Min(menu.recipes.Count, 5)); // 最多四道菜
-            return GuestManager.Instance.menu.recipes.GetRandomElements(n);
+            int n = UnityEngine.Random.Range(1, Math.Min(menu.recipes.Count, 7)); // 最多六道菜
+            List<Recipe> recipes = GuestManager.Instance.menu.recipes.GetRandomElements(n);
+            return recipes;
         }
     }
 }
@@ -174,7 +175,7 @@ public class BillStrategy : IStrategy
         {
             //Debug.Log("Finish billing");
             guest.UpdateState(GuestState.Leave);
-            SeatManager.Instance.EmptySeat(guest.index);
+            SeatManager.Instance.EmptySeat(guest.seatIndex);
             return Node.State.Success;
         }
         else

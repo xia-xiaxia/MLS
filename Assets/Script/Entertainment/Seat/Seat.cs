@@ -5,7 +5,7 @@ using UnityEngine;
 public class Seat : MonoBehaviour
 {
     [SerializeField]
-    private int index;
+    private int seatIndex;
     public enum SeatDir
     {
         None,
@@ -20,16 +20,16 @@ public class Seat : MonoBehaviour
 
     private void Start()
     {
-        index = SeatManager.Instance.AddSeat(this);
+        seatIndex = SeatManager.Instance.AddSeat(this);
     }
     //private void Start()
     //{
     //    if (name.StartsWith("Seat") && name.Length == 6)
     //    {
     //        string numberPart = name.Substring(4, 2);
-    //        if (int.TryParse(numberPart, out index))
+    //        if (int.TryParse(numberPart, out seatIndex))
     //        {
-    //            SeatManager.Instance.AddSeat(index, this);
+    //            SeatManager.Instance.AddSeat(seatIndex, this);
     //        }
     //        else
     //        {

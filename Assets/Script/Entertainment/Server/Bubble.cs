@@ -7,9 +7,6 @@ using UnityEngine.UI;
 
 public class Bubble : MonoBehaviour
 {
-    public Sprite order;
-    public Sprite serve;
-    public Sprite clean;
     public Transform owner;
     private Image bubble;
     private TextMeshProUGUI text;

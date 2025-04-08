@@ -41,14 +41,17 @@ public class GuestManager : Singleton<GuestManager>
             }
         }
     }
-    public void AddGuest()
+    public void AddGuest() //需要改为：每次随机n个顾客，并且直接设置座位，生成顾客改成一段时间加一批顾客，
     {
-        MissionManager.Instance.UpdateValue("guestCount", ++guestCount);
+        MissionManager.Instance.UpdateValue("guestCount", ++guestCount);//任务系统所需
+
         GameObject guest = Instantiate(guestPrefab, Guests);
         GuestAI guestAI = guest.GetComponent<GuestAI>();
+
         Bubble bubble = Instantiate(bubblePrefab, Bubbles).GetComponent<Bubble>();
         bubble.owner = guest.transform;
         guestAI.guest.bubble = bubble;
+
         guestAI.guest.UpdateState(GuestState.GetIn);
         guests.Add(guest);
     }

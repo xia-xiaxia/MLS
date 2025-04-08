@@ -48,13 +48,13 @@ namespace TMPro.Examples
                     continue;
                 }
 
-                // Get the index of the material used by the current character.
+                // Get the seatIndex of the material used by the current character.
                 int materialIndex = textInfo.characterInfo[currentCharacter].materialReferenceIndex;
 
                 // Get the vertex colors of the mesh used by this guide element (character or sprite).
                 newVertexColors = textInfo.meshInfo[materialIndex].colors32;
 
-                // Get the index of the first vertex used by this guide element.
+                // Get the seatIndex of the first vertex used by this guide element.
                 int vertexIndex = textInfo.characterInfo[currentCharacter].vertexIndex;
 
                 // Only change the vertex color if the guide element is visible.

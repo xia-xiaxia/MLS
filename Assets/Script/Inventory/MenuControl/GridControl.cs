@@ -68,7 +68,7 @@ public class GridControl : MonoBehaviour
                 child.SetParent(nextGrid.transform);
             }
 
-            // 更新 currentGrid 和 index
+            // 更新 currentGrid 和 seatIndex
             currentGrid = nextGrid;
             index++;
         }
