@@ -77,14 +77,12 @@ public class GetItems : MonoBehaviour
                         if (card.rarity > inventory.Recipes[index].Rarity)
                         {
                             inventory.Recipes[index].Rarity = card.rarity;
-                            Debug.Log("recipes: " + index + "changed");
                         }
                     }
                     else
                     {
                         recipe.Rarity = card.rarity;
                         inventory.Recipes.Add(recipe);
-                        Debug.Log("Recipe added: " + recipe.RecipeName);
                     }
                 }
                 else
@@ -99,21 +97,17 @@ public class GetItems : MonoBehaviour
                     Debug.Log(ingredient.IngredientName);
                     if (bag.ingredients.Contains(ingredient))
                     {
-                        Debug.Log("111111111111111111111111");
                         int index = bag.ingredients.IndexOf(ingredient);
                         if (card.rarity > bag.ingredients[index].Rarity)
                         {
                             bag.ingredients[index].Rarity = card.rarity;
-                            Debug.Log("ingredients: " + index + "changed");
                         }
-                        Debug.Log("111111111111111111111112222");
 
                     }
                     else
                     {
                         ingredient.Rarity = card.rarity;
                         bag.ingredients.Add(ingredient);
-                        Debug.Log("Ingredient added: " + ingredient.IngredientName);
                     }
                 }
             }

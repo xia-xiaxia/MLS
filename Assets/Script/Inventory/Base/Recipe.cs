@@ -11,10 +11,10 @@ public class Recipe : ScriptableObject
     [TextArea]
     public string RecipeDescription;
     public int RecipeID;
-    public int RecipeLevel;
+    public int RecipeLevel = 0;
     public float RecipePrice;
     public float RecipeCost;
-    public Rarity Rarity;
+    public Rarity Rarity = Rarity.Green;
 
     [Header("Recipe Ingredients")]
     public List<Ingredient> ingredients;

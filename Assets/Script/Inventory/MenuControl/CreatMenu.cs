@@ -33,7 +33,6 @@ public class CreatMenu : MonoBehaviour
     public void OnEnable()
     {
         Names = new List<TextMeshProUGUI>();
-        menu.recipes.Clear();
         index = 0;
         if (Names.Count == 0)
         {

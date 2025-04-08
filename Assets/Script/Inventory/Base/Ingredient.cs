@@ -11,9 +11,9 @@ public class Ingredient : ScriptableObject
     [TextArea]
     public string IngredientDescription;
     public int IngredientID;
-    public int IngredientLevel;
+    public int IngredientLevel = 0;
     public float IngredientPrice;
-    public Rarity Rarity;
+    public Rarity Rarity = Rarity.Green;
 
     public bool isEnable;
 
