@@ -70,26 +70,50 @@ public class GetItems : MonoBehaviour
             {
                 if (recipeCard.TryGetValue(card.name, out Recipe recipe))
                 {
-                    recipe.Rarity = card.rarity;
-                    inventory.Recipes.Add(recipe);
+                    Debug.Log(recipe.RecipeName);
+                    if (inventory.Recipes.Contains(recipe))
+                    {
+                        int index = inventory.Recipes.IndexOf(recipe);
+                        if (card.rarity > inventory.Recipes[index].Rarity)
+                        {
+                            inventory.Recipes[index].Rarity = card.rarity;
+                        }
+                    }
+                    else
+                    {
+                        recipe.Rarity = card.rarity;
+                        inventory.Recipes.Add(recipe);
+                    }
                 }
                 else
                 {
                     Debug.LogWarning($"Recipe {card.name} not found in recipeCard dictionary");
                 }
             }
-
             if (card.type == CardType.Ingredient)
             {
                 if (ingredientCard.TryGetValue(card.name, out Ingredient ingredient))
                 {
-                    ingredient.Rarity = card.rarity;
-                    bag.ingredients.Add(ingredient);
+                    Debug.Log(ingredient.IngredientName);
+                    if (bag.ingredients.Contains(ingredient))
+                    {
+                        int index = bag.ingredients.IndexOf(ingredient);
+                        if (card.rarity > bag.ingredients[index].Rarity)
+                        {
+                            bag.ingredients[index].Rarity = card.rarity;
+                        }
+
+                    }
+                    else
+                    {
+                        ingredient.Rarity = card.rarity;
+                        bag.ingredients.Add(ingredient);
+                    }
                 }
-                else
-                {
-                    Debug.LogWarning($"Ingredient {card.name} not found in ingredientCard dictionary");
-                }
+            }
+            else
+            {
+                Debug.LogWarning($"Ingredient {card.name} not found in ingredientCard dictionary");
             }
         }
     }

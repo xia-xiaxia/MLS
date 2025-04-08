@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MenuSwitchManager : MonoBehaviour
+public class MenuSwitchManager : Singleton<MenuSwitchManager>
 {
-    public static MenuSwitchManager Instance { get; set; }
+    public GameObject staticCanvas;
+
     private enum MenuState
     {
         Restaurant,
@@ -25,15 +26,9 @@ public class MenuSwitchManager : MonoBehaviour
 
 
 
-    private void Awake()
+    protected override void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-
+        base.Awake();
         DontDestroyOnLoad(transform.parent);
     }
 
@@ -88,6 +83,16 @@ public class MenuSwitchManager : MonoBehaviour
         isLoadingScene = true;
         string sceneName = state.ToString();
         AsyncOperation asyncOperation;
+        if (state == MenuState.Street)
+        {
+            RestaurantAudioManager.Instance.OnEndMusic();
+            staticCanvas.SetActive(false);
+        }
+        else
+        {
+            RestaurantAudioManager.Instance.OnStartMusic();
+            staticCanvas.SetActive(true);
+        }
         if (curState == MenuState.Restaurant)//由餐厅切换到其他场景
         {
             asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);

@@ -8317,7 +8317,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curState: 1
-  audioSource: {fileID: 1848204732}
   audioToggle: {fileID: 371933555}
   audioSlider: {fileID: 481866422}
   scrollView: {fileID: 417339234}
@@ -9708,6 +9707,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1848204733}
   - component: {fileID: 1848204732}
+  - component: {fileID: 1848204734}
   m_Layer: 0
   m_Name: Audio Source
   m_TagString: Untagged
@@ -9826,6 +9826,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1848204734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848204731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1586881a7bd76f4983b82f5f43d2c70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1879283328
 GameObject:
   m_ObjectHideFlags: 0
@@ -10677,6 +10689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3eb29b2af13e49499225a17fd3fa8b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  staticCanvas: {fileID: 1981906049}
   images:
   - {fileID: 1452850983}
   - {fileID: 751861942}
