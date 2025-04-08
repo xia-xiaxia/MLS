@@ -74,10 +74,7 @@ public class GameDataManager : MonoBehaviour
         fullPartners.Add(partnerName);
     }
 
-    void Update()
-    {
-        Debug.Log("allDrawnCards:::" + allDrawnCards.Count);
-    }
+    
     public void SaveGameData()
     {
         GameData data = new GameData
@@ -145,7 +142,8 @@ public class GameDataManager : MonoBehaviour
         totalPartnerFragments = 0;             
         recipeMaxRarity.Clear();               
         totalRecipeExperience = 0;            
-        totalIngredientExperience = 0;       
+        totalIngredientExperience = 0;   
+        
         Debug.Log("所有存档数据已清除！");
     }
 }
