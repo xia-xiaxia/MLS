@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using static Table;
 
 public class GuestManager : Singleton<GuestManager>
 {
@@ -12,48 +13,57 @@ public class GuestManager : Singleton<GuestManager>
     public Menu menu;
 
     private bool isOperating;
-    private float timer = 10f;
-    private float newGuestInterval = 10f;
     private List<GameObject> guests = new List<GameObject>();
-    private int guestCount;
+    private int guestCount; // 任务需求
+    private float timer;
+    private float newGuestsInterval = 25f;
+    private float batchInterval = 0.5f;
 
 
 
     private void Start()
     {
         MissionManager.Instance.RegisterMission("guestCount", guestCount);
+        timer = newGuestsInterval;
     }
     private void Update()
     {
         if (!isOperating)
             return;
         timer += Time.deltaTime;
-        if (timer >= newGuestInterval)
+        if (timer >= newGuestsInterval)
         {
             timer = 0;
-            if (guests.Count < SeatManager.Instance.CheckEmptySeatCounts().Count)
+            //if (guests.Count < SeatManager.Instance.CheckEmptySeatCounts().Count)
+            //{
+            //    AddGuest();
+            //}
+            Table table = TableManager.Instance.OccupyTable();
+            if (table != null)
             {
-                AddGuest();
-            }
-            else
-            {
-                //Debug.LogWarning("No Empty Seat !!!");
+                StartCoroutine(BatchOfGuests(table));
             }
         }
     }
-    public void AddGuest() //需要改为：每次随机n个顾客，并且直接设置座位，生成顾客改成一段时间加一批顾客，
+    public Guest AddGuest(bool isOrderer, Table table, int seat)
     {
         MissionManager.Instance.UpdateValue("guestCount", ++guestCount);//任务系统所需
 
-        GameObject guest = Instantiate(guestPrefab, Guests);
-        GuestAI guestAI = guest.GetComponent<GuestAI>();
+        GameObject guestObj = Instantiate(guestPrefab, Guests);
+        Guest guest = guestObj.GetComponent<GuestAI>().guest;
 
         Bubble bubble = Instantiate(bubblePrefab, Bubbles).GetComponent<Bubble>();
-        bubble.owner = guest.transform;
-        guestAI.guest.bubble = bubble;
+        bubble.owner = guestObj.transform;
+        guest.bubble = bubble;
+        guest.isOrderer = isOrderer;
+        guest.tableIndex = table.tableIndex;
+        if (seat < table.seats.Count)
+            guest.seatIndex = table.seats[seat].seatIndex;
+        guest.seatDir = SeatManager.Instance.CheckSeatDir(guest.seatIndex);
 
-        guestAI.guest.UpdateState(GuestState.GetIn);
-        guests.Add(guest);
+        guest.UpdateState(GuestState.GetIn);
+        guests.Add(guestObj);
+        return guest;
     }
     public void DestroyGuest(GameObject guest)
     {
@@ -71,5 +81,37 @@ public class GuestManager : Singleton<GuestManager>
     public void OnEndReceivingGuests()
     {
         isOperating = false;
+    }
+    private IEnumerator BatchOfGuests(Table table)
+    {
+        int guestCount = 0;
+        int dishCount = 0;
+        switch (table.tableSize)
+        {
+            case TableSize.S:
+                guestCount = UnityEngine.Random.Range(1, 2); // 小桌1-2人
+                dishCount = UnityEngine.Random.Range(1, Mathf.Min(2, GuestManager.Instance.menu.recipes.Count) + 1); // 1-2道菜
+                break;
+            case TableSize.M:
+                guestCount = UnityEngine.Random.Range(3, 5); // 中桌3-4人
+                dishCount = UnityEngine.Random.Range(2, Mathf.Min(5, GuestManager.Instance.menu.recipes.Count) + 1); // 2-5道菜
+                break;
+            case TableSize.L:
+                guestCount = UnityEngine.Random.Range(5, 7); // 大桌5-6人
+                dishCount = UnityEngine.Random.Range(4, Mathf.Min(6, GuestManager.Instance.menu.recipes.Count) + 1); // 4-6道菜
+                break;
+        }
+        Debug.Log(guestCount);
+        table.seats.Shuffle();
+        List<Guest> accompanyings = new List<Guest>();
+        Guest orderer = AddGuest(true, table, guestCount - 1);
+        orderer.dishCount = dishCount;
+        while (--guestCount > 0)
+        {
+            Debug.Log(guestCount);
+            yield return new WaitForSeconds(batchInterval);
+            accompanyings.Add(AddGuest(false, table, guestCount - 1));
+        }
+        orderer.accompanyings = accompanyings;
     }
 }

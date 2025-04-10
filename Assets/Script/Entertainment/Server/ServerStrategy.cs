@@ -221,6 +221,7 @@ public class CleanStrategy : IStrategy
             //Debug.Log("Finish cleaning");
             timer = 0;
             server.bubble.Hide();
+            TableManager.Instance.ClearTable(server.curTask.guest.tableIndex, server.curTask.guest.dishCount);
             return Node.State.Failure;
         }
         else

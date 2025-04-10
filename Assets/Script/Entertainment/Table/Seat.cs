@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Seat : MonoBehaviour
 {
-    [SerializeField]
-    private int seatIndex;
+    public int seatIndex;
     public enum SeatDir
     {
         None,

@@ -27,8 +27,14 @@ public class GuestAI : BTAI
 
         Selector GetIn = new Selector("GetIn");
         GetIn.AddChild(new Leaf("goToRandomDoor", new ExecuteOnceStrategy(new GotoRandomDoorStrategy(agent, transform))));
-        GetIn.AddChild(new Leaf("chooseSeat", new GotoRandomSeatStrategy(agent, guest)));//此处给guest设置了index
-        GetIn.AddChild(new Leaf("seated", new ActionStrategy(() => guest.UpdateState(GuestState.WaitForOrder))));
+        GetIn.AddChild(new Leaf("chooseSeat", new GotoSeatStrategy(agent, guest)));//此处给guest设置了index
+        GetIn.AddChild(new Leaf("seated", new ActionStrategy(() => 
+        {
+            if (!guest.isOrderer)
+                guest.UpdateState(GuestState.None);
+            else
+                guest.UpdateState(GuestState.WaitForOrder);
+        })));
 
         isSeated.AddChild(GetIn);
 
@@ -159,11 +165,20 @@ public class GuestAI : BTAI
                     animator.Play("Forward");
                 else if (angle >= -90 && angle < 0)
                     animator.Play("Right");
+                //float angle = Mathf.Atan2(agent.velocity.y, agent.velocity.x) * Mathf.Rad2Deg;
+                //if (angle > -30f && angle < 30f)
+                //    animator.Play("Right");
+                //else if (angle >= 30 && angle <= 150)
+                //    animator.Play("Back");
+                //else if (angle > 150 || angle < -150)
+                //    animator.Play("Left");
+                //else if (angle >= -150 && angle <= -30)
+                //    animator.Play("Forward");
             }
             else
                 animator.Play("IdleForward");
         }
-        else if (guest.state == GuestState.WaitForOrder)
+        else if (guest.state == GuestState.WaitForOrder || guest.state == GuestState.None)
             animator.Play("Idle" + guest.seatDir);
     }
 }

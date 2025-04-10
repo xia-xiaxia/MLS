@@ -41,29 +41,29 @@ public class GotoRandomDoorStrategy : IStrategy
     }
 }
 
-public class GotoRandomSeatStrategy : IStrategy
+public class GotoSeatStrategy : IStrategy
 {
     NavMeshAgent agent;
     private Guest guest;
     bool isSeatChosen;
 
-    public GotoRandomSeatStrategy(NavMeshAgent agent, Guest guest)
+    public GotoSeatStrategy(NavMeshAgent agent, Guest guest)
     {
         this.agent = agent;
-        this.isSeatChosen = false;
+        //this.isSeatChosen = false;
         this.guest = guest;
     }
     public Node.State Execute()
     {
-        if (!isSeatChosen)
-        {
-            isSeatChosen = true;
-            List<int> freeSeats = SeatManager.Instance.CheckEmptySeatCounts();
-            guest.seatIndex = freeSeats[UnityEngine.Random.Range(0, freeSeats.Count)];
-            guest.seatDir = SeatManager.Instance.CheckSeatDir(guest.seatIndex);
-            SeatManager.Instance.OccupySeat(guest.seatIndex);
-            return Node.State.Success;
-        }
+        //if (!isSeatChosen)
+        //{
+        //    isSeatChosen = true;
+        //    List<int> freeTables = SeatManager.Instance.CheckEmptySeatCounts();
+        //    guest.seatIndex = freeTables[UnityEngine.Random.Range(0, freeTables.Count)];
+        //    guest.seatDir = SeatManager.Instance.CheckSeatDir(guest.seatIndex);
+        //    SeatManager.Instance.OccupySeat(guest.seatIndex);
+        //    return Node.State.Success;
+        //}
         agent.SetDestination(SeatManager.Instance.GetSeat(guest.seatIndex).transform.position);
         if (!agent.pathPending)
         {
@@ -121,8 +121,8 @@ public class GuestOrderStrategy : IStrategy
         }
         else
         {
-            int n = UnityEngine.Random.Range(1, Math.Min(menu.recipes.Count, 7)); // 最多六道菜
-            List<Recipe> recipes = GuestManager.Instance.menu.recipes.GetRandomElements(n);
+            //guest.dishCount = UnityEngine.Random.Range(1, Math.Min(menu.recipes.Count, 7)); // 最多六道菜
+            List<Recipe> recipes = GuestManager.Instance.menu.recipes.GetRandomElements(guest.dishCount);
             return recipes;
         }
     }
@@ -132,7 +132,7 @@ public class EatStrategy : IStrategy
 {
     private float timer = 0;
     private float executeInterval;
-    private float eatTime = 5f;
+    private float eatTime = 10f;
     private Guest guest;
 
     public EatStrategy(float executeInterval, Guest guest)
@@ -175,7 +175,9 @@ public class BillStrategy : IStrategy
         {
             //Debug.Log("Finish billing");
             guest.UpdateState(GuestState.Leave);
-            SeatManager.Instance.EmptySeat(guest.seatIndex);
+            foreach (var accompanying in guest.accompanyings)
+                accompanying.UpdateState(GuestState.Leave);
+            TableManager.Instance.EmptyTable(guest.tableIndex);
             return Node.State.Success;
         }
         else

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum GuestState
 {
+    None,//伴随客人
     GetIn,//初始状态
     WaitForOrder,//到达座位后转换到此状态
     Order,//server到达后转换到此状态
@@ -17,16 +18,22 @@ public class Guest
 {
     public int seatIndex;
     public int tableIndex;
+    public int dishCount;
+    public bool isOrderer;//一桌只有一个点菜者
+    public List<Guest> accompanyings;
     public Seat.SeatDir seatDir;
     public GuestState state;
     public Bubble bubble;
     public TaskBase task;
-    public bool isOrderer;//一桌只有一个点菜者
 
     public void UpdateState(GuestState newState)
     {
         switch (newState)
         {
+            case GuestState.None:
+                state = GuestState.None;
+                bubble.UpdateState("");
+                break;
             case GuestState.GetIn:
                 state = GuestState.GetIn;
                 bubble.UpdateState("新！");
@@ -107,6 +114,7 @@ public class ServeTask : ServeTaskBase
         if (!isServed)
         {
             isServed = true;
+            TableManager.Instance.ServeDish(guest.tableIndex, guest.dishCount, ((ServeTaskBase)guest.task).servedDishCount, recipe.RecipeName);
             ((ServeTaskBase)guest.task).servedDishCount++;
         }
     }

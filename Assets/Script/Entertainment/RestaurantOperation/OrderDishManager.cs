@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OrderDishManager : Singleton<OrderDishManager>
+public class OrderDishManager : Singleton<OrderDishManager> //作用待定，也许可以直接用CardImageDatabase的字典
 {
     public CardImageDatabase cardImageDatabase;
 
@@ -20,5 +20,12 @@ public class OrderDishManager : Singleton<OrderDishManager>
             else
                 Debug.LogError(Equals($"Duplicate dish entry: {dish.cardName}"));
         }
+    }
+    public Sprite GetDishSprite(string dishName)
+    {
+        if (dishes.ContainsKey(dishName))
+            return dishes[dishName];
+        else
+            return null;
     }
 }
