@@ -22,14 +22,17 @@ public class CreatMenu : MonoBehaviour
             Destroy(this);
             return;
         }
-        instance = this;
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
 
     public void OnEnable()
     {
         Names = new List<TextMeshProUGUI>();
-        menu.recipes.Clear();
         index = 0;
         if (Names.Count == 0)
         {

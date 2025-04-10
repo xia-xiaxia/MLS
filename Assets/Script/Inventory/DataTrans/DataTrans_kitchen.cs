@@ -40,7 +40,6 @@ public class DataTrans_kitchen : MonoBehaviour
         if (scene.name == "Kitchen") // 替换 "Kitchen" 为你要检测的场景名称
         {
             LoadScence();
-            Debug.Log("LoadScence::::::::::::::: kitchen");
         }
     }
 
@@ -62,4 +61,5 @@ public class DataTrans_kitchen : MonoBehaviour
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
+
 }
