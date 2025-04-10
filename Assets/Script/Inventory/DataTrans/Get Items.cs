@@ -59,6 +59,11 @@ public class GetItems : MonoBehaviour
                 ingredientCard.Add(ingredient.IngredientName, ingredient);
             }
         }
+        if (RestaurantEconomyManager.Instance != null)
+        {
+            RestaurantEconomyManager.Instance.TransferDictionary(recipeCard, ingredientCard);
+        }
+        StartCoroutine(RefreshPriceAndCost());
     }
 
     public void RefreshItems()
@@ -121,6 +126,29 @@ public class GetItems : MonoBehaviour
             {
                 Debug.LogWarning($"Ingredient {card.name} not found in ingredientCard dictionary");
             }
+        }
+        StartCoroutine(RefreshPriceAndCost());
+    }
+    public IEnumerator RefreshPriceAndCost() //协程防止卡顿
+    {
+        // 先更新食材的采购费
+        foreach (var i in ingredients)
+        {
+            i.IngredientPrice = i.IngredientBasePrice + (i.IngredientLevel - 1) * i.IngredientLevelPriceAddition;
+        }
+        yield return null;
+        // 再更新菜品的成本和价格
+        foreach (var j in recipes)
+        {
+            int cost = 0, price = 0;
+            foreach (var k in j.ingredients)
+            {
+                cost += k.IngredientPrice;
+                price += (k.IngredientLevel - 1) * k.IngredientLevelProfitAddition;
+            }
+            j.RecipeCost = cost;
+            j.RecipePrice = j.RecipeBasePrice + (j.RecipeLevel - 1) * j.RecipeLevelPriceAddition + price; // 菜品的价格等于基础价格 + 菜品的稀有度收益 + 食材的稀有度收益
+            yield return null;
         }
     }
 }

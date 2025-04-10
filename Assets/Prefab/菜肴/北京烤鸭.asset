@@ -17,8 +17,12 @@ MonoBehaviour:
   RecipeDescription: "\u5317\u4EAC\u70E4\u9E2D\u5317\u4EAC\u70E4\u9E2D\u5317\u4EAC\u70E4\u9E2D"
   RecipeID: 4
   RecipeLevel: 1
+  RecipeLevelPriceAddition: 30
+  RecipeBasePrice: 150
   RecipePrice: 150
   RecipeCost: 50
+  Rarity: 0
   ingredients:
   - {fileID: 11400000, guid: a6e42d25a8878dd47a0d213093bb0436, type: 2}
   - {fileID: 11400000, guid: 6947d8bdfb045734099b8475fc292b76, type: 2}
+  isEnable: 0

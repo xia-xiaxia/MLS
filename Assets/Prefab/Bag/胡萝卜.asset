@@ -17,5 +17,9 @@ MonoBehaviour:
   IngredientDescription: "\u4E00\u6839\u7EA2\u7EA2\u7684\u80E1\u841D\u535C"
   IngredientID: 11
   IngredientLevel: 1
-  IngredientPrice: 5
+  IngredientLevelPriceAddition: 15
+  IngredientLevelProfitAddition: 40
+  IngredientBasePrice: 20
+  IngredientPrice: 20
   Rarity: 0
+  isEnable: 0

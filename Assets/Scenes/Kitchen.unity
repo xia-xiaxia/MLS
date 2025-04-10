@@ -1998,9 +1998,9 @@ MonoBehaviour:
   bag: {fileID: 11400000, guid: 9d3bd27d2d55cfe4ba444b32b1d49eb8, type: 2}
   inventory: {fileID: 11400000, guid: 2666411ae3c81c24aacafbdf007b2b90, type: 2}
   recipes:
-  - {fileID: 11400000, guid: 220102508e9e641449fd407c8aa011ec, type: 2}
+  - {fileID: 11400000, guid: 99374b06222b6204c997b7d34535c6eb, type: 2}
   - {fileID: 11400000, guid: 27af4521321d0dc49aee032eab24a0a0, type: 2}
-  - {fileID: 11400000, guid: 0570e7335da6e794e96a6b4a5b7f3859, type: 2}
+  - {fileID: 11400000, guid: 862a9b2ce160a8944a13ebf867732911, type: 2}
   - {fileID: 11400000, guid: 421f64f631f1baa47836d65b9fc9f5e3, type: 2}
   - {fileID: 11400000, guid: 2aea4ab5e79285545afc2fd272e45580, type: 2}
   - {fileID: 11400000, guid: f2c1079a12e297c4e80e2c1025080faa, type: 2}
@@ -2012,7 +2012,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 890afd7b6314ad24e85d9e896fc88e07, type: 2}
   - {fileID: 11400000, guid: dd417c7ddc3123b41ac7353af47c8667, type: 2}
   - {fileID: 11400000, guid: 9797ba148cab1ac4db45c3bb806b2f61, type: 2}
-  - {fileID: 11400000, guid: d763dbd9a95d8a342bb35e56896b73ad, type: 2}
   - {fileID: 11400000, guid: 3b223accb51b3114d8544cb51b5a0828, type: 2}
   - {fileID: 11400000, guid: 6947d8bdfb045734099b8475fc292b76, type: 2}
   - {fileID: 11400000, guid: 1d5e614635470e5448cdf75a8b6cddfe, type: 2}

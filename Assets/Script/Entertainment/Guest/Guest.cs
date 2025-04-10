@@ -107,6 +107,7 @@ public class ServeTask : ServeTaskBase
     {
         this.recipe = recipe;
         this.guest = guest;
+        Debug.Log(recipe.RecipeName);
     }
     public void IsServed()
     {
@@ -115,6 +116,7 @@ public class ServeTask : ServeTaskBase
         {
             isServed = true;
             TableManager.Instance.ServeDish(guest.tableIndex, guest.dishCount, ((ServeTaskBase)guest.task).servedDishCount, recipe.RecipeName);
+            RestaurantEconomyManager.Instance.AddRevenue(recipe.RecipeName);
             ((ServeTaskBase)guest.task).servedDishCount++;
         }
     }

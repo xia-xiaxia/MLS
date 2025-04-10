@@ -23,6 +23,7 @@ public class OrderDishManager : Singleton<OrderDishManager> //作用待定，也许可以
     }
     public Sprite GetDishSprite(string dishName)
     {
+        Debug.Log(dishName);
         if (dishes.ContainsKey(dishName))
             return dishes[dishName];
         else
