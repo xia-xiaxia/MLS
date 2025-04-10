@@ -12,11 +12,15 @@ public class Recipe : ScriptableObject
     public string RecipeDescription;
     public int RecipeID;
     public int RecipeLevel;
-    public float RecipePrice;
-    public float RecipeCost;
+    public int RecipeLevelPriceAddition; // 稀有度价格增长
+    public int RecipeBasePrice; // 基础价格
+    public int RecipePrice;
+    public int RecipeCost;
     public Rarity Rarity;
 
     [Header("Recipe Ingredients")]
     public List<Ingredient> ingredients;
+
+    public bool isEnable;
 
 }

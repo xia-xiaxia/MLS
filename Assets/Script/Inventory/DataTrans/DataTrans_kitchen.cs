@@ -32,15 +32,6 @@ public class DataTrans_kitchen : MonoBehaviour
             {
                 gettenCards = GameDataManager.Instance.allDrawnCards;
             }
-            else
-            {
-                Debug.Log("gettenCards: null");
-            }
-            Debug.Log("gettenCards: " + gettenCards.Count);
-        }
-        else
-        {
-            Debug.Log("GameDataManager.Instance is null");
         }
     }
 

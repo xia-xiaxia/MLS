@@ -49,6 +49,11 @@ public class QuickPurchase : MonoBehaviour
     public GameObject uiPanel;
     public HangoutFlow hangoutFlow;
     public CardImageDatabase cardImageDatabase;
+    public EarningsUIManager earningsUIManager;
+    public RestaurantEconomyManager restaurantEconomyManager;
+    public int quickPurchaseNumber = 0;
+    public int bigPurchaseNumber = 0;
+    public int AllDrawnCardsCost = 0;//假设quick消耗100，big消耗200
 
     private List<string> recipePool = new List<string> { "宫保鸡丁", "麻婆豆腐", "北京烤鸭", "红烧肉", "鱼香肉丝", "水煮鱼", "糖醋里脊" };
     private List<string> ingredientPool = new List<string> { "鸡肉", "花生", "辣椒", "盐", "大豆", "牛肉", "鸭肉", "猪肉", "胡萝卜", "鱼肉", "鸡蛋", "糖" };
@@ -156,6 +161,18 @@ public class QuickPurchase : MonoBehaviour
     }
     private void SelectPurchaseMode(bool isBigPurchase)
     {
+        if (isBigPurchase == true)
+        {
+            bigPurchaseNumber=1;
+            Debug.Log($"bigpurchase的次数为{bigPurchaseNumber}");
+            Debug.Log($"quickpurchase的次数为{quickPurchaseNumber}");
+        }
+        else if (isBigPurchase == false)
+        {
+            quickPurchaseNumber=1;
+            Debug.Log($"bigpurchase的次数为{bigPurchaseNumber}");
+            Debug.Log($"quickpurchase的次数为{quickPurchaseNumber}");
+        }
         lastPurchaseModeIsBig = isBigPurchase;
         isBigPurchaseMode = isBigPurchase;
         confirmPurchaseButton.gameObject.SetActive(true); // 选择模式后显示确认按钮
@@ -163,6 +180,13 @@ public class QuickPurchase : MonoBehaviour
     }
     private void ConfirmPurchase()
     {
+        AllDrawnCardsCost = quickPurchaseNumber * 100 + bigPurchaseNumber * 200;
+        Debug.Log($"抽卡总共花费了{AllDrawnCardsCost}");
+        int costt = -AllDrawnCardsCost;
+        RestaurantEconomyManager.Instance.UseOrGainMoney(costt);
+        EarningsUIManager.Instance.UpdateEarnings(RestaurantEconomyManager.Instance.TotalEarnings);
+        quickPurchaseNumber = 0;
+        bigPurchaseNumber = 0;
         DisablePurchaseButtons();
         confirmPurchaseButton.gameObject.SetActive(false);
         drawnCards.Clear();
