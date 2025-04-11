@@ -25,7 +25,7 @@ public class BaseData : MonoBehaviour
 
     void Update()
     {
-        AmountTransfer();
+        //AmountTransfer();
         TimePass();
 
     }

@@ -13,7 +13,7 @@ public class MissionManager : MonoBehaviour
     //private Dictionary<string, object> monitoredProperties;
     private Dictionary<string, Mission> missions = new Dictionary<string, Mission>
     {
-        {"guestCount", new Mission("Entertain 10 guests.", 10, null) }
+        {"guestCount", new Mission("ÕÐ´ý 10 Î»¹Ë¿Í.", 10, null) }
     };
     private static List<string> names = new List<string> { "guestCount" };
     private Queue<string> missionQueue = new Queue<string>(names);

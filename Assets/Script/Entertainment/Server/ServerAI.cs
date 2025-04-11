@@ -159,7 +159,7 @@ public class ServerAI : BTAI
         //¿ØÖÆ¶¯»­µÄÇÐ»»
         if (agent.velocity.magnitude > 0)
         {
-            float angle = Vector2.SignedAngle(new Vector2(1,1), new Vector2(agent.velocity.x, agent.velocity.y));
+            float angle = Vector2.SignedAngle(new Vector2(1, 1), new Vector2(agent.velocity.x, agent.velocity.y));
             if (angle >= 0 && angle < 90)
                 animator.Play("Back");
             else if (angle >= 90 && angle <= 180)
@@ -168,6 +168,15 @@ public class ServerAI : BTAI
                 animator.Play("Forward");
             else if (angle >= -90 && angle < 0)
                 animator.Play("Right");
+            //float angle = Mathf.Atan2(agent.velocity.y, agent.velocity.x) * Mathf.Rad2Deg;
+            //if (angle > -30f && angle < 30f)
+            //    animator.Play("Right");
+            //else if (angle >= 30 && angle <= 150)
+            //    animator.Play("Back");
+            //else if (angle > 150 || angle < -150)
+            //    animator.Play("Left");
+            //else if (angle >= -150 && angle <= -30)
+            //    animator.Play("Forward");
         }
         else
             animator.Play("Idle");

@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -223,7 +223,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71423608ccad2824884b16d0ad5b4c34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  order: {fileID: -7672668934660383822, guid: 9d454b28ea9d83042b008c3672527d59, type: 3}
-  serve: {fileID: 1788074583648023756, guid: c3bd8b395957d3649a4ea93cbeef86a9, type: 3}
-  clean: {fileID: -6845322168022999181, guid: e6a7eac3ac424614d9cc03d8bf8b28a4, type: 3}
   owner: {fileID: 0}

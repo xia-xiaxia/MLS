@@ -7,15 +7,11 @@ using UnityEngine.UI;
 
 public class Bubble : MonoBehaviour
 {
-    public Sprite order;
-    public Sprite serve;
-    public Sprite clean;
     public Transform owner;
     private Image bubble;
     private TextMeshProUGUI text;
 
-    private Vector3 offset = new Vector3(0.4f, 0.55f, 0.36f);
-    //private Vector3 offset = new Vector3(0, 0.6f, 0);
+    private Vector3 offset = new Vector3(1.0f, 1.7f, 0);
 
 
 

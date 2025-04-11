@@ -134,7 +134,7 @@ public class GetItems : MonoBehaviour
         // 先更新食材的采购费
         foreach (var i in ingredients)
         {
-            i.IngredientPrice = i.IngredientBasePrice + i.IngredientLevel * (i.IngredientLevelPriceAddition - 1);
+            i.IngredientPrice = i.IngredientBasePrice + (i.IngredientLevel - 1) * i.IngredientLevelPriceAddition;
         }
         yield return null;
         // 再更新菜品的成本和价格
@@ -144,10 +144,10 @@ public class GetItems : MonoBehaviour
             foreach (var k in j.ingredients)
             {
                 cost += k.IngredientPrice;
-                price += k.IngredientLevel * (k.IngredientLevelProfitAddition - 1);
+                price += (k.IngredientLevel - 1) * k.IngredientLevelProfitAddition;
             }
             j.RecipeCost = cost;
-            j.RecipePrice = j.RecipeBasePrice + j.RecipeLevel * (j.RecipeLevelPriceAddition - 1) + price; // 菜品的价格等于基础价格 + 菜品的稀有度收益 + 食材的稀有度收益
+            j.RecipePrice = j.RecipeBasePrice + (j.RecipeLevel - 1) * j.RecipeLevelPriceAddition + price; // 菜品的价格等于基础价格 + 菜品的稀有度收益 + 食材的稀有度收益
             yield return null;
         }
     }

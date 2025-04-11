@@ -32,7 +32,7 @@ public class HeadToOrderStrategy : IStrategy
     }
     public Node.State Execute()
     {
-        agent.SetDestination(SeatManager.Instance.GetSeat(server.curTask.guest.index).transform.position);
+        agent.SetDestination(SeatManager.Instance.GetSeat(server.curTask.guest.seatIndex).transform.position);
         server.bubble.UpdateState("前往点单——");
         if (!agent.pathPending)
         {
@@ -143,7 +143,7 @@ public class ServeStrategy : IStrategy
 
         if (task == null)
             task = server.curTask;
-        agent.SetDestination(SeatManager.Instance.GetSeat(task.guest.index).transform.position);
+        agent.SetDestination(SeatManager.Instance.GetSeat(task.guest.seatIndex).transform.position);
         server.bubble.UpdateState("上菜——");
         //Debug.Log("Serving");
         if (!agent.pathPending)
@@ -154,7 +154,7 @@ public class ServeStrategy : IStrategy
             }
             else
             {
-                //Debug.Log("Served");
+                Debug.Log("Served");
                 agent.ResetPath();
                 server.bubble.Hide();
                 ((ServeTask)task).IsServed();
@@ -178,7 +178,7 @@ public class HeadToBillStrategy : IStrategy
     }
     public Node.State Execute()
     {
-        agent.SetDestination(SeatManager.Instance.GetSeat(server.curTask.guest.index).transform.position);
+        agent.SetDestination(SeatManager.Instance.GetSeat(server.curTask.guest.seatIndex).transform.position);
         server.bubble.UpdateState("前往结账——");
         if (!agent.pathPending)
         {
@@ -221,6 +221,7 @@ public class CleanStrategy : IStrategy
             //Debug.Log("Finish cleaning");
             timer = 0;
             server.bubble.Hide();
+            TableManager.Instance.ClearTable(server.curTask.guest.tableIndex, server.curTask.guest.dishCount);
             return Node.State.Failure;
         }
         else
