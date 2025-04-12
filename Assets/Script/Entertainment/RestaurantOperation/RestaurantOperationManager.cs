@@ -11,7 +11,12 @@ public class RestaurantOperationManager : Singleton<RestaurantOperationManager>
     //}
     public void BeginOperation()
     {
-        ServerManager.Instance.OnBeginOperation();
+        if (GuestManager.Instance.menu.recipes.Count <= 0)
+        {
+            WarningUIManager.Instance.ShowWarning();
+        }
+        else
+            ServerManager.Instance.OnBeginOperation();
     }
     public void EndOperation()
     {
@@ -19,7 +24,12 @@ public class RestaurantOperationManager : Singleton<RestaurantOperationManager>
     }
     public void BeginReceivingGuests()
     {
-        GuestManager.Instance.OnBeginReceivingGuests();
+        if (GuestManager.Instance.menu.recipes.Count <= 0)
+        {
+            WarningUIManager.Instance.ShowWarning();
+        }
+        else
+            GuestManager.Instance.OnBeginReceivingGuests();
     }
     public void EndReceivingGuests()
     {
