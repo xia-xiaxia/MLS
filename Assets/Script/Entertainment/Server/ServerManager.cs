@@ -30,7 +30,7 @@ public class ServerManager : Singleton<ServerManager>
         if (timer >= CheckInterval)
         {
             timer = 0;
-            if (RestaurantManager.Instance.CheckWaitingTasksCounts() > 3)
+            if (RestaurantTaskManager.Instance.CheckWaitingTasksCounts() > 3)
                 AddServer();
         }
     }

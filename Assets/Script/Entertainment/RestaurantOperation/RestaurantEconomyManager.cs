@@ -42,6 +42,7 @@ public class RestaurantEconomyManager : Singleton<RestaurantEconomyManager>
     }
     public void SettleAccounts() // 一天的结算
     {
+        SettlementUIManager.Instance.OnShowEarnings(revenuePerDay);
         TotalEarnings += revenuePerDay;
         revenuePerDay = 0;
     }

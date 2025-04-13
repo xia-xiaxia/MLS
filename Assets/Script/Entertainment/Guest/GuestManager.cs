@@ -65,23 +65,6 @@ public class GuestManager : Singleton<GuestManager>
         guests.Add(guestObj);
         return guest;
     }
-    public void DestroyGuest(GameObject guest)
-    {
-        Destroy(guest.GetComponent<GuestAI>().guest.bubble.gameObject);
-        Destroy(guest);
-        if (guests.Contains(guest))
-        {
-            guests.Remove(guest);
-        }
-    }
-    public void OnBeginReceivingGuests()
-    {
-        isOperating = true;
-    }
-    public void OnEndReceivingGuests()
-    {
-        isOperating = false;
-    }
     private IEnumerator BatchOfGuests(Table table)
     {
         int guestCount = 0;
@@ -114,4 +97,33 @@ public class GuestManager : Singleton<GuestManager>
         }
         orderer.accompanyings = accompanyings;
     }
+    public void DestroyGuest(GameObject guest)
+    {
+        Destroy(guest.GetComponent<GuestAI>().guest.bubble.gameObject);
+        Destroy(guest);
+        if (guests.Contains(guest))
+        {
+            guests.Remove(guest);
+        }
+    }
+    public void OnBeginReceivingGuests()
+    {
+        isOperating = true;
+    }
+    public void OnStopReceivingGuests()
+    {
+        isOperating = false;
+    }
+    public void ForceGuestsAway()
+    {
+        foreach (var guest in guests)
+        {
+            guest.GetComponent<GuestAI>().guest.UpdateState(GuestState.Leave);
+        }
+    }
+    public int CheckGuestsCount()
+    {
+        return guests.Count;
+    }
+        
 }

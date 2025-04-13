@@ -18,8 +18,8 @@ public class GotoRandomDoorStrategy : IStrategy
     {
         this.agent = agent;
         this.guest = guest;
-        this.entrances = RestaurantManager.Instance.entrances;
-        this.doors = RestaurantManager.Instance.doors;
+        this.entrances = RestaurantTaskManager.Instance.entrances;
+        this.doors = RestaurantTaskManager.Instance.doors;
     }
     public Node.State Execute()
     {
@@ -197,7 +197,7 @@ public class LeaveStrategy : IStrategy
     public LeaveStrategy(NavMeshAgent agent)
     {
         this.agent = agent;
-        this.doors = RestaurantManager.Instance.doors;
+        this.doors = RestaurantTaskManager.Instance.doors;
         i = UnityEngine.Random.Range(0, doors.Count);
     }
     public Node.State Execute()

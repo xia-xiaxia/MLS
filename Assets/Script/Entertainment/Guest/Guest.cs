@@ -80,7 +80,7 @@ public class OrderTask : TaskBase
     public OrderTask(Guest guest)
     {
         this.guest = guest;
-        RestaurantManager.Instance.EnqueueTaskBase(this);
+        RestaurantTaskManager.Instance.EnqueueTaskBase(this);
     }
 }
 public class ServeTaskBase : TaskBase
@@ -126,6 +126,6 @@ public class BillTask : TaskBase
     public BillTask(Guest guest)
     {
         this.guest = guest;
-        RestaurantManager.Instance.EnqueueTaskBase(this);//可以写到基类里
+        RestaurantTaskManager.Instance.EnqueueTaskBase(this);//可以写到基类里
     }
 }
