@@ -5,7 +5,7 @@ using UnityEngine;
 public class RestaurantEconomyManager : Singleton<RestaurantEconomyManager>
 {
     private int totalEarnings; // 总钱数 起步20000
-    private int TotalEarnings
+    public int TotalEarnings
     {
         get { return totalEarnings; }
         set 

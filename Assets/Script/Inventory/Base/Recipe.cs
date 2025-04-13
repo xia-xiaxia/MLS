@@ -21,6 +21,6 @@ public class Recipe : ScriptableObject
     [Header("Recipe Ingredients")]
     public List<Ingredient> ingredients;
 
-    public bool isEnable; 
+    public bool isEnable;
 
 }

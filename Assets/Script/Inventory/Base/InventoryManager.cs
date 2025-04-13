@@ -47,7 +47,7 @@ public class InventoryManager : MonoBehaviour
             RecipeSlot newSlot = Instantiate(instance.slotPrefab, instance.slotGrid.transform) as RecipeSlot;
             newSlot.gameObject.transform.SetParent(instance.slotGrid.transform);
             newSlot.slotRecipe = recipe;
-            newSlot.slotName.text = recipe.RecipeName + "  LV:" + recipe.RecipeLevel.ToString();
+            newSlot.slotName.text = recipe.RecipeName + "  Rarity:" + recipe.Rarity.ToString();
             newSlot.slotIcon = newSlot.GetComponent<Image>();
             newSlot.slotIcon.sprite = recipe.RecipeImage;
         }
