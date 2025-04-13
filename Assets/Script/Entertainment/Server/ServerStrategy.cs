@@ -82,7 +82,7 @@ public class TakeBackOrderStrategy : IStrategy
                 //Debug.Log("New Order hung on");
                 agent.ResetPath();
                 server.bubble.Hide();
-                RestaurantManager.Instance.AddOrder(((ServeTaskBase)server.curTask.guest.task).serveTasks);
+                RestaurantTaskManager.Instance.AddOrder(((ServeTaskBase)server.curTask.guest.task).serveTasks);
                 return Node.State.Failure;
             }
         }

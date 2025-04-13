@@ -49,14 +49,14 @@ public class ServerAI : BTAI
 
         // { 意愿接取任务
         Sequence isAcceptTask = new Sequence("isAcceptTask");
-        isAcceptTask.AddChild(new Leaf("isNewTaskToDo", new ConditionStrategy(() => RestaurantManager.Instance.curTask != null)));
+        isAcceptTask.AddChild(new Leaf("isNewTaskToDo", new ConditionStrategy(() => RestaurantTaskManager.Instance.curTask != null)));
         isAcceptTask.AddChild(new Leaf("acceptWork", new ActionStrategy(() =>
         {
             //Debug.Log(name + " " + server.willingness);
-            if (server.willingness >= 20 && !RestaurantManager.Instance.CheckWillinger(this))
+            if (server.willingness >= 20 && !RestaurantTaskManager.Instance.CheckWillinger(this))
             {
                 //Debug.Log("WillingToAcccept");
-                RestaurantManager.Instance.AddWillinger(this);
+                RestaurantTaskManager.Instance.AddWillinger(this);
                 server.willingness -= 20;
             }
         })));

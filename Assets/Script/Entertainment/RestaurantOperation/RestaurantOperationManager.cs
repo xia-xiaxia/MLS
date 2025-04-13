@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class RestaurantOperationManager : Singleton<RestaurantOperationManager>
 {
-    //private void Start()
-    //{
-    //    BeginOperation();
-    //    BeginReceivingGuests();
-    //}
+    public GameObject startButton;
+
+
+
     public void BeginOperation()
     {
         if (GuestManager.Instance.menu.recipes.Count <= 0)
@@ -16,23 +15,28 @@ public class RestaurantOperationManager : Singleton<RestaurantOperationManager>
             WarningUIManager.Instance.ShowWarning();
         }
         else
+        {
+            startButton.SetActive(false);
+            TimeManager.Instance.StartOperation();
             ServerManager.Instance.OnBeginOperation();
+            BeginReceivingGuests();
+        }
     }
     public void EndOperation()
     {
         ServerManager.Instance.OnEndOperation();
+        startButton.SetActive(true);
     }
     public void BeginReceivingGuests()
     {
-        if (GuestManager.Instance.menu.recipes.Count <= 0)
-        {
-            WarningUIManager.Instance.ShowWarning();
-        }
-        else
             GuestManager.Instance.OnBeginReceivingGuests();
     }
-    public void EndReceivingGuests()
+    public void StopReceivingGuests()
     {
-        GuestManager.Instance.OnEndReceivingGuests();
+        GuestManager.Instance.OnStopReceivingGuests();
+    }
+    public void ForceGuestsAway()
+    {
+        GuestManager.Instance.ForceGuestsAway();
     }
 }

@@ -48,7 +48,7 @@ namespace Spine.Unity.Examples {
 			skeletonRenderer = GetComponent<SkeletonRenderer>();
 			if (skeletonRenderer == null) return;
 
-			// Use the OnPostProcessVertices callback to modify the vertices at the correct time.
+			// Use the OnPostProcessVertices callback to modify the vertices at the correct hour.
 			skeletonRenderer.OnPostProcessVertices -= ProcessVertices;
 			skeletonRenderer.OnPostProcessVertices += ProcessVertices;
 
