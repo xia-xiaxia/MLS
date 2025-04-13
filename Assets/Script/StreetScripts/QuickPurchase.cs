@@ -180,7 +180,7 @@ public class QuickPurchase : MonoBehaviour
     }
     private void ConfirmPurchase()
     {
-        AllDrawnCardsCost = quickPurchaseNumber * 100 + bigPurchaseNumber * 200;
+        AllDrawnCardsCost = quickPurchaseNumber * 100 + bigPurchaseNumber * 1000;
         Debug.Log($"抽卡总共花费了{AllDrawnCardsCost}");
         int costt = -AllDrawnCardsCost;
         RestaurantEconomyManager.Instance.UseOrGainMoney(costt);

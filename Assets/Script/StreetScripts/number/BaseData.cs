@@ -7,22 +7,19 @@ public class BaseData : MonoBehaviour
 {
 
     public TextMeshProUGUI timeText;  // 用于显示时间的 TextMeshProUGUI 组件
-    public TextMeshProUGUI earningsText;
+    public TextMeshProUGUI dayPassedText;//每天结束之后显示出一个ui，表示今天已经过去。
+    public  float realTimeElapsed = 0f;  // 现实中流逝的时间（秒）
+    public  float startTimeInScene = 8f * 60f;  // 场景中开始的时间，8:00 AM，单位为分钟
+    public  float endTimeInScene = 22f * 60f;  // 场景中结束的时间，10:00 PM，单位为分钟
+    public  float totalDayDuration = 20f * 60f;  // 场景中的 1 天总时间，单位为分钟 (20分钟现实时间 = 1天)
 
-    private float realTimeElapsed = 0f;  // 现实中流逝的时间（秒）
-    private float startTimeInScene = 8f * 60f;  // 场景中开始的时间，8:00 AM，单位为分钟
-    private float endTimeInScene = 22f * 60f;  // 场景中结束的时间，10:00 PM，单位为分钟
-    private float totalDayDuration = 20f * 60f;  // 场景中的 1 天总时间，单位为分钟 (20分钟现实时间 = 1天)
 
-    public float earnings;
+
+
     public float nowTime;
     public bool isPaused = false;
 
-    void Start()
-    {
-        earnings = 0;
-    }
-
+   
     void Update()
     {
         //AmountTransfer();
@@ -30,12 +27,7 @@ public class BaseData : MonoBehaviour
 
     }
 
-    public void AmountTransfer()
-    {
-        earnings += 0.01f;
-        earningsText.text = "Earnings: " + earnings.ToString("F2");
-    }
-
+    
     public void TimePass()
     {
 
@@ -53,7 +45,8 @@ public class BaseData : MonoBehaviour
         {
             // 如果到达 22:00，重置回 08:00，实现循环
             realTimeElapsed = 0f;  // 重置现实时间
-            earnings -= 100;
+
+           
             sceneTimeInMinutes = startTimeInScene;
         }
 
